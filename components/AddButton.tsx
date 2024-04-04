@@ -16,8 +16,8 @@ export function AddButton() {
             Ajouter</Button>
       </PopoverTrigger>
       <PopoverContent className="bg-dark border-none shadow-md space-y-4 w-[190px] flex flex-col items-center">
-        <Button>Ajouter un achat</Button>
-        <Button>Ajouter un sortie</Button>
+        <Button>Ajouter un Entrée</Button>
+        <Button>Ajouter un Sortie</Button>
       </PopoverContent>
     </Popover>
   );

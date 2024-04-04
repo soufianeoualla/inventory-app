@@ -1,5 +1,6 @@
 'use client'
 import { LineChart } from "@mui/x-charts/LineChart";
+
 export const SortieEntreeStatistics = () => {
   return (
     <div className="p-8 w-[700px]">
@@ -12,7 +13,7 @@ export const SortieEntreeStatistics = () => {
           </div>
           <div className="achats text-blue-500 flex items-center gap-x-2">
             <div className="w-2 h-2 rounded-full bg-blue-500" />
-            <span>Achats</span>
+            <span>Entrée</span>
           </div>
         </div>
       </div>

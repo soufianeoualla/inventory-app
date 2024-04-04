@@ -19,7 +19,7 @@ export const AchatWrapper = () => {
             className="flex items-center gap-x-2 font-bold"
           >
             <FaPlus />
-            Ajouter un Achat
+            Ajouter un Entrée
           </Button>
         </div>
         <Items type="achat" />

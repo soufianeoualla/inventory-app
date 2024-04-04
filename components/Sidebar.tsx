@@ -2,10 +2,9 @@
 import Image from "next/image";
 import logo from "@/public/box_7649763.png";
 import { BiSolidDashboard } from "react-icons/bi";
-import { FaBagShopping } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { IoExit } from "react-icons/io5";
+import { IoExit,IoEnter } from "react-icons/io5";
 import { FaBox } from "react-icons/fa6";
 
 
@@ -18,9 +17,9 @@ export const Sidebar = () => {
       icon: <BiSolidDashboard />,
     },
     {
-      name: "Achat",
+      name: "Entrée",
       href: "/achat",
-      icon: <FaBagShopping />,
+      icon: <IoEnter />,
     },
     {
       name: "Sortie",
