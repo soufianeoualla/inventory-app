@@ -15,7 +15,7 @@ export const Filters = () => {
         <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
           <SelectValue placeholder="Category" />
         </SelectTrigger>
-        <SelectContent className="bg-Dark-Charcoal-Gray text-white border-none">
+        <SelectContent className="bg-dark text-white border-none">
           <SelectItem value="light">1</SelectItem>
           <SelectItem value="dark">2</SelectItem>
           <SelectItem value="system">3</SelectItem>

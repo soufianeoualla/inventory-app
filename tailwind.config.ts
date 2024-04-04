@@ -31,6 +31,9 @@ const config = {
         "Slate-Blue": "#828fa3",
         "Charcoal-Blue": "#3e3f4e",
         "Dark-Charcoal-Gray": "#2b2c37",
+        dark: "hsl(233, 30%, 11%)",
+        "Slate-Teal": "hsl(233, 31%, 17%)",
+        "Dusty-Aqua": "hsl(233, 30%, 21%)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -65,11 +68,7 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -83,6 +82,10 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      screens: {
+        md: { max: "939px" },
+        sm: { max: "620px" },
       },
     },
   },

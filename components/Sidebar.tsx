@@ -34,7 +34,7 @@ export const Sidebar = () => {
     },
   ];
   return (
-    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue ">
+    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue z-20 ">
       <div className="logo h-20 border-b border-b-slate-500/20 flex items-center w-full gap-x-2 text-xl font-bold uppercase tracking-wide px-8 text-white">
         <Image src={logo} alt="logo" className=" w-10" />
         Inventory
@@ -45,7 +45,7 @@ export const Sidebar = () => {
             key={item.name}
             href={item.href}
             className={`flex items-center gap-3  px-8  w-[90%] rounded-r-3xl h-12 ${
-              pathname === item.href
+              pathname.includes(item.href)
                 ? "bg-primary text-white"
                 : "text-Slate-Blue"
             } `}

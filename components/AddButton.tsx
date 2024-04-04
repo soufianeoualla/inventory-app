@@ -15,7 +15,7 @@ export function AddButton() {
             <FaPlus/>
             Ajouter</Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-Dark-Charcoal-Gray border-none shadow-md space-y-4 w-[190px] flex flex-col items-center">
+      <PopoverContent className="bg-dark border-none shadow-md space-y-4 w-[190px] flex flex-col items-center">
         <Button>Ajouter un achat</Button>
         <Button>Ajouter un sortie</Button>
       </PopoverContent>

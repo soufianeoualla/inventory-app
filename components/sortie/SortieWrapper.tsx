@@ -1,20 +1,29 @@
-import React from "react";
+'use client'
+import React, { useContext } from "react";
 import { Filters } from "../Filters";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
-import { Items } from "../achat/Items";
+import { AddEditModalContext } from "@/context/AddEditModalContext";
+import { AddEdit } from "../AddEdit";
+import { Items } from "../Items";
 
 export const SortieWrapper = () => {
+  const {toggle,addEditModal} = useContext(AddEditModalContext)
   return (
+    <>
     <div className="w-[900px] mx-auto space-y-16">
       <div className="flex justify-end items-center gap-x-8">
         <Filters />
-        <Button className="flex items-center gap-x-2 font-bold">
+        <Button
+        onClick={toggle}
+         className="flex items-center gap-x-2 font-bold">
           <FaPlus />
           Ajouter un Sortie
         </Button>
       </div>
-      <Items />
+      <Items type='sortie' />
     </div>
+    {addEditModal && <AddEdit type="sortie"/>}
+    </>
   );
 };

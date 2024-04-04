@@ -14,7 +14,7 @@ export const InventoryWrapper = () => {
           <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
-          <SelectContent className="bg-Dark-Charcoal-Gray text-white border-none">
+          <SelectContent className="bg-card text-white border-none">
             <SelectItem value="light">1</SelectItem>
             <SelectItem value="dark">2</SelectItem>
             <SelectItem value="system">3</SelectItem>
@@ -25,7 +25,7 @@ export const InventoryWrapper = () => {
           <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
-          <SelectContent className="bg-Dark-Charcoal-Gray text-white border-none">
+          <SelectContent className="bg-card text-white border-none">
             <SelectItem value="light">In Stock</SelectItem>
             <SelectItem value="dark">Out Of Stock</SelectItem>
           </SelectContent>
