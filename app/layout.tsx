@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
-import { Sidebar } from "@/components/Sidebar";
 import { AddEditModalProvider } from "@/context/AddEditModalContext";
 
 const font = Space_Grotesk({ subsets: ["latin"] });
@@ -20,15 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <AddEditModalProvider>
-          <main className="grid grid-cols-[250px,1fr]">
-            <Sidebar />
-            <div>
-              <Header />
-              {children}
-            </div>
-          </main>
-        </AddEditModalProvider>
+        <AddEditModalProvider>{children}</AddEditModalProvider>
       </body>
     </html>
   );

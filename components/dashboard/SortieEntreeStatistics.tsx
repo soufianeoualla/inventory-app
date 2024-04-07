@@ -1,5 +1,4 @@
 'use client'
-import { LineChart } from "@mui/x-charts/LineChart";
 
 export const SortieEntreeStatistics = () => {
   return (
@@ -18,18 +17,7 @@ export const SortieEntreeStatistics = () => {
         </div>
       </div>
 
-      <LineChart
       
-        xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-        sx={{color:'white'}}
-        series={[
-            { curve: "linear", data: [0, 5, 2, 6, 3, 9.3] },
-            { curve: "linear", data: [6, 3, 7, 9.5, 4, 2] },
-        ]}
-        margin={{ left: 0, right: 30, top: 100, bottom: 30 }}
-        width={700}
-        height={300}
-      />
     </div>
   );
 };

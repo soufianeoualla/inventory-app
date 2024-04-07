@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
-import logo from "@/public/box_7649763.png";
+import logo from "@/public/logo.png";
 import { BiSolidDashboard } from "react-icons/bi";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { IoExit,IoEnter } from "react-icons/io5";
+import { IoExit,IoEnter,IoLogOut } from "react-icons/io5";
 import { FaBox } from "react-icons/fa6";
+import { FaUserAlt } from "react-icons/fa";
+import { Button } from "./ui/button";
 
 
 export const Sidebar = () => {
@@ -31,9 +33,14 @@ export const Sidebar = () => {
       href: "/inventaire",
       icon: <FaBox />,
     },
+    {
+      name: "Profile",
+      href: "/profile",
+      icon: <FaUserAlt />,
+    },
   ];
   return (
-    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue z-20 ">
+    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue z-20 relative ">
       <div className="logo h-20 border-b border-b-slate-500/20 flex items-center w-full gap-x-2 text-xl font-bold uppercase tracking-wide px-8 text-white">
         <Image src={logo} alt="logo" className=" w-10" />
         Inventory
@@ -54,6 +61,10 @@ export const Sidebar = () => {
           </Link>
         ))}
       </div>
+      <Button variant={'ghost'} className="absolute left-0  w-[90%] rounded-none rounded-r-3xl bottom-10 flex gap-x-2 items-center text-Slate-Blue text-base h-12 hover:bg-primary ">
+        <IoLogOut/>
+        Log Out
+      </Button>
     </div>
   );
 };

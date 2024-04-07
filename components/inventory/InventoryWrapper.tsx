@@ -31,7 +31,7 @@ export const InventoryWrapper = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="flex flex-wrap gap-4 justify-center items-center">
+      <div className="flex flex-wrap gap-4 justify-start items-center">
         <InventoryItemCard />
         <InventoryItemCard />
         <InventoryItemCard />

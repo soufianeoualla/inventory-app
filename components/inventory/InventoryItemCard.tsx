@@ -2,7 +2,7 @@ import React from "react";
 
 export const InventoryItemCard = () => {
   return (
-    <div className="px-4 py-8 rounded-lg flex items-center justify-between w-[400px] text-white bg-card/20 shadow-md">
+    <div className="px-4 py-8 rounded-lg flex items-center justify-between w-[400px] text-white bg-gradient-to-br from-accent/20 to-card shadow-md ">
       <div className="grid gap-y-2">
         <b className="text-Slate-Blue">Id</b>
         <strong>Article</strong>
