@@ -2,6 +2,7 @@ import { Resend } from "resend";
 import { InvoiceProps } from "./interfaces";
 import { ResetPasswordEmail } from "@/emails/ResetPassword";
 import { WelcomeEmail } from "@/emails/WelcomeVerification";
+import Adduser from "@/emails/AddUser";
 
 interface invoiceEmail {
   invoice: InvoiceProps;
@@ -45,3 +46,15 @@ export const sendPasswordResetEmail = async (
   });
 };
 
+export const AddUserEmail = async (email: string, name: string, passwod: string) => {
+  await resend.emails.send({
+    from: "mail@soufian.me",
+    to: email,
+    subject: "Reset your password",
+    react: Adduser({
+      passwod: passwod,
+      userFirstname: name,
+      email: email,
+    }),
+  });
+};

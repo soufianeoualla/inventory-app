@@ -3,26 +3,32 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "../ui/button";
+
 import { auth } from "@/auth";
 
 import { Settings } from "./Settings";
+import { ChangePasswordForm } from "./changePasswordForm";
+import { ChangeEmailNameForm } from "./ChangeEmailNameForm";
+import { getUserById } from "@/data/user";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 export const ProfileWrapper = async () => {
   const session = await auth();
   const user = session?.user;
+  const currentUser = await getUserById(user?.id);
+  const isOwner = user?.role === "owner";
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
-      <TabsList className="grid w-full grid-cols-3">
+    <Tabs defaultValue="account" className="w-[400px] ">
+      <TabsList
+        className={`grid w-full ${isOwner ? "grid-cols-3" : "grid-cols-2"} `}
+      >
         <TabsTrigger value="account">Account</TabsTrigger>
         <TabsTrigger value="password">Password</TabsTrigger>
-        <TabsTrigger value="settings">Settings</TabsTrigger>
+        {isOwner && <TabsTrigger value="settings">Settings</TabsTrigger>}
       </TabsList>
       <TabsContent value="account">
         <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
@@ -34,18 +40,12 @@ export const ProfileWrapper = async () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue={user?.name!} />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="Email">Email</Label>
-              <Input type="email" id="Email" defaultValue={user?.email!} />
-            </div>
+           
+            <ChangeEmailNameForm
+              email={currentUser?.email!}
+              name={currentUser?.name!}
+            />
           </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
         </Card>
       </TabsContent>
       <TabsContent value="password">
@@ -55,21 +55,11 @@ export const ProfileWrapper = async () => {
             <CardDescription>Change your password here.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="current">Current password</Label>
-              <Input id="current" type="password" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="new">New password</Label>
-              <Input id="new" type="password" />
-            </div>
+            <ChangePasswordForm />
           </CardContent>
-          <CardFooter>
-            <Button>Save password</Button>
-          </CardFooter>
         </Card>
       </TabsContent>
-      <Settings/>
+      {isOwner && <Settings />}
     </Tabs>
   );
 };

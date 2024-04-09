@@ -4,6 +4,13 @@ import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getUserById } from "./data/user";
 
+declare module "next-auth" {
+  interface User {
+    role: string;
+    companyId: string;
+  }
+}
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -27,13 +34,16 @@ export const {
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
-        
       }
 
+      if (!session.user) return session;
+      const existingUser = await getUserById(session.user.id);
+      if (!existingUser) return session;
+      session.user.role = existingUser.role;
+      session.user.companyId = existingUser.companyId;
       return session;
     },
     async jwt({ token }) {
-
       return token;
     },
   },

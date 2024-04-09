@@ -8,6 +8,7 @@ import { RegisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/token";
 import { sendVerificationEmail } from "@/lib/mail";
+import { v4 as uuid } from "uuid";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -16,7 +17,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields!" };
   }
 
-  const { email, password, name } = validatedFields.data;
+  const { email, password, name, company } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
@@ -25,15 +26,26 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Email already in use!" };
   }
 
+  const Company = await db.company.create({
+    data: {
+      name: company,
+    },
+  });
+
   await db.user.create({
     data: {
+      companyId: Company.id,
       name,
       email,
       password: hashedPassword,
     },
   });
   const verficationToken = await generateVerificationToken(email);
-  await sendVerificationEmail(verficationToken.email, verficationToken.token,name);
+  await sendVerificationEmail(
+    verficationToken.email,
+    verficationToken.token,
+    name
+  );
 
   return { success: "Confirmation email sent!" };
 };

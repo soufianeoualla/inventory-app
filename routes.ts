@@ -1,5 +1,4 @@
 export const publicRoutes = [
-  "/",
   "/auth/verification",
   "/auth/reset",
 ];

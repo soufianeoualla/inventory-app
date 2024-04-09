@@ -1,10 +1,4 @@
 "use client";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { TabsContent } from "@/components/ui/tabs";
 import {
   Card,
@@ -25,24 +19,81 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Button } from "../ui/button";
-import { IoCopy } from "react-icons/io5";
-import { v4 as uuid } from "uuid";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { Input } from "../ui/input";
+import { addUser } from "@/actions/addUser";
+import { FormError } from "../auth/FormError";
+import { FormSuccess } from "../auth/FormSuccess";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AdduserSchema } from "@/schemas";
+import { z } from "zod";
+import { getComapnyUsers } from "@/data/getCompanyUsers";
+import { changeUserRole } from "@/actions/changeUserRole";
+
+interface User {
+  name: string;
+  email: string;
+  role: string;
+  id: string;
+}
 
 export const Settings = () => {
-  const [code, setcode] = useState<string | undefined>();
-  const [copy, setcopy] = useState<string | undefined>();
+  const [role, setrole] = useState<string>("");
+  const [newRole, setnewRole] = useState<string>("");
+  const [isPending, startTransition] = useTransition();
+  const [error, seterror] = useState<string | undefined>();
+  const [success, setsuccess] = useState<string | undefined>();
+  const [users, setusers] = useState<User[] | undefined>();
+  const [user, setuser] = useState<string | undefined>();
 
-  const generate = () => {
-    const referral_code = uuid().slice(0, 6);
-    setcode(referral_code);
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getComapnyUsers();
+      setusers(response?.filter((item) => item.role !== "owner"));
+    };
+    getData();
+  }, []);
+
+  const form = useForm<z.infer<typeof AdduserSchema>>({
+    resolver: zodResolver(AdduserSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+  });
+
+  const onAddUser = (values: z.infer<typeof AdduserSchema>) => {
+    seterror("");
+    setsuccess("");
+    if (!role) return seterror("Please select a role");
+    startTransition(() => {
+      addUser(values, role).then((data) => {
+        seterror(data?.error);
+        setsuccess(data?.success);
+      });
+    });
   };
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code!);
-    setcopy("copied");
-    setTimeout(() => {
-      setcopy(undefined);
-    }, 2000);
+
+  const onChangeRole = () => {
+    seterror("");
+    setsuccess("");
+    if (!newRole) return seterror("Please select a role");
+    if (!user) return seterror("Please select a user");
+    startTransition(() => {
+      changeUserRole(user, newRole).then((data) => {
+        seterror(data?.error);
+        setsuccess(data?.success);
+      });
+    });
   };
 
   return (
@@ -53,67 +104,131 @@ export const Settings = () => {
           <CardDescription>Control your Users</CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
-          <div className="space-y-4">
-            <Label htmlFor="">Gnerate referral code</Label>
-            <div className="flex items-center gap-x-3">
-              <Button onClick={generate}>Generate</Button>
-              {code}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onAddUser)} className="space-y-4">
+              <Label htmlFor="">Add new User</Label>
+              <div className="flex items-center gap-x-3">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPending}
+                          className="h-10"
+                          id="email"
+                          type="email"
+                          {...field}
+                        />
+                      </FormControl>
 
-              {code && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button onClick={handleCopy} variant="secondary">
-                        <IoCopy />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="border-none">
-                      <p>Copy</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {copy && <p className="text-emerald-500 capitalize">{copy} </p>}
-            </div>
-          </div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full name</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isPending}
+                          className="h-10"
+                          id="name"
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div></div>
+              <div className="flex items-end gap-x-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Role</Label>
+                  <Select
+                    value={role}
+                    onValueChange={(value) => setrole(value)}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue
+                        placeholder={`${role ? role : "Select Role"}`}
+                      />
+                    </SelectTrigger>
+                    <SelectContent className="border-none">
+                      <SelectGroup>
+                        <SelectLabel>Roles</SelectLabel>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="user">User</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button className="w-full" disabled={isPending}>
+                  Add user
+                </Button>
+              </div>
+
+    
+            </form>
+          </Form>
+
           <div className=" space-y-4">
-            <Label htmlFor="">Change Role</Label>
+            <Label htmlFor="">Change Current User Roles </Label>
             <div className="flex items-center gap-x-2">
-              <Select>
+              <Select value={user} onValueChange={(value) => setuser(value)}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select a User" />
+                  <SelectValue placeholder={"Select a User"} />
                 </SelectTrigger>
                 <SelectContent className="border-none">
                   <SelectGroup>
-                    <SelectLabel>Fruits</SelectLabel>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                    <SelectItem value="grapes">Grapes</SelectItem>
-                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                    <SelectLabel>Users</SelectLabel>
+                    {users &&
+                      users.map((item) => (
+                        <SelectItem key={item.id} value={item.id}>
+                          <div className="grid ">
+                            {item.email}
+                            <small className="text-white/50">
+                              {item.name}{" "}
+                            </small>
+                          </div>
+                        </SelectItem>
+                      ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
 
-              <Select>
+              <Select
+                value={newRole}
+                onValueChange={(value) => setnewRole(value)}
+              >
                 <SelectTrigger className="w-[180px] ">
-                  <SelectValue placeholder="Select a role" />
+                  <SelectValue placeholder="Change role" />
                 </SelectTrigger>
                 <SelectContent className="border-none">
                   <SelectGroup>
                     <SelectLabel>roles</SelectLabel>
-                    <SelectItem value="apple">Admin</SelectItem>
-                    <SelectItem value="banana">Watcher</SelectItem>
-                    <SelectItem value="blueberry">User</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
           </div>
         </CardContent>
-        <CardFooter>
-          <Button>Save changes</Button>
+        <CardFooter className="grid gap-y-4">
+          <Button  type="button" onClick={onChangeRole}>
+            Save changes
+          </Button>
+          {error && <FormError message={error} />}
+          {success && <FormSuccess message={success} />}
         </CardFooter>
       </Card>
     </TabsContent>

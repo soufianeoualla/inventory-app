@@ -15,7 +15,6 @@ export const ProductSchema = z.object({
   }),
 });
 
-
 export const LoginSchema = z.object({
   email: z.string().email({
     message: "Email is Required",
@@ -29,15 +28,45 @@ export const ForgotPsswordSchema = z.object({
     message: "Email is Required",
   }),
 });
+export const AdduserSchema = z.object({
+  name: z.string().min(3, {
+    message: "Full Name is Required",
+  }),
+
+  email: z.string().email({
+    message: "Email is Required",
+  }),
+});
+export const changeNameEmailSchema = z.object({
+  name: z.string().min(3, {
+    message: "Full Name is Required",
+  }),
+
+  email: z.string().email({
+    message: "Email is Required",
+  }),
+});
 
 export const RegisterSchema = z.object({
   name: z.string().min(3, {
     message: "Full Name is Required",
   }),
+  company: z.string().min(3, {
+    message: "Company is Required",
+  }),
   email: z.string().email({
     message: "Email is Required",
   }),
   password: z.string().min(6, {
+    message: "Password is required",
+  }),
+});
+
+export const NewPasswordSchema = z.object({
+  oldPassword: z.string().min(6, {
+    message: "Password is required",
+  }),
+  newPassword: z.string().min(6, {
     message: "Password is required",
   }),
 });
@@ -58,4 +87,3 @@ export const ResetSchema = z
       path: ["confirmPassword"],
     }
   );
-

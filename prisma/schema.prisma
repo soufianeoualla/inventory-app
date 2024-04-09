@@ -18,9 +18,9 @@ datasource db {
 }
 
 enum role {
-  admin
+  owner
   user
-  watcher
+  admin
 }
 
 model company {
@@ -31,13 +31,13 @@ model company {
 }
 
 model User {
-  name          String?
+  name          String
   id            String    @id @default(cuid()) @map(name: "id")
-  email         String?   @unique
-  password      String?
+  email         String   @unique
+  password      String
   emailVerified DateTime?
   image         String?
-  role          role      @default(user)
+  role          role      @default(owner)
   company       company   @relation(fields: [companyId], references: [id])
   companyId     String    @default(cuid()) @map(name: "company_id")
 }
@@ -47,6 +47,7 @@ model article {
   name        String
   ref         String
   quanity     Int
+  category    String
   inventory   inventory @relation(fields: [inventoryId], references: [id])
   inventoryId String    @default(cuid()) @map(name: "inventoryId_id")
 }
