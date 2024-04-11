@@ -17,14 +17,13 @@ export const SingleItem = ({ type }: SingleItemProp) => {
             {"id"}
           </b>
           <p className="  ">{"date"}</p>
-          <p className="    ">{"supplier"}</p>
+          <p className="    ">{"ref"}</p>
           <p className="    ">{"article name"}</p>
         </div>
 
         <div className="flex items-center   ">
           <b className=" mr-8     ">{"quantity"}</b>
-          <b className=" mr-8     ">{"price"}</b>
-          <b className=" mr-8     ">{"total"}</b>
+          
 
           <div
             className={`w-[104px] h-10  bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${"statusColors"} `}

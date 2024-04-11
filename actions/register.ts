@@ -31,6 +31,11 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       name: company,
     },
   });
+  await db.inventory.create({
+    data: {
+      companyId: Company.id,
+    },
+  });
 
   await db.user.create({
     data: {
@@ -40,6 +45,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       password: hashedPassword,
     },
   });
+
   const verficationToken = await generateVerificationToken(email);
   await sendVerificationEmail(
     verficationToken.email,

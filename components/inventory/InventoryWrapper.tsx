@@ -5,8 +5,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { InventoryItemCard } from "./InventoryItemCard";
-export const InventoryWrapper = () => {
+import { Button } from "../ui/button";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { getInventory } from "@/data/inventory";
+import Loading from "../loading";
+import { InventoryTable } from "./inventoryTable";
+
+export const InventoryWrapper = async () => {
+  const inventory = await getInventory();
+  const articles = inventory?.article;
+
   return (
     <div className="px-8 mx-auto space-y-16">
       <div className="flex items-center gap-x-4 justify-end">
@@ -30,12 +39,10 @@ export const InventoryWrapper = () => {
             <SelectItem value="dark">Out Of Stock</SelectItem>
           </SelectContent>
         </Select>
+        <Button>Add a product</Button>
       </div>
       <div className="flex flex-wrap gap-4 justify-start items-center">
-        <InventoryItemCard />
-        <InventoryItemCard />
-        <InventoryItemCard />
-        <InventoryItemCard /><InventoryItemCard />
+        {articles ? <InventoryTable articles={articles} /> : <Loading />}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
 import { useContext } from "react";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { AddEdit } from "../AddEdit";
+import { AddEdit } from "../modals/AddEdit";
 import { Items } from "../Items";
 
 export const AchatWrapper = () => {

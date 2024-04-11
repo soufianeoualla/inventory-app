@@ -3,6 +3,7 @@ import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AddEditModalProvider } from "@/context/AddEditModalContext";
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 const font = Space_Grotesk({ subsets: ["latin"] });
 
@@ -19,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <EdgeStoreProvider>
-          <AddEditModalProvider>{children}</AddEditModalProvider>
-        </EdgeStoreProvider>
+        <NotificationProvider>
+          <EdgeStoreProvider>
+            <AddEditModalProvider>{children}</AddEditModalProvider>
+          </EdgeStoreProvider>
+        </NotificationProvider>
       </body>
     </html>
   );
