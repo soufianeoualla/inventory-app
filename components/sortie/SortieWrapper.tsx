@@ -27,7 +27,7 @@ export const SortieWrapper = () => {
         </div>
         <Items type="sortie" />
       </div>
-      {addEditModal && <AddEditSortie />}
+      {addEditModal && <AddEditSortie edit={false} operation={undefined} />}
 
       {notification && <PopUpMessage />}
     </>

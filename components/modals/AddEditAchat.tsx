@@ -30,7 +30,7 @@ import { operation } from "../opertaionOverview/OperationOverview";
 
 interface props {
   edit: boolean;
-  operation: operation;
+  operation: operation | undefined;
 }
 
 export const AddEditAchat = (props: props) => {
@@ -39,16 +39,16 @@ export const AddEditAchat = (props: props) => {
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
 
-  const [date, setDate] = useState<Date>(edit ? operation.date : new Date());
+  const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [isPending, startTransition] = useTransition();
   const [category, setcategory] = useState<string | undefined>();
   const { toggle } = useContext(AddEditModalContext);
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      name: edit ? operation.article : "",
-      ref: edit ? operation.ref.toString() : "",
-      quantity: edit ? operation.quantity.toString() : "",
+      name: edit ? operation!.article : "",
+      ref: edit ? operation!.ref.toString() : "",
+      quantity: edit ? operation!.quantity.toString() : "",
     },
   });
 
@@ -58,7 +58,7 @@ export const AddEditAchat = (props: props) => {
     if (!category) return;
     startTransition(() => {
       edit
-        ? editEntree(values, category!, date, operation.id).then((data) => {
+        ? editEntree(values, category!, date, operation!.id).then((data) => {
             setError(data?.error);
             setSuccess(data?.success);
           })
@@ -150,7 +150,7 @@ export const AddEditAchat = (props: props) => {
 
             <div className="flex items-center gap-x-2">
               <Select
-                defaultValue={edit ? operation.category : ""}
+                defaultValue={edit ? operation!.category : ""}
                 disabled={isPending}
                 onValueChange={(value) => setcategory(value)}
               >

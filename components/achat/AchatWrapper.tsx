@@ -28,7 +28,7 @@ export const AchatWrapper = () => {
         <Items type="achat" />
       </div>
 
-      {addEditModal && <AddEditAchat  />}
+      {addEditModal && <AddEditAchat edit={false} operation={undefined}  />}
       {notification && <PopUpMessage />}
     </>
   );

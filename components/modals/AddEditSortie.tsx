@@ -31,7 +31,7 @@ interface respone {
 }
 interface props {
   edit: boolean;
-  operation: operation;
+  operation: operation | undefined;
 }
 
 export const AddEditSortie = ({ edit, operation }: props) => {
@@ -39,10 +39,10 @@ export const AddEditSortie = ({ edit, operation }: props) => {
   const [ref, setref] = useState<Array<string> | null>();
   const [articles, setarticles] = useState<respone[] | null>();
   const [selectedName, setselectedName] = useState<string>(
-    edit ? operation.article : ""
+    edit ? operation!.article : ""
   );
   const [selectedRef, setselectedRef] = useState<string>(
-    edit ? operation.ref.toString() : ""
+    edit ? operation!.ref.toString() : ""
   );
   useEffect(() => {
     const getData = async () => {
@@ -58,11 +58,11 @@ export const AddEditSortie = ({ edit, operation }: props) => {
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
 
-  const [date, setDate] = useState<Date>(edit ? operation.date : new Date());
+  const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [isPending, startTransition] = useTransition();
   const { toggle } = useContext(AddEditModalContext);
   const [quantity, setquantity] = useState<string>(
-    edit ? operation.quantity.toString() : ""
+    edit ? operation!.quantity.toString() : ""
   );
 
   const handleNameChange = (value: string) => {
@@ -89,7 +89,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
     const sortieValues = { selectedName, selectedRef, quantity, date };
     startTransition(() => {
       edit
-        ? editSortie(sortieValues, operation.id).then((data) => {
+        ? editSortie(sortieValues, operation!.id).then((data) => {
             setError(data.error);
             setSuccess(data.success);
           })
