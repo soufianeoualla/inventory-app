@@ -1,30 +1,30 @@
-"use server";
+'use server'
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-export const getEntree = async () => {
+export const getSortie = async () => {
   const session = await auth();
   const companyId = session?.user?.companyId;
   const inventory = await db.inventory.findFirst({
     where: { companyId: companyId },
   });
   try {
-    const entree = await db.entree.findMany({
+    const sortie = await db.sortie.findMany({
       where: { inventoryId: inventory?.id },
     });
-    return entree;
+    return sortie;
   } catch (error) {
     return null;
   }
 };
 
-export const getSingleEntree = async (id: string) => {
+export const getSingleSortie = async (id: string) => {
   try {
-    const entree = await db.entree.findUnique({
+    const sortie = await db.sortie.findUnique({
       where: { id: id },
     });
-    return entree;
+    return sortie;
   } catch (error) {
     return null;
   }

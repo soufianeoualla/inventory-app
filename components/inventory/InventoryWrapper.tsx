@@ -6,11 +6,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
-import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { getInventory } from "@/data/inventory";
 import Loading from "../loading";
-import { InventoryTable } from "./inventoryTable";
+import { InventoryItem } from "./InventoryItem";
 
 export const InventoryWrapper = async () => {
   const inventory = await getInventory();
@@ -39,10 +37,12 @@ export const InventoryWrapper = async () => {
             <SelectItem value="dark">Out Of Stock</SelectItem>
           </SelectContent>
         </Select>
-        <Button>Add a product</Button>
       </div>
-      <div className="flex flex-wrap gap-4 justify-start items-center">
-        {articles ? <InventoryTable articles={articles} /> : <Loading />}
+      <div className="flex flex-col gap-4 justify-center items-center">
+        {articles?.map(item=>(
+          <InventoryItem key={item.id} article ={item}/>
+        ))}
+      
       </div>
     </div>
   );

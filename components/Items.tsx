@@ -1,33 +1,62 @@
-import React, { Suspense } from "react";
+"use client";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import { SingleItem } from "./SingleItem";
+import { getEntree } from "@/data/entree";
+import { getSortie } from "@/data/sortie";
+import { TriggerContext } from "@/context/TriggerContext";
+import { usePathname } from "next/navigation";
+import Loading from "./loading";
+import Image from "next/image";
+import ullistration from "@/components/assets/illustration-empty.svg";
+
+interface respone {
+  id: string;
+  ref: number;
+  date: Date;
+  createdAt: Date;
+  email: string;
+  article: string;
+  category: string;
+  quantity: number;
+  inventoryId: string;
+}
 
 interface SingleItemProp {
   type: string;
 }
 export const Items = ({ type }: SingleItemProp) => {
+  const [items, setitems] = useState<respone[] | null>();
+  const { trigger } = useContext(TriggerContext);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const getdata = async () => {
+      const res = pathname.includes("achat")
+        ? await getEntree()
+        : await getSortie();
+      setitems(res);
+    };
+    getdata();
+  }, [trigger, pathname]);
   return (
     <div className="w-[700px] mx-auto uppercase text-[13px]">
-      <div className="w-full mb-4 flex justify-between pr-3 pl-8 items-center text-muted-foreground    ">
-        <div className="flex items-center justify-between gap-x-16 ">
-          <b className="     ">
-            <span className="text-Subtle-Turquoise  ">#</span>
-            {"id"}
-          </b>
-          <b className=" ">{"date"}</b>
-          <b className="   ">{"ref"}</b>
-          <b className="   ">{"article name"}</b>
-        </div>
-
-        <div className="flex items-center  ">
-          <b className=" mr-8">{"quantity"}</b>
-
-          <div className={`w-[144px] text-center  `}>
-            <b className={` capitalize tracking-wide`}>{"Category"}</b>
-          </div>
-        </div>
-      </div>
       <Suspense>
-        <SingleItem type={type} />
+        {!items && (
+          <div className="flex items-center justify-center h-[70vh]">
+            <Loading />
+          </div>
+        )}
+
+        {items?.length === 0 && (
+          <div className="flex flex-col justify-center items-center h-[60vh] text-center">
+            <Image src={ullistration} alt="ullistration empty" />
+            <h1 className="text-2xl font-bold mt-8 text-white">
+              There is nothing here
+            </h1>
+            
+          </div>
+        )}
+        <SingleItem type={type} items={items!} />
       </Suspense>
     </div>
   );

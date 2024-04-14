@@ -4,10 +4,13 @@ import { Filters } from "../Filters";
 import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { AddEdit } from "../modals/AddEdit";
 import { Items } from "../Items";
+import { AddEditSortie } from "../modals/AddEditSortie";
+import { NotificationContext } from "@/context/NotificationContext";
+import { PopUpMessage } from "../modals/PopUpMessage";
 
 export const SortieWrapper = () => {
+  const { notification } = useContext(NotificationContext);
   const { toggle, addEditModal } = useContext(AddEditModalContext);
   return (
     <>
@@ -24,7 +27,9 @@ export const SortieWrapper = () => {
         </div>
         <Items type="sortie" />
       </div>
-      {addEditModal && <AddEdit type="sortie" />}
+      {addEditModal && <AddEditSortie />}
+
+      {notification && <PopUpMessage />}
     </>
   );
 };

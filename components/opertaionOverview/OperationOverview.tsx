@@ -3,40 +3,56 @@ import { Button } from "@/components/ui/button";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { usePathname,useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Loading from "../loading";
-import { Summary } from "./Summary";
-import { AddEdit } from "../AddEdit";
-import { DeleteModal } from "../DeleteModal";
+import { AddEditAchat } from "../modals/AddEditAchat";
+import { DeleteModal } from "../modals/DeleteModal";
+import { getSingleEntree } from "@/data/entree";
+import { getSingleSortie } from "@/data/sortie";
+import { TriggerContext } from "@/context/TriggerContext";
+import { formatDate } from "@/lib/functions";
+import { getCategoryColor } from "@/lib/color";
+import { AddEditSortie } from "../modals/AddEditSortie";
 
+export interface operation {
+  id: string;
+  ref: number;
+  date: Date;
+  createdAt: Date;
+  email: string;
+  article: string;
+  category: string;
+  quantity: number;
+  inventoryId: string;
+}
 
 export const OperationOverview = () => {
   const { addEditModal, toggle } = useContext(AddEditModalContext);
-//   const { triggerToggle, trigger } = useContext(TriggerContext);
-  const [operation, setOperation] = useState<any>();
+  const { trigger } = useContext(TriggerContext);
+  const [operation, setOperation] = useState<operation>();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
-  const id = pathname.split('/')[1];
+  const id = pathname.split("/")[2];
+  const getData = useCallback(async () => {
+    if (!id) return;
+    const response = pathname.includes("achat")
+      ? await getSingleEntree(id)
+      : await getSingleSortie(id);
+    if (!response) return;
+    setOperation(response);
+  }, [id, pathname]);
 
-//   const getData = useCallback(async () => {
-//     if (!id) return;
-//     const response = await getSingleInvoice(id);
-//     if (!response) return;
-//     setInvoice(response as InvoiceProps);
-//   }, [id]);
+  useEffect(() => {
+    getData();
+  }, [getData, trigger]);
 
-//   useEffect(() => {
-//     getData();
-//   }, [getData, trigger]);
-
-  // if (!operation)
-  //   return (
-  //     <div className="h-screen flex justify-center items-center">
-  //       <Loading />
-  //     </div>
-  //   );
-
+  if (!operation)
+    return (
+      <div className="h-[70vh] flex justify-center items-center">
+        <Loading />
+      </div>
+    );
 
   return (
     <>
@@ -55,13 +71,30 @@ export const OperationOverview = () => {
         <div className="w-full h-[88px] rounded-lg flex items-center justify-between px-8 py-6  mt-8 bg-card/20">
           <div className="flex items-center sm:w-full sm:justify-between gap-5">
             <small className="text-[13px] font-medium text-card-foreground  ">
-              Status
+              Category
             </small>
             <div
-              className={`w-[104px] h-10 ${'statusColors'}  bg-opacity-10 rounded-md flex items-center justify-center gap-2`}
+              style={{
+                background: `hsla(${getCategoryColor(
+                  operation.category
+                )}, 0.15)`,
+              }}
+              className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2  `}
             >
-              <div className={`w-2 h-2 rounded-full ${'statusColors'} `} />
-              <b className={` capitalize`}>{'invoice.status'}</b>
+              <div
+                style={{
+                  background: `hsla(${getCategoryColor(operation.category)})`,
+                }}
+                className={`w-2 h-2 rounded-full `}
+              />
+              <b
+                style={{
+                  color: `hsla(${getCategoryColor(operation.category)})`,
+                }}
+                className={` capitalize tracking-wide`}
+              >
+                {operation.category}
+              </b>
             </div>
           </div>
 
@@ -83,17 +116,72 @@ export const OperationOverview = () => {
             >
               Delete
             </Button>
-           
           </div>
         </div>
 
-       <Summary  />
+        <div className="my-6  rounded-lg p-12 bg-card/20 sm:mb-10  ">
+          <div className="flex items-center justify-between sm:flex-col sm:gap-y-8 sm:justify-start sm:items-start">
+            <div className="grid gap-y-2">
+              <strong className=" uppercase text-white text-[15px]">
+                <span className=" ">#</span>
+                {operation.id}
+              </strong>
+            </div>
+          </div>
+
+          <div className="flex gap-28 md:gap-20 mt-10 ">
+            <div className="space-y-8">
+              <div className="grid gap-2">
+                <span className=" text-[13px] font-medium text-card-foreground">
+                  Ajouter le
+                </span>
+                <strong className=" text-white text-[15px]">
+                  {formatDate(operation.createdAt.toString())}
+                </strong>
+              </div>
+
+              <div className="grid gap-2">
+                <span className=" text-[13px] font-medium text-card-foreground">
+                  {"Date"}
+                </span>
+                <strong className=" text-white text-[15px]">
+                  {formatDate(operation.date.toString())}
+                </strong>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 text-[13px]  text-card-foreground">
+              <span className=" font-medium  ">Ajouter Par</span>
+              <strong className="capitalize text-white text-[15px]">
+                {operation.email}
+              </strong>
+            </div>
+          </div>
+
+          <div className="p-8 bg-Dusty-Aqua rounded-lg mt-11 text-[15px]">
+            <table className="w-full sm:hidden">
+              <tr className="text-muted-foreground ">
+                <th>item Name</th>
+                <th>Ref</th>
+                <th>QTY.</th>
+              </tr>
+
+              <tr className=" text-white">
+                <td>{operation.article}</td>
+                <td className=" text-card-foreground">{operation.ref}</td>
+                <td className=" text-card-foreground">{operation.quantity}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
       {deleteModal && (
-        <DeleteModal id={'45'} setDeleteModal={setDeleteModal} />
+        <DeleteModal id={operation.id} setDeleteModal={setDeleteModal} />
       )}
 
-      {addEditModal && <AddEdit type="so" />}
+      {addEditModal && pathname.includes('achat') && <AddEditAchat edit operation={operation} />}
+      {addEditModal && pathname.includes('sortie') && <AddEditSortie edit operation={operation} />}
+
     </>
   );
 };

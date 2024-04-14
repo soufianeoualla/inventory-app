@@ -53,25 +53,28 @@ model article {
 }
 
 model entree {
-  id          String    @id @default(cuid())
+  id          String    @id 
   ref         Int
   date        DateTime
   createdAt   DateTime  @default(now())
   email       String
   article     String
+  category    String
   quantity    Int
   inventory   inventory @relation(fields: [inventoryId], references: [id])
   inventoryId String    @default(cuid()) @map(name: "inventoryId_id")
 }
 
 model sortie {
-  id          String    @id @default(cuid())
-  ref         Int
-  date        DateTime
-  createdAt   DateTime  @default(now())
-  email       String
-  article     String
-  quantity    Int
+  id        String   @id 
+  ref       Int
+  date      DateTime
+  createdAt DateTime @default(now())
+  email     String
+  article   String
+  quantity  Int
+  category  String
+
   inventory   inventory @relation(fields: [inventoryId], references: [id])
   inventoryId String    @default(cuid()) @map(name: "inventoryId_id")
 }

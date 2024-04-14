@@ -4,10 +4,13 @@ import { Button } from "../ui/button";
 import { FaPlus } from "react-icons/fa6";
 import { useContext } from "react";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { AddEdit } from "../modals/AddEdit";
+import { AddEditAchat } from "../modals/AddEditAchat";
 import { Items } from "../Items";
+import { PopUpMessage } from "../modals/PopUpMessage";
+import { NotificationContext } from "@/context/NotificationContext";
 
 export const AchatWrapper = () => {
+  const { notification } = useContext(NotificationContext);
   const { toggle, addEditModal } = useContext(AddEditModalContext);
   return (
     <>
@@ -25,7 +28,8 @@ export const AchatWrapper = () => {
         <Items type="achat" />
       </div>
 
-      {addEditModal && <AddEdit type="achat" />}
+      {addEditModal && <AddEditAchat  />}
+      {notification && <PopUpMessage />}
     </>
   );
 };

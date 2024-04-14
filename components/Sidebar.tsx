@@ -4,11 +4,11 @@ import logo from "@/public/logo.png";
 import { BiSolidDashboard } from "react-icons/bi";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { IoExit,IoEnter,IoLogOut } from "react-icons/io5";
+import { IoExit, IoEnter, IoLogOut } from "react-icons/io5";
 import { FaBox } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
 import { Button } from "./ui/button";
-
+import { signOut } from "next-auth/react";
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -61,8 +61,12 @@ export const Sidebar = () => {
           </Link>
         ))}
       </div>
-      <Button variant={'ghost'} className="absolute left-0  w-[90%] rounded-none rounded-r-3xl bottom-10 flex gap-x-2 items-center text-Slate-Blue text-base h-12 hover:bg-primary ">
-        <IoLogOut/>
+      <Button
+        onClick={() => signOut()}
+        variant={"ghost"}
+        className="absolute left-0  w-[90%] rounded-none rounded-r-3xl bottom-10 flex gap-x-2 items-center text-Slate-Blue text-base h-12 hover:bg-primary "
+      >
+        <IoLogOut />
         Log Out
       </Button>
     </div>
