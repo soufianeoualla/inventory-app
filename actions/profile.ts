@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/auth.Js";
+import { auth } from "@/auth";
 import { getUserByEmail, getUserById } from "@/data/user";
 import { NewPasswordSchema, changeNameEmailSchema } from "@/schemas";
 import { z } from "zod";
