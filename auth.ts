@@ -3,8 +3,14 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getUserById } from "./data/user";
+import type { Adapter } from "next-auth/adapters";
 
-
+declare module "next-auth" {
+  interface User {
+    role: string;
+    companyId: string;
+  }
+}
 
 export const {
   handlers: { GET, POST },
@@ -52,7 +58,7 @@ export const {
       });
     },
   },
-  adapter: PrismaAdapter(db),
+  adapter:  PrismaAdapter(db) as Adapter,
   session: { strategy: "jwt" },
   ...authConfig,
 });

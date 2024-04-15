@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth } from "@/auth.Js";
 import { db } from "@/lib/db";
 
 export const getEntree = async () => {

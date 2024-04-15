@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn } from "@/auth.Js";
 import { getUserByEmail } from "@/data/user";
 import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";

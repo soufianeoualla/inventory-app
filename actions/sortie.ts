@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth } from "@/auth.Js";
 import { getProductByRef } from "@/data/products";
 import { db } from "@/lib/db";
 import { v4 as uuid } from "uuid";

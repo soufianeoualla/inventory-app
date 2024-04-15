@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/auth";
+import { auth } from "@/auth.Js";
 import { db } from "@/lib/db";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcryptjs";
