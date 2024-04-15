@@ -1,7 +1,7 @@
 import React from "react";
 import { FaCircleUser } from "react-icons/fa6";
 import { AddButton } from "./AddButton";
-import { auth } from "@/auth.Js";
+import { auth } from "@/auth";
 import { getUserById } from "@/data/user";
 import Image from "next/image";
 

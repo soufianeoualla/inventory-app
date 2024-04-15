@@ -7,14 +7,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { auth } from "@/auth.Js";
+import { auth } from "@/auth";
 
 import { Settings } from "./Settings";
 import { ChangePasswordForm } from "./changePasswordForm";
 import { ChangeEmailNameForm } from "./ChangeEmailNameForm";
 import { getUserById } from "@/data/user";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 export const ProfileWrapper = async () => {
   const session = await auth();

@@ -1,12 +1,9 @@
 import { Resend } from "resend";
-import { InvoiceProps } from "./interfaces";
 import { ResetPasswordEmail } from "@/emails/ResetPassword";
 import { WelcomeEmail } from "@/emails/WelcomeVerification";
 import Adduser from "@/emails/AddUser";
 
-interface invoiceEmail {
-  invoice: InvoiceProps;
-}
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 
