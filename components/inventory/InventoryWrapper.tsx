@@ -11,14 +11,6 @@ import { InventoryItem } from "./InventoryItem";
 import { useEffect, useState } from "react";
 import { article } from "@prisma/client";
 
-interface Article {
-  id: string;
-  name: string;
-  ref: number;
-  quantity: number;
-  category: string;
-  inventoryId: string;
-}
 
 export const InventoryWrapper = () => {
   const [articles, setarticles] = useState<article[] | undefined>();
@@ -54,38 +46,42 @@ export const InventoryWrapper = () => {
   });
 
   return (
-    <div className="px-8 mx-auto space-y-16">
-      <div className="flex items-center gap-x-4 justify-end">
-        <Select onValueChange={(value) => setcategory(value)}>
-          <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent className="bg-card text-white border-none">
-            <SelectItem value="all">All</SelectItem>
-            {uniqueCategories?.map((item, index) => (
-              <SelectItem key={index} value={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <>
+      <div className="px-8 mx-auto space-y-16">
+        <div className="flex items-center gap-x-4 justify-end">
+          <Select onValueChange={(value) => setcategory(value)}>
+            <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent className="bg-card text-white border-none">
+              <SelectItem value="all">All</SelectItem>
+              {uniqueCategories?.map((item, index) => (
+                <SelectItem key={index} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select onValueChange={(value) => setstatus(value)}>
-          <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent className="bg-card text-white border-none">
-            <SelectItem value="all">All</SelectItem>
-            <SelectItem value="instock">In Stock</SelectItem>
-            <SelectItem value="outOfStock">Out Of Stock</SelectItem>
-          </SelectContent>
-        </Select>
+          <Select onValueChange={(value) => setstatus(value)}>
+            <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent className="bg-card text-white border-none">
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="instock">In Stock</SelectItem>
+              <SelectItem value="outOfStock">Out Of Stock</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-col gap-4 justify-center items-center">
+          {finalFilteredArticles?.map((item) => (
+            <InventoryItem key={item.id} article={item} />
+          ))}
+        </div>
       </div>
-      <div className="flex flex-col gap-4 justify-center items-center">
-        {finalFilteredArticles?.map((item) => (
-          <InventoryItem key={item.id} article={item} />
-        ))}
-      </div>
-    </div>
+
+      
+    </>
   );
 };

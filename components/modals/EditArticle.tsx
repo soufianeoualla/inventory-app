@@ -1,6 +1,6 @@
 "use client";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { useContext, useState, useTransition } from "react";
+import { useContext, useTransition } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,34 +16,29 @@ import { useForm } from "react-hook-form";
 import { ProductSchema } from "@/schemas";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { DatePicker } from "../DatePicker";
-import { addEntree, editEntree } from "@/actions/Entree";
+
 import { NotificationContext } from "@/context/NotificationContext";
 import { TriggerContext } from "@/context/TriggerContext";
-import { operation } from "../opertaionOverview/OperationOverview";
-import { Label } from "../ui/label";
+import { article } from "@prisma/client";
 
 interface props {
-  edit: boolean;
-  operation: operation | undefined;
+  article: article | undefined;
 }
 
-export const AddEditAchat = (props: props) => {
-  const { edit, operation } = props;
+export const EditArticle = (props: props) => {
+  const {  article } = props;
   const { setError, setSuccess, notificationToggle } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
-
-  const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [isPending, startTransition] = useTransition();
   const { toggle } = useContext(AddEditModalContext);
   const form = useForm<z.infer<typeof ProductSchema>>({
     resolver: zodResolver(ProductSchema),
     defaultValues: {
-      name: edit ? operation!.article : "",
-      ref: edit ? operation!.ref.toString() : "",
-      quantity: edit ? operation!.quantity.toString() : "",
-      category: edit ? operation?.category : "",
+      name: article!.name,
+      ref: article!.ref.toString(),
+      quantity: article!.quantity.toString(),
+      category: article?.category,
     },
   });
 
@@ -51,15 +46,6 @@ export const AddEditAchat = (props: props) => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      edit
-        ? editEntree(values, date, operation!.id).then((data) => {
-            setError(data?.error);
-            setSuccess(data?.success);
-          })
-        : addEntree(values, date).then((data) => {
-            setError(data?.error);
-            setSuccess(data?.success);
-          });
 
       triggerToggle();
       toggle();
@@ -71,15 +57,15 @@ export const AddEditAchat = (props: props) => {
     <>
       <div
         onClick={toggle}
-        className="w-full top-0 left-0 h-full fixed bg-background/70 z-10  "
+        className="w-full top-0 left-0 h-full fixed bg-background/40 z-10  "
       ></div>
       <div className="bg-dark w-[610px]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
-          {edit ? "Modifier L'Entrée" : "Ajouter un Entrée "}
+          { "Modifier L'Entrée"}
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="flex items-center gap-x-2 ">
+            <div className="grid grid-cols-2 items-center gap-x-2 ">
               <FormField
                 control={form.control}
                 name="name"
@@ -120,6 +106,9 @@ export const AddEditAchat = (props: props) => {
                 )}
               />
 
+            </div>
+
+            <div className="grid grid-cols-2 items-end gap-x-2">
               <FormField
                 control={form.control}
                 name="quantity"
@@ -140,9 +129,6 @@ export const AddEditAchat = (props: props) => {
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className="grid grid-cols-2 items-end gap-x-2">
               <FormField
                 control={form.control}
                 name="category"
@@ -162,10 +148,7 @@ export const AddEditAchat = (props: props) => {
                   </FormItem>
                 )}
               />
-              <div className="space-y-2 w-full">
-                <Label>Date</Label>
-                <DatePicker date={date} setDate={setDate} />
-              </div>
+              
             </div>
             <div className="flex items-center justify-end gap-x-4">
               <Button
@@ -178,7 +161,7 @@ export const AddEditAchat = (props: props) => {
                 Anuuler
               </Button>
               <Button disabled={isPending} type="submit" size={"lg"}>
-                {edit ? "Modifier" : "Ajouter"}
+                { "Modifier" }
               </Button>
             </div>
           </form>

@@ -1,10 +1,10 @@
-import { SortieWrapper } from "@/components/sortie/SortieWrapper";
+import { PageWrapper } from "@/components/PageWrapper";
 import React from "react";
 
 const SortiePage = () => {
   return (
-    <div className="h-[calc(100vh-80px)] p-6 w-[calc(100vw-250px)]  bg-Charcoal overflow-y-scroll">
-      <SortieWrapper />
+    <div className="h-[calc(100vh-80px)] p-6 w-[calc(100vw-250px)]  bg-Charcoal ">
+      <PageWrapper />
     </div>
   );
 };

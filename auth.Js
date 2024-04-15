@@ -4,12 +4,7 @@ import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getUserById } from "./data/user";
 
-declare module "next-auth" {
-  interface User {
-    role: string;
-    companyId: string;
-  }
-}
+
 
 export const {
   handlers: { GET, POST },

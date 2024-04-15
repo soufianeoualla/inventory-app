@@ -1,4 +1,5 @@
 "use client";
+import { deleteArticle } from "@/actions/article";
 import { deleteEntree } from "@/actions/deleteEntree";
 import { deleteSortie } from "@/actions/deleteSortie";
 import { Button } from "@/components/ui/button";
@@ -10,9 +11,10 @@ import { Dispatch, SetStateAction, useContext, useTransition } from "react";
 interface DeleteModalProp {
   id: string;
   setDeleteModal: Dispatch<SetStateAction<boolean>>;
+  type: string;
 }
 
-export const DeleteModal = ({ id, setDeleteModal }: DeleteModalProp) => {
+export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
   const { triggerToggle } = useContext(TriggerContext);
   const [isPending, startTransition] = useTransition();
   const { notificationToggle, setError, setSuccess, success } =
@@ -42,9 +44,23 @@ export const DeleteModal = ({ id, setDeleteModal }: DeleteModalProp) => {
       notificationToggle();
     });
   };
+  const onDeleteArticle = () => {
+    startTransition(() => {
+      deleteArticle(id).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+      });
+      triggerToggle();
+      notificationToggle();
+    });
+  };
 
   const onDelete = () => {
-    pathname.includes("achat") ? onDeleteEntree() : onDeleteSortie();
+    pathname.includes("achat")
+      ? onDeleteEntree()
+      : pathname.includes("achat")
+      ? onDeleteSortie()
+      : onDeleteArticle();
   };
   return (
     <>
@@ -58,7 +74,8 @@ export const DeleteModal = ({ id, setDeleteModal }: DeleteModalProp) => {
           Confirm Deletion
         </h1>
         <p className="text-Soft-Teal text-sm text-white/80">
-          Are you sure you want to delete this operation{" "}
+          Are you sure you want to delete{" "}
+          {type === "article" ? "this article" : "this operation"}{" "}
           {/* <span className="uppercase">#{id}</span>? */}
           This action cannot be undone.
         </p>

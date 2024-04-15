@@ -10,6 +10,9 @@ export const ProductSchema = z.object({
   quantity: z.string().min(2, {
     message: "Quantity is Required",
   }),
+  category: z.string().min(2, {
+    message: "Quantity is Required",
+  }),
   
 });
 

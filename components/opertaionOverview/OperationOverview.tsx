@@ -176,7 +176,7 @@ export const OperationOverview = () => {
         </div>
       </div>
       {deleteModal && (
-        <DeleteModal id={operation.id} setDeleteModal={setDeleteModal} />
+        <DeleteModal id={operation.id} setDeleteModal={setDeleteModal} type="operation" />
       )}
 
       {addEditModal && pathname.includes('achat') && <AddEditAchat edit operation={operation} />}

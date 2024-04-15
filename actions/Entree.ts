@@ -9,7 +9,6 @@ import { v4 as uuid } from "uuid";
 
 export const addEntree = async (
   values: z.infer<typeof ProductSchema>,
-  category: string,
   date: Date
 ) => {
   const session = await auth();
@@ -19,7 +18,7 @@ export const addEntree = async (
   if (!validateFields.success) {
     return { error: "Invalid fields!" };
   }
-  const { name, quantity, ref } = validateFields.data;
+  const { name, quantity, ref,category } = validateFields.data;
 
   const company = await db.company.findUnique({
     where: { id: user.companyId },
@@ -67,7 +66,6 @@ export const addEntree = async (
 
 export const editEntree = async (
   values: z.infer<typeof ProductSchema>,
-  category: string,
   date: Date,
   operationId: string
 ) => {
@@ -78,7 +76,7 @@ export const editEntree = async (
   if (!validateFields.success) {
     return { error: "Invalid fields!" };
   }
-  const { name, quantity, ref } = validateFields.data;
+  const { name, quantity, ref,category } = validateFields.data;
   const entree = await db.entree.findUnique({
     where: { id: operationId },
   });

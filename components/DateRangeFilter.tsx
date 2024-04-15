@@ -1,27 +1,30 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { addDays, format } from "date-fns"
-import { DateRange } from "react-day-picker"
+import * as React from "react";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
+
+interface DateRangeFilterProps {
+  className: React.HTMLAttributes<HTMLDivElement> | undefined;
+  date: DateRange | undefined;
+  setDate: React.Dispatch<React.SetStateAction<DateRange|undefined>>;
+}
 
 export function DateRangeFilter({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  })
-
+  date,
+  setDate,
+}: DateRangeFilterProps) {
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -49,9 +52,12 @@ export function DateRangeFilter({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 border-Dark-Charcoal-Gray bg-dark " align="start">
+        <PopoverContent
+          className="w-auto p-0 border-Dark-Charcoal-Gray bg-dark "
+          align="start"
+        >
           <Calendar
-          className=""
+            className=""
             initialFocus
             mode="range"
             defaultMonth={date?.from}
@@ -62,5 +68,5 @@ export function DateRangeFilter({
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

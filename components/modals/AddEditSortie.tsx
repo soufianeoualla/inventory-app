@@ -97,11 +97,10 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             setError(data.error);
             setSuccess(data.success);
           });
-      if (success) {
-        toggle();
-        notificationToggle();
-        triggerToggle();
-      }
+
+      toggle();
+      notificationToggle();
+      triggerToggle();
     });
   };
 

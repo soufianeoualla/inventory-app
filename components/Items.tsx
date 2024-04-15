@@ -1,44 +1,21 @@
 "use client";
-import React, { Suspense, useContext, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { SingleItem } from "./SingleItem";
-import { getEntree } from "@/data/entree";
-import { getSortie } from "@/data/sortie";
-import { TriggerContext } from "@/context/TriggerContext";
-import { usePathname } from "next/navigation";
 import Loading from "./loading";
 import Image from "next/image";
 import ullistration from "@/components/assets/illustration-empty.svg";
+import { respone } from "./PageWrapper";
 
-interface respone {
-  id: string;
-  ref: number;
-  date: Date;
-  createdAt: Date;
-  email: string;
-  article: string;
-  category: string;
-  quantity: number;
-  inventoryId: string;
-}
+
 
 interface SingleItemProp {
   type: string;
+  items:respone[] | undefined |null
 }
-export const Items = ({ type }: SingleItemProp) => {
-  const [items, setitems] = useState<respone[] | null>();
-  const { trigger } = useContext(TriggerContext);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const getdata = async () => {
-      const res = pathname.includes("achat")
-        ? await getEntree()
-        : await getSortie();
-      setitems(res);
-    };
-    getdata();
-  }, [trigger, pathname]);
+export const Items = ({ type,items }: SingleItemProp) => {
+ 
   return (
+    
     <div className="w-[700px] mx-auto uppercase text-[13px]">
       <Suspense>
         {!items && (

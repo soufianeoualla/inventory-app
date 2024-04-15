@@ -5,22 +5,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DateRangeFilter } from "./DateRangeFilter";
+import { Dispatch, SetStateAction } from "react";
+interface FiltersProps {
+  uniqueCategories: Array<string>;
+  setcategory: Dispatch<SetStateAction<string>>;
+}
 
-export const Filters = () => {
+export const Filters = ({ uniqueCategories, setcategory }: FiltersProps) => {
   return (
-    <div className="flex items-center justify-end gap-x-4">
-      <DateRangeFilter />
-      <Select>
-        <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
-          <SelectValue placeholder="Category" />
-        </SelectTrigger>
-        <SelectContent className="bg-dark text-white border-none">
-          <SelectItem value="light">1</SelectItem>
-          <SelectItem value="dark">2</SelectItem>
-          <SelectItem value="system">3</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select onValueChange={(value) => setcategory(value)}>
+      <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+        <SelectValue placeholder="Category" />
+      </SelectTrigger>
+      <SelectContent className="bg-dark text-white border-none">
+        <SelectItem value={"all"}>{"All"}</SelectItem>
+        {uniqueCategories.map((item, index) => (
+          <SelectItem key={index} value={item}>
+            {item}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };

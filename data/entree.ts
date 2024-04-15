@@ -12,6 +12,7 @@ export const getEntree = async () => {
   try {
     const entree = await db.entree.findMany({
       where: { inventoryId: inventory?.id },
+      orderBy: { date: "desc" },
     });
     return entree;
   } catch (error) {
