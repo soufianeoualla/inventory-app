@@ -1,6 +1,6 @@
 "use client";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { useContext, useState, useTransition } from "react";
+import { useContext, useEffect, useState, useTransition } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,6 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { useForm } from "react-hook-form";
 import { ProductSchema } from "@/schemas";
@@ -22,6 +29,9 @@ import { NotificationContext } from "@/context/NotificationContext";
 import { TriggerContext } from "@/context/TriggerContext";
 import { operation } from "../opertaionOverview/OperationOverview";
 import { Label } from "../ui/label";
+import { getInventories } from "@/data/inventory";
+import { Inventories } from "../inventory/InventoryList";
+import Link from "next/link";
 
 interface props {
   edit: boolean;
@@ -33,8 +43,17 @@ export const AddEditAchat = (props: props) => {
   const { setError, setSuccess, notificationToggle } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
-
+  const [inventoryId, setinventoryId] = useState<string>("");
   const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
+  const [inventories, setinventories] = useState<Inventories[] | null>(null);
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getInventories();
+      setinventories(response);
+    };
+    getData();
+  }, []);
+
   const [isPending, startTransition] = useTransition();
   const { toggle } = useContext(AddEditModalContext);
   const form = useForm<z.infer<typeof ProductSchema>>({
@@ -48,6 +67,8 @@ export const AddEditAchat = (props: props) => {
   });
 
   const onSubmit = (values: z.infer<typeof ProductSchema>) => {
+    if (!inventoryId)
+      return setError("sélectionnez un inventaire s'il vous plaît");
     setError("");
     setSuccess("");
     startTransition(() => {
@@ -56,7 +77,7 @@ export const AddEditAchat = (props: props) => {
             setError(data?.error);
             setSuccess(data?.success);
           })
-        : addEntree(values, date).then((data) => {
+        : addEntree(values, date, inventoryId).then((data) => {
             setError(data?.error);
             setSuccess(data?.success);
           });
@@ -78,7 +99,7 @@ export const AddEditAchat = (props: props) => {
           {edit ? "Modifier L'Entrée" : "Ajouter un Entrée "}
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="flex items-center gap-x-2 ">
               <FormField
                 control={form.control}
@@ -142,7 +163,7 @@ export const AddEditAchat = (props: props) => {
               />
             </div>
 
-            <div className="grid grid-cols-2 items-end gap-x-2">
+            <div className="grid grid-cols-2 items-end gap-x-2 space-y-6">
               <FormField
                 control={form.control}
                 name="category"
@@ -162,11 +183,36 @@ export const AddEditAchat = (props: props) => {
                   </FormItem>
                 )}
               />
+              <div className=" w-full space-y-2">
+                <Label>Inventaire</Label>
+                <Select
+                  value={inventoryId}
+                  disabled={isPending}
+                  onValueChange={(value) => setinventoryId(value)}
+                >
+                  <SelectTrigger className="w-full h-11 bg-Slate-Teal border-none text-white">
+                    <SelectValue placeholder="Inventaire" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-Slate-Teal text-white border-none">
+                    {inventories?.length === 0 && (
+                      <SelectItem disabled value={" "}>
+                        {"vous n'avez pas d'inventaire, créez-en un"}
+                      </SelectItem>
+                    )}
+                    {inventories?.map((item, index) => (
+                      <SelectItem key={index} value={item.id}>
+                        {item.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-2 w-full">
                 <Label>Date</Label>
                 <DatePicker date={date} setDate={setDate} />
               </div>
             </div>
+
             <div className="flex items-center justify-end gap-x-4">
               <Button
                 disabled={isPending}

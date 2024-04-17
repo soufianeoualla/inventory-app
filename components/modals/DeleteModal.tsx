@@ -52,6 +52,7 @@ export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
       });
       triggerToggle();
       notificationToggle();
+      setDeleteModal(false);
     });
   };
 

@@ -2,16 +2,16 @@ import { z } from "zod";
 
 export const ProductSchema = z.object({
   name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+    message: "name is Required",
   }),
   ref: z.string().min(2, {
-    message: "Code must be at least 2 characters.",
+    message: "Ref is Required",
   }),
   quantity: z.string().min(2, {
     message: "Quantity is Required",
   }),
   category: z.string().min(2, {
-    message: "Quantity is Required",
+    message: "Category is Required",
   }),
   
 });

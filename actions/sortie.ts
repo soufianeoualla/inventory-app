@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
+import { getInventory } from "@/data/inventory";
 import { getProductByRef } from "@/data/products";
 import { db } from "@/lib/db";
 import { v4 as uuid } from "uuid";
@@ -11,21 +12,15 @@ interface values {
   date: Date;
 }
 
-export const addSortie = async (sortieValues: values) => {
+export const addSortie = async (sortieValues: values, inventoryId: string) => {
   const session = await auth();
   const user = session?.user;
   if (!user) return { error: "not logged In" };
 
   const { selectedName, quantity, selectedRef, date } = sortieValues;
 
-  const company = await db.company.findUnique({
-    where: { id: user.companyId },
-  });
-  if (!company) return { error: "Something went wrong" };
-  const inventory = await db.inventory.findFirst({
-    where: { companyId: company.id },
-  });
-  if (!inventory) return { error: "Something went wrong" };
+
+
   const existingProduct = await getProductByRef(parseInt(selectedRef));
   if (!existingProduct)
     return { error: "Article does not exist on the inventory" };
@@ -33,15 +28,19 @@ export const addSortie = async (sortieValues: values) => {
   if (existingProduct.quantity < parseInt(quantity))
     return { error: "You don't have enough Quantity on this article" };
   const id = uuid().slice(0, 7);
+  const res = await getInventory(inventoryId!);
+  const inventoryName = res?.name;
   await db.sortie.create({
     data: {
+      companyId: user.companyId,
+      inventoryName: inventoryName!,
       id: id,
       email: user.email!,
       quantity: parseInt(quantity),
       ref: parseInt(selectedRef),
       article: selectedName,
       date: date,
-      inventoryId: inventory.id,
+      inventoryId: inventoryId,
       category: existingProduct.category,
     },
   });
@@ -56,13 +55,12 @@ export const addSortie = async (sortieValues: values) => {
   return { success: "Opertaion successfully done" };
 };
 
-export const editSortie = async (sortieValues: values,operationId:string) => {
+export const editSortie = async (sortieValues: values, operationId: string) => {
   const session = await auth();
   const user = session?.user;
   if (!user) return { error: "not logged In" };
 
-  const { selectedName, quantity, selectedRef, date } =
-    sortieValues;
+  const { selectedName, quantity, selectedRef, date } = sortieValues;
 
   const sortie = await db.sortie.findUnique({
     where: { id: operationId },
@@ -89,8 +87,12 @@ export const editSortie = async (sortieValues: values,operationId:string) => {
   if (existingProduct.quantity < parseInt(quantity))
     return { error: "You don't have enough Quantity on this article" };
 
+  const res = await getInventory(inventoryId!);
+  const inventoryName = res?.name;
   await db.sortie.create({
     data: {
+      companyId: user.companyId,
+      inventoryName: inventoryName!,
       id: operationId,
       email: user.email!,
       quantity: parseInt(quantity),

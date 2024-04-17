@@ -6,16 +6,12 @@ import Image from "next/image";
 import ullistration from "@/components/assets/illustration-empty.svg";
 import { respone } from "./PageWrapper";
 
-
-
 interface SingleItemProp {
   type: string;
-  items:respone[] | undefined |null
+  items: respone[] | undefined | null;
 }
-export const Items = ({ type,items }: SingleItemProp) => {
- 
+export const Items = ({ type, items }: SingleItemProp) => {
   return (
-    
     <div className="w-[700px] mx-auto uppercase text-[13px]">
       <Suspense>
         {!items && (
@@ -30,10 +26,11 @@ export const Items = ({ type,items }: SingleItemProp) => {
             <h1 className="text-2xl font-bold mt-8 text-white">
               There is nothing here
             </h1>
-            
           </div>
         )}
-        <SingleItem type={type} items={items!} />
+        {items?.map((item) => (
+          <SingleItem key={item.id} type={type} item={item} />
+        ))}
       </Suspense>
     </div>
   );

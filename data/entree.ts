@@ -6,12 +6,10 @@ import { db } from "@/lib/db";
 export const getEntree = async () => {
   const session = await auth();
   const companyId = session?.user?.companyId;
-  const inventory = await db.inventory.findFirst({
-    where: { companyId: companyId },
-  });
+  
   try {
     const entree = await db.entree.findMany({
-      where: { inventoryId: inventory?.id },
+      where: { companyId: companyId },
       orderBy: { date: "desc" },
     });
     return entree;

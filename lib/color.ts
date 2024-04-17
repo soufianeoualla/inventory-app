@@ -1,3 +1,4 @@
+
 export const getCategoryColor = (category: string) => {
     // Generate a hash code for the category name
     const hashCode = category.split("").reduce((acc, char) => {
@@ -8,6 +9,8 @@ export const getCategoryColor = (category: string) => {
     // Return the color from the colorsHSL array
     return colorsHSL[colorIndex];
   };
+
+
   const colorsHSL = [
     "205, 100%, 68%", // #49C4E5
     "275, 59%, 58%", // #9370DB

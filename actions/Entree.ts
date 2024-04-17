@@ -6,10 +6,12 @@ import { db } from "@/lib/db";
 import { ProductSchema } from "@/schemas";
 import { z } from "zod";
 import { v4 as uuid } from "uuid";
+import { getInventory } from "@/data/inventory";
 
 export const addEntree = async (
   values: z.infer<typeof ProductSchema>,
-  date: Date
+  date: Date,
+  inventoryId: string
 ) => {
   const session = await auth();
   const user = session?.user;
@@ -18,16 +20,8 @@ export const addEntree = async (
   if (!validateFields.success) {
     return { error: "Invalid fields!" };
   }
-  const { name, quantity, ref,category } = validateFields.data;
+  const { name, quantity, ref, category } = validateFields.data;
 
-  const company = await db.company.findUnique({
-    where: { id: user.companyId },
-  });
-  if (!company) return { error: "Something went wrong" };
-  const inventory = await db.inventory.findFirst({
-    where: { companyId: company.id },
-  });
-  if (!inventory) return { error: "Something went wrong" };
   const existingProduct = await getProductByRef(parseInt(ref));
   if (!existingProduct) {
     await db.article.create({
@@ -36,17 +30,21 @@ export const addEntree = async (
         name: name,
         quantity: parseInt(quantity),
         ref: parseInt(ref),
-        inventoryId: inventory.id,
+        inventoryId: inventoryId,
       },
     });
   }
   const id = uuid().slice(0, 7);
+  const res = await getInventory(inventoryId);
+  const inventoryName = res?.name;
 
   await db.entree.create({
     data: {
+      companyId: user.companyId,
       id: id,
       category: category,
-      inventoryId: inventory.id,
+      inventoryId: inventoryId,
+      inventoryName: inventoryName!,
       article: name,
       date: date,
       quantity: parseInt(quantity),
@@ -76,7 +74,7 @@ export const editEntree = async (
   if (!validateFields.success) {
     return { error: "Invalid fields!" };
   }
-  const { name, quantity, ref,category } = validateFields.data;
+  const { name, quantity, ref, category } = validateFields.data;
   const entree = await db.entree.findUnique({
     where: { id: operationId },
   });
@@ -109,9 +107,13 @@ export const editEntree = async (
       },
     });
   }
+  const res = await getInventory(inventoryId!);
+  const inventoryName = res?.name;
 
   await db.entree.create({
     data: {
+      inventoryName: inventoryName!,
+      companyId: user.companyId,
       id: operationId,
       category: category,
       inventoryId: inventoryId,

@@ -1,5 +1,5 @@
 "use client";
-import {  useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Filters } from "./Filters";
 import { Button } from "./ui/button";
 import { FaPlus } from "react-icons/fa6";
@@ -16,6 +16,10 @@ import { AddEditSortie } from "./modals/AddEditSortie";
 import { DateRange } from "react-day-picker";
 import { addDays, subDays } from "date-fns";
 import { DateRangeFilter } from "./DateRangeFilter";
+import { getInventories } from "@/data/inventory";
+import { Inventories } from "./inventory/InventoryList";
+import { getSession } from "next-auth/react";
+import { User } from "next-auth";
 
 export interface respone {
   id: string;
@@ -32,7 +36,7 @@ export interface respone {
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 15),
-    to: addDays(new Date(),7),
+    to: addDays(new Date(), 7),
   });
 
   const { notification } = useContext(NotificationContext);
@@ -42,13 +46,20 @@ export const PageWrapper = () => {
   const [category, setcategory] = useState<string>("");
   const { trigger } = useContext(TriggerContext);
   const pathname = usePathname();
+  const [inventories, setinventories] = useState<Inventories[] | null>(null);
+  const [inventoryId, setinventoryId] = useState<string>("");
+  const [user, setuser] = useState<User | null>();
 
   useEffect(() => {
     const getdata = async () => {
+      const session = await getSession();
+      setuser(session?.user);
       const res = pathname.includes("achat")
         ? await getEntree()
         : await getSortie();
       setitems(res);
+      const response = await getInventories();
+      setinventories(response);
     };
     getdata();
   }, [trigger, pathname]);
@@ -63,22 +74,38 @@ export const PageWrapper = () => {
   const filtredItemsByCategory = items?.filter((item) => {
     if (category && category !== "all") {
       return item.category === category;
-    } else return true;
+    }
+    return true;
   });
 
-  const filtredItemsByTime =filtredItemsByCategory?.filter(item=>item.date >= date?.from! && item.date <= date?.to! )
+  const filtredItemsByInventory = filtredItemsByCategory?.filter((item) => {
+    if (inventoryId && inventoryId !== "all") {
+      return item.inventoryId === inventoryId;
+    }
+    return true;
+  });
+
+  const filtredItemsByTime = filtredItemsByInventory?.filter(
+    (item) => item.date >= date?.from! && item.date <= date?.to!
+  );
 
   return (
     <>
       <div className="w-[900px] mx-auto space-y-16">
-        <div className="flex justify-end items-center gap-x-8">
-        <DateRangeFilter date={date} setDate={setDate} className={undefined}   />
+        <div className="flex justify-end items-center gap-x-4">
+          <DateRangeFilter
+            date={date}
+            setDate={setDate}
+            className={undefined}
+          />
           <Filters
             uniqueCategories={uniqueCategories}
             setcategory={setcategory}
+            inventories={inventories}
+            setinventoryId={setinventoryId}
           />
 
-          {pathname.includes("achat") ? (
+          {user?.role !=='user' && pathname.includes("achat") ? (
             <Button
               onClick={() => {
                 toggle();

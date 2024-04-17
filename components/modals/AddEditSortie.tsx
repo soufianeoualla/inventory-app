@@ -14,12 +14,14 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { DatePicker } from "../DatePicker";
 import { NotificationContext } from "@/context/NotificationContext";
-import { getArticles } from "@/data/inventory";
+import { getArticles, getInventories } from "@/data/inventory";
 import { Label } from "../ui/label";
 import { addSortie, editSortie } from "@/actions/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
 import { FormError } from "../auth/FormError";
 import { operation } from "../opertaionOverview/OperationOverview";
+import { Inventories } from "../inventory/InventoryList";
+import Link from "next/link";
 
 interface respone {
   id: string;
@@ -44,15 +46,25 @@ export const AddEditSortie = ({ edit, operation }: props) => {
   const [selectedRef, setselectedRef] = useState<string>(
     edit ? operation!.ref.toString() : ""
   );
+  const [inventoryId, setinventoryId] = useState<string>("");
+  const [inventories, setinventories] = useState<Inventories[] | null>(null);
   useEffect(() => {
     const getData = async () => {
-      const res = await getArticles();
+      const response = await getInventories();
+      setinventories(response);
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getArticles(inventoryId);
       setarticles(res);
       setnames(res?.map((item) => item.name));
       setref(res?.map((item) => item.ref.toString()));
     };
     getData();
-  }, []);
+  }, [inventoryId]);
 
   const { setError, setSuccess, notificationToggle, success, error } =
     useContext(NotificationContext);
@@ -93,7 +105,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             setError(data.error);
             setSuccess(data.success);
           })
-        : addSortie(sortieValues).then((data) => {
+        : addSortie(sortieValues,inventoryId).then((data) => {
             setError(data.error);
             setSuccess(data.success);
           });
@@ -116,6 +128,37 @@ export const AddEditSortie = ({ edit, operation }: props) => {
         </div>
 
         <form onSubmit={onAddSortie} className="space-y-8">
+          <div className="flex items-end gap-x-2">
+            <div className=" w-full space-y-2">
+              <Label>Inventaire</Label>
+              <Select
+                value={inventoryId}
+                disabled={isPending}
+                onValueChange={(value) => setinventoryId(value)}
+              >
+                <SelectTrigger className="w-full h-11 bg-Slate-Teal border-none text-white">
+                  <SelectValue placeholder="Inventaire" />
+                </SelectTrigger>
+                <SelectContent className="bg-Slate-Teal text-white border-none">
+                  {inventories?.length === 0 && (
+                    <SelectItem disabled value={" "}>
+                      {"vous n'avez pas d'inventaire,"}
+                      <Link href={"/inventaire"}>créez-en un</Link>
+                    </SelectItem>
+                  )}
+                  {inventories?.map((item, index) => (
+                    <SelectItem key={index} value={item.id}>
+                      {item.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="w-full space-y-2">
+              <Label>Date</Label>
+              <DatePicker date={date} setDate={setDate} />
+            </div>
+          </div>
           <div className="flex items-center gap-x-2 ">
             <div className=" w-full space-y-2">
               <Label>Name</Label>
@@ -167,7 +210,6 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             </div>
           </div>
 
-          <DatePicker date={date} setDate={setDate} />
           {error && <FormError message={error} />}
           <div className="flex items-center justify-end gap-x-4">
             <Button

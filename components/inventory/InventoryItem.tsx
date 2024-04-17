@@ -1,10 +1,9 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "../ui/card";
-import { EditDelete } from "../modals/EditDelete";
 import { DeleteModal } from "../modals/DeleteModal";
-import { EditArticle } from "../modals/EditArticle";
-import { AddEditModalContext } from "@/context/AddEditModalContext";
+import { Button } from "../ui/button";
+import { MdDelete } from "react-icons/md";
 interface article {
   id: string;
   name: string;
@@ -18,8 +17,6 @@ interface InventoryTableProp {
   article: article | undefined;
 }
 export const InventoryItem = ({ article }: InventoryTableProp) => {
-  const { type, addEditModal } = useContext(AddEditModalContext);
-
   const [deleteModal, setdeleteModal] = useState<boolean>(false);
 
   const inStock = article?.quantity! > 0;
@@ -46,7 +43,14 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
             </div>
           </div>
           <div className="z-0">
-            <EditDelete setdeleteModal={setdeleteModal} />
+            <Button
+              onClick={() => setdeleteModal(true)}
+              className="text-white"
+              variant={"destructive"}
+              size={"icon"}
+            >
+              <MdDelete />
+            </Button>{" "}
           </div>
         </div>
         <CardContent className="space-y-4">
@@ -74,7 +78,6 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
           type="article"
         />
       )}
-      {addEditModal && type === "article" && <EditArticle article={article} />}
     </>
   );
 };

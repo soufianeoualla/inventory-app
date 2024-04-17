@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
@@ -6,12 +6,10 @@ import { db } from "@/lib/db";
 export const getSortie = async () => {
   const session = await auth();
   const companyId = session?.user?.companyId;
-  const inventory = await db.inventory.findFirst({
-    where: { companyId: companyId },
-  });
+
   try {
     const sortie = await db.sortie.findMany({
-      where: { inventoryId: inventory?.id },
+      where: { companyId: companyId },
     });
     return sortie;
   } catch (error) {

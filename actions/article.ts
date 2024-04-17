@@ -11,8 +11,8 @@ export const deleteArticle = async (id: string) => {
       where: { ref: article.ref },
     });
     await db.sortie.deleteMany({
-        where: { ref: article.ref },
-      });
+      where: { ref: article.ref },
+    });
 
     await db.article.delete({
       where: { id: id },

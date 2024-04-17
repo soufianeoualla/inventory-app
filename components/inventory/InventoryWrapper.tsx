@@ -10,19 +10,23 @@ import { getInventory } from "@/data/inventory";
 import { InventoryItem } from "./InventoryItem";
 import { useEffect, useState } from "react";
 import { article } from "@prisma/client";
+import { usePathname } from "next/navigation";
+import Loading from "../loading";
 
 
 export const InventoryWrapper = () => {
   const [articles, setarticles] = useState<article[] | undefined>();
   const [status, setstatus] = useState<string>("");
   const [category, setcategory] = useState<string>("");
+  const pathname = usePathname();
+  const id = pathname.split("/")[2];
   useEffect(() => {
     const getData = async () => {
-      const inventory = await getInventory();
+      const inventory = await getInventory(id);
       setarticles(inventory?.article);
     };
     getData();
-  }, []);
+  }, [id]);
   const categories = articles?.map((item) => item.category);
   const uniqueCategoriesSet = new Set(categories);
   const uniqueCategories: string[] = [];
@@ -44,6 +48,12 @@ export const InventoryWrapper = () => {
       return item.category === category;
     } else return true;
   });
+  if (!articles)
+    return (
+      <div className="flex items-center justify-center h-[80vh] ">
+        <Loading />
+      </div>
+    );
 
   return (
     <>

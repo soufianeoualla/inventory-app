@@ -8,7 +8,6 @@ import { RegisterSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/token";
 import { sendVerificationEmail } from "@/lib/mail";
-import { v4 as uuid } from "uuid";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -29,11 +28,6 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const Company = await db.company.create({
     data: {
       name: company,
-    },
-  });
-  await db.inventory.create({
-    data: {
-      companyId: Company.id,
     },
   });
 
