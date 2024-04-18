@@ -18,7 +18,7 @@ import { TriggerContext } from "@/context/TriggerContext";
 
 import { addInventaire } from "@/actions/Inventaire";
 export const AddInventory = () => {
-  const methods = ["CMUP", "LIFO", "FIFO"];
+  const methods = ["CMUP"];
   const [selectedMethod, setselectedMethod] = useState<string>("");
   const [name, setname] = useState<string>("");
   const [isPending, startTransition] = useTransition();

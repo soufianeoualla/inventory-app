@@ -1,8 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getInventory } from "@/data/inventory";
-import { getProductByRef } from "@/data/products";
+import { getArticle, getInventory } from "@/data/inventory";
 import { db } from "@/lib/db";
 import { v4 as uuid } from "uuid";
 interface values {
@@ -19,9 +18,7 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
 
   const { selectedName, quantity, selectedRef, date } = sortieValues;
 
-
-
-  const existingProduct = await getProductByRef(parseInt(selectedRef));
+  const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
   if (!existingProduct)
     return { error: "Article does not exist on the inventory" };
 
@@ -32,6 +29,8 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
   const inventoryName = res?.name;
   await db.sortie.create({
     data: {
+      price: existingProduct.price,
+      total: parseInt(quantity) * existingProduct.price,
       companyId: user.companyId,
       inventoryName: inventoryName!,
       id: id,
@@ -46,7 +45,12 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
   });
 
   await db.article.update({
-    where: { ref: parseInt(selectedRef) },
+    where: {
+      ref_inventoryId: {
+        ref: parseInt(selectedRef),
+        inventoryId: inventoryId,
+      },
+    },
     data: {
       quantity: existingProduct.quantity - parseFloat(quantity),
     },
@@ -67,11 +71,14 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   });
   if (!sortie) return { error: "Operation does not exist" };
   const inventoryId = sortie?.inventoryId;
-  const article = await db.article.findUnique({
-    where: { ref: sortie?.ref },
-  });
+  const article = await getArticle(sortie.ref, sortie.inventoryId);
   await db.article.update({
-    where: { ref: sortie?.ref },
+    where: {
+      ref_inventoryId: {
+        ref: sortie.ref,
+        inventoryId: sortie.inventoryId,
+      },
+    },
     data: {
       quantity: article?.quantity! + sortie?.quantity,
     },
@@ -80,7 +87,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   await db.sortie.delete({
     where: { id: operationId },
   });
-  const existingProduct = await getProductByRef(parseInt(selectedRef));
+  const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
   if (!existingProduct)
     return { error: "Article does not exist on the inventory" };
 
@@ -91,6 +98,8 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   const inventoryName = res?.name;
   await db.sortie.create({
     data: {
+      price: existingProduct.price,
+      total: parseInt(quantity) * existingProduct.price,
       companyId: user.companyId,
       inventoryName: inventoryName!,
       id: operationId,
@@ -105,7 +114,12 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   });
 
   await db.article.update({
-    where: { ref: parseInt(selectedRef) },
+    where: {
+      ref_inventoryId: {
+        ref: parseInt(selectedRef),
+        inventoryId: inventoryId,
+      },
+    },
     data: {
       quantity: existingProduct.quantity - parseFloat(quantity),
     },

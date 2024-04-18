@@ -4,15 +4,15 @@ import { SingleItem } from "./SingleItem";
 import Loading from "./loading";
 import Image from "next/image";
 import ullistration from "@/components/assets/illustration-empty.svg";
-import { respone } from "./PageWrapper";
+import { entree } from "@prisma/client";
 
 interface SingleItemProp {
   type: string;
-  items: respone[] | undefined | null;
+  items: entree[] | undefined | null;
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   return (
-    <div className="w-[700px] mx-auto uppercase text-[13px]">
+    <div className="w-[900px] mx-auto uppercase text-[13px]">
       <Suspense>
         {!items && (
           <div className="flex items-center justify-center h-[70vh]">

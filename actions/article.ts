@@ -8,10 +8,10 @@ export const deleteArticle = async (id: string) => {
 
     if (!article) return { error: "article not found" };
     await db.entree.deleteMany({
-      where: { ref: article.ref },
+      where: { ref: article.ref ,inventoryId:article.inventoryId },
     });
     await db.sortie.deleteMany({
-      where: { ref: article.ref },
+      where: { ref: article.ref ,inventoryId:article.inventoryId },
     });
 
     await db.article.delete({

@@ -33,7 +33,7 @@ model company {
 model User {
   name          String
   id            String    @id @default(cuid()) @map(name: "id")
-  email         String    @unique
+  email         String    
   password      String
   emailVerified DateTime?
   image         String?
@@ -45,12 +45,16 @@ model User {
 model article {
   id          String    @id @default(cuid())
   name        String
-  ref         Int       @unique
+  price       Float
+  total       Float
+  ref         Int       
   quantity    Int
   category    String
   inventory   inventory @relation(fields: [inventoryId], references: [id])
   inventoryId String    @default(cuid()) @map(name: "inventoryId_id")
-}
+
+ @@unique([ref, inventoryId])
+ }
 
 model entree {
   id            String    @id
@@ -59,13 +63,17 @@ model entree {
   createdAt     DateTime  @default(now())
   email         String
   article       String
+  price         Float
+  total         Float
   category      String
   quantity      Int
   companyId     String
   inventory     inventory @relation(fields: [inventoryId], references: [id])
   inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
   inventoryName String
-}
+
+ @@unique([ref, inventoryId])
+ }
 
 model sortie {
   id            String    @id
@@ -76,10 +84,14 @@ model sortie {
   article       String
   quantity      Int
   companyId     String
+  price         Float
+  total         Float
   category      String
   inventory     inventory @relation(fields: [inventoryId], references: [id])
   inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
   inventoryName String
+
+  @@unique([ref, inventoryId])
 }
 
 model inventory {

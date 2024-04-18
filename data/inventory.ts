@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
@@ -16,14 +16,13 @@ export const getInventories = async () => {
   }
 };
 
-export const getInventoryIndex = async (id:string)=>{
-  const res = await getInventories()
-  const selectedInventory = res?.findIndex(item=>item.id ===id)
-  return selectedInventory
-}
+export const getInventoryIndex = async (id: string) => {
+  const res = await getInventories();
+  const selectedInventory = res?.findIndex((item) => item.id === id);
+  return selectedInventory;
+};
 
-export const getInventory = async (id:string) => {
-  
+export const getInventory = async (id: string) => {
   try {
     const inventory = await db.inventory.findUnique({
       where: { id: id },
@@ -35,12 +34,40 @@ export const getInventory = async (id:string) => {
   }
 };
 
-export const getArticles = async (inventoryId:string) => {
+export const getArticles = async (inventoryId: string) => {
   try {
     const articles = await db.article.findMany({
       where: { inventoryId: inventoryId },
     });
     return articles;
+  } catch (error) {
+    return null;
+  }
+};
+export const getArticle = async (ref: number, inventoryId: string) => {
+  try {
+    const articles = await db.article.findUnique({
+      where: {
+        ref_inventoryId: {
+          ref: ref,
+          inventoryId: inventoryId,
+        },
+      },
+    });
+    return articles;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getArticleByRef = async (ref: number) => {
+  try {
+    const article = await db.article.findFirst({
+      where: {
+        ref: ref,
+      },
+    });
+    return article;
   } catch (error) {
     return null;
   }

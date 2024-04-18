@@ -4,14 +4,8 @@ import { Card, CardContent } from "../ui/card";
 import { DeleteModal } from "../modals/DeleteModal";
 import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
-interface article {
-  id: string;
-  name: string;
-  ref: number;
-  quantity: number;
-  category: string;
-  inventoryId: string;
-}
+import { article } from "@prisma/client";
+
 
 interface InventoryTableProp {
   article: article | undefined;
@@ -63,10 +57,21 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
               <span>Quantity: </span>
               <b>{article?.quantity}</b>
             </div>
+            <div>
+              <span>Price Unitaire: </span>
+              <b>{article?.price.toFixed(2)}</b>
+            </div>
+          </div>
+          <div className="flex items-center gap-x-4">
+          <div>
+            <span>Total: </span>
+            <b>{article?.total.toFixed(2)}</b>
           </div>
           <div>
             <span>Category: </span>
             <b>{article?.category}</b>
+          </div>
+
           </div>
         </CardContent>
       </Card>

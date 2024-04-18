@@ -1,35 +1,19 @@
 import { MdChevronRight } from "react-icons/md";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { formatDate } from "@/lib/functions";
+import { formatDate, formatPrice } from "@/lib/functions";
 import { getCategoryColor } from "@/lib/color";
-import { getInventory } from "@/data/inventory";
-
-interface item {
-  id: string;
-  ref: number;
-  date: Date;
-  createdAt: Date;
-  email: string;
-  article: string;
-  category: string;
-  quantity: number;
-  inventoryId: string;
-}
+import { entree } from "@prisma/client";
 
 interface SingleItemProp {
   type: string;
-  item: item;
+  item: entree;
 }
 
 export const SingleItem = async ({ type, item }: SingleItemProp) => {
   const pathname = (id: string) => {
     return type === "sortie" ? `/sortie/${id}` : `/achat/${id}`;
   };
-  const res = await getInventory(item.inventoryId);
-  const InventoryName = res?.name;
-
-  
 
   return (
     <div>
@@ -38,14 +22,23 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
           <div className="flex items-center justify-between flex-1  ">
             <b className=" uppercase    ">#{item.id}</b>
             <p className="  ">{formatDate(item.date.toString())}</p>
-            <div>{InventoryName}</div>
+            <div className="flex justify-center items-center gap-x-2">
+              <div
+                style={{
+                  background: `hsla(${getCategoryColor(item.inventoryName)})`,
+                }}
+                className={`w-2 h-2 rounded-full `}
+              />
+              {item.inventoryName}
+            </div>
             <p className="    ">{item.ref}</p>
             <p className="    ">{item.article}</p>
           </div>
 
           <div className="flex items-center   ">
-            <b className=" mr-4     ">{item.quantity}</b>
-
+            <b className=" mr-5     ">{item.quantity}</b>
+            <b className=" mr-5     ">{formatPrice(item.price)}</b>
+            <b className=" mr-5     ">{formatPrice(item.total)}</b>
             <div
               style={{
                 background: `hsla(${getCategoryColor(item.category)}, 0.15)`,

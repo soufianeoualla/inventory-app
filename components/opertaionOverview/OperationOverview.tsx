@@ -10,26 +10,17 @@ import { DeleteModal } from "../modals/DeleteModal";
 import { getSingleEntree } from "@/data/entree";
 import { getSingleSortie } from "@/data/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
-import { formatDate } from "@/lib/functions";
+import { formatDate, formatPrice } from "@/lib/functions";
 import { getCategoryColor } from "@/lib/color";
 import { AddEditSortie } from "../modals/AddEditSortie";
+import { entree } from "@prisma/client";
 
-export interface operation {
-  id: string;
-  ref: number;
-  date: Date;
-  createdAt: Date;
-  email: string;
-  article: string;
-  category: string;
-  quantity: number;
-  inventoryId: string;
-}
+
 
 export const OperationOverview = () => {
   const { addEditModal, toggle } = useContext(AddEditModalContext);
   const { trigger } = useContext(TriggerContext);
-  const [operation, setOperation] = useState<operation>();
+  const [operation, setOperation] = useState<entree>();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -79,7 +70,7 @@ export const OperationOverview = () => {
                   operation.category
                 )}, 0.15)`,
               }}
-              className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2  `}
+              className={`px-2 h-10   rounded-md flex items-center justify-center gap-2  `}
             >
               <div
                 style={{
@@ -127,6 +118,15 @@ export const OperationOverview = () => {
                 {operation.id}
               </strong>
             </div>
+            <div className="flex justify-center items-center gap-x-2 text-white font-bold capitalize">
+              <div
+                style={{
+                  background: `hsla(${getCategoryColor(operation.inventoryName)})`,
+                }}
+                className={`w-2 h-2 rounded-full `}
+              />
+              {operation.inventoryName}
+            </div>
           </div>
 
           <div className="flex gap-28 md:gap-20 mt-10 ">
@@ -164,12 +164,16 @@ export const OperationOverview = () => {
                 <th>item Name</th>
                 <th>Ref</th>
                 <th>QTY.</th>
+                <th>P.U</th>
+                <th>Total</th>
               </tr>
 
               <tr className=" text-white">
                 <td>{operation.article}</td>
                 <td className=" text-card-foreground">{operation.ref}</td>
                 <td className=" text-card-foreground">{operation.quantity}</td>
+                <td className=" text-card-foreground">{formatPrice(operation.price)}</td>
+                <td className=" text-card-foreground">{formatPrice(operation.total)}</td>
               </tr>
             </table>
           </div>

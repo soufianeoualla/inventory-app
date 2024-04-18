@@ -20,18 +20,8 @@ import { getInventories } from "@/data/inventory";
 import { Inventories } from "./inventory/InventoryList";
 import { getSession } from "next-auth/react";
 import { User } from "next-auth";
+import { entree } from "@prisma/client";
 
-export interface respone {
-  id: string;
-  ref: number;
-  date: Date;
-  createdAt: Date;
-  email: string;
-  article: string;
-  category: string;
-  quantity: number;
-  inventoryId: string;
-}
 
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
@@ -42,7 +32,7 @@ export const PageWrapper = () => {
   const { notification } = useContext(NotificationContext);
   const { toggle, addEditModal, settype, type } =
     useContext(AddEditModalContext);
-  const [items, setitems] = useState<respone[] | null>();
+  const [items, setitems] = useState<entree[] | null>();
   const [category, setcategory] = useState<string>("");
   const { trigger } = useContext(TriggerContext);
   const pathname = usePathname();

@@ -13,6 +13,9 @@ export const ProductSchema = z.object({
   category: z.string().min(2, {
     message: "Category is Required",
   }),
+  unitPrice: z.string().min(2, {
+    message: "Prix Unitaire is Required",
+  }),
   
 });
 

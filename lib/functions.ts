@@ -10,7 +10,7 @@ export const formatDate = (dateString: string) => {
 
  export const formatPrice = (
     price: number,
-    currency: string = "USD",
+    currency: string = "DHS",
     locale: string = "en-US"
   ) => {
     const formatter = new Intl.NumberFormat(locale, {

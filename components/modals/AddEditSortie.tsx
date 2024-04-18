@@ -19,27 +19,20 @@ import { Label } from "../ui/label";
 import { addSortie, editSortie } from "@/actions/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
 import { FormError } from "../auth/FormError";
-import { operation } from "../opertaionOverview/OperationOverview";
 import { Inventories } from "../inventory/InventoryList";
 import Link from "next/link";
+import { article, sortie } from "@prisma/client";
 
-interface respone {
-  id: string;
-  name: string;
-  ref: number;
-  quantity: number;
-  category: string;
-  inventoryId: string;
-}
+
 interface props {
   edit: boolean;
-  operation: operation | undefined;
+  operation: sortie | undefined;
 }
 
 export const AddEditSortie = ({ edit, operation }: props) => {
   const [names, setnames] = useState<Array<string> | undefined>();
   const [ref, setref] = useState<Array<string> | null>();
-  const [articles, setarticles] = useState<respone[] | null>();
+  const [articles, setarticles] = useState<article[] | null>();
   const [selectedName, setselectedName] = useState<string>(
     edit ? operation!.article : ""
   );
@@ -48,16 +41,11 @@ export const AddEditSortie = ({ edit, operation }: props) => {
   );
   const [inventoryId, setinventoryId] = useState<string>("");
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
+
   useEffect(() => {
     const getData = async () => {
       const response = await getInventories();
       setinventories(response);
-    };
-    getData();
-  }, []);
-
-  useEffect(() => {
-    const getData = async () => {
       const res = await getArticles(inventoryId);
       setarticles(res);
       setnames(res?.map((item) => item.name));

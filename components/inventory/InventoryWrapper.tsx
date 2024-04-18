@@ -8,13 +8,15 @@ import {
 } from "@/components/ui/select";
 import { getInventory } from "@/data/inventory";
 import { InventoryItem } from "./InventoryItem";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { article } from "@prisma/client";
 import { usePathname } from "next/navigation";
 import Loading from "../loading";
+import { TriggerContext } from "@/context/TriggerContext";
 
 
 export const InventoryWrapper = () => {
+  const { trigger } = useContext(TriggerContext);
   const [articles, setarticles] = useState<article[] | undefined>();
   const [status, setstatus] = useState<string>("");
   const [category, setcategory] = useState<string>("");
@@ -26,7 +28,7 @@ export const InventoryWrapper = () => {
       setarticles(inventory?.article);
     };
     getData();
-  }, [id]);
+  }, [id,trigger]);
   const categories = articles?.map((item) => item.category);
   const uniqueCategoriesSet = new Set(categories);
   const uniqueCategories: string[] = [];

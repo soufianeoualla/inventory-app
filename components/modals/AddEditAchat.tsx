@@ -27,15 +27,14 @@ import { DatePicker } from "../DatePicker";
 import { addEntree, editEntree } from "@/actions/Entree";
 import { NotificationContext } from "@/context/NotificationContext";
 import { TriggerContext } from "@/context/TriggerContext";
-import { operation } from "../opertaionOverview/OperationOverview";
 import { Label } from "../ui/label";
-import { getInventories } from "@/data/inventory";
+import { getArticleByRef, getInventories } from "@/data/inventory";
 import { Inventories } from "../inventory/InventoryList";
-import Link from "next/link";
+import { entree } from "@prisma/client";
 
 interface props {
   edit: boolean;
-  operation: operation | undefined;
+  operation: entree | undefined;
 }
 
 export const AddEditAchat = (props: props) => {
@@ -46,14 +45,6 @@ export const AddEditAchat = (props: props) => {
   const [inventoryId, setinventoryId] = useState<string>("");
   const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
-  useEffect(() => {
-    const getData = async () => {
-      const response = await getInventories();
-      setinventories(response);
-    };
-    getData();
-  }, []);
-
   const [isPending, startTransition] = useTransition();
   const { toggle } = useContext(AddEditModalContext);
   const form = useForm<z.infer<typeof ProductSchema>>({
@@ -63,8 +54,26 @@ export const AddEditAchat = (props: props) => {
       ref: edit ? operation!.ref.toString() : "",
       quantity: edit ? operation!.quantity.toString() : "",
       category: edit ? operation?.category : "",
+      unitPrice: edit ? operation?.price.toString() : "",
     },
   });
+  const { watch } = form;
+
+  const selectedRef = watch("ref");
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getInventories();
+      setinventories(response);
+      if (selectedRef) {
+        const articleData = await getArticleByRef(parseInt(selectedRef));
+        form.setValue("name", articleData?.name || "");
+        form.setValue("category", articleData?.category || "");
+      }
+    };
+    getData();
+    console.log(selectedRef);
+  }, [selectedRef, form]);
 
   const onSubmit = (values: z.infer<typeof ProductSchema>) => {
     if (!inventoryId)
@@ -99,19 +108,41 @@ export const AddEditAchat = (props: props) => {
           {edit ? "Modifier L'Entrée" : "Ajouter un Entrée "}
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex items-center gap-x-2 ">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex items-start gap-x-2 ">
+              <div>
+                <FormField
+                  control={form.control}
+                  name="ref"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Réf</FormLabel>
+                      <FormControl>
+                        <Input
+                          list="ref-list"
+                          disabled={isPending}
+                          className="text-white"
+                          placeholder="Ref"
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Article</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
                         className="text-white w-full"
-                        placeholder="Name"
+                        placeholder="Article"
                         {...field}
                       />
                     </FormControl>
@@ -123,15 +154,15 @@ export const AddEditAchat = (props: props) => {
 
               <FormField
                 control={form.control}
-                name="ref"
+                name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Ref</FormLabel>
+                    <FormLabel>Catégorie</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
-                        className="text-white"
-                        placeholder="Ref"
+                        className="text-white w-full"
+                        placeholder="Catégorie"
                         {...field}
                       />
                     </FormControl>
@@ -140,13 +171,35 @@ export const AddEditAchat = (props: props) => {
                   </FormItem>
                 )}
               />
+            </div>
 
+            <div className="grid grid-cols-2 items-end gap-x-2 space-y-6">
+              <FormField
+                control={form.control}
+                name="unitPrice"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Prix Unitaire</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        className="text-white w-full"
+                        placeholder="P.U"
+                        type="number"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="quantity"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Quantity</FormLabel>
+                    <FormLabel>Quantité</FormLabel>
                     <FormControl>
                       <Input
                         disabled={isPending}
@@ -161,28 +214,7 @@ export const AddEditAchat = (props: props) => {
                   </FormItem>
                 )}
               />
-            </div>
 
-            <div className="grid grid-cols-2 items-end gap-x-2 space-y-6">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isPending}
-                        className="text-white w-full"
-                        placeholder="Category"
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <div className=" w-full space-y-2">
                 <Label>Inventaire</Label>
                 <Select
@@ -213,7 +245,7 @@ export const AddEditAchat = (props: props) => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-x-4">
+            <div className="flex items-center justify-end gap-x-4 mt-6">
               <Button
                 disabled={isPending}
                 type="button"
