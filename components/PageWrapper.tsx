@@ -22,7 +22,6 @@ import { getSession } from "next-auth/react";
 import { User } from "next-auth";
 import { entree } from "@prisma/client";
 
-
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 15),
@@ -75,9 +74,30 @@ export const PageWrapper = () => {
     return true;
   });
 
-  const filtredItemsByTime = filtredItemsByInventory?.filter(
-    (item) => item.date >= date?.from! && item.date <= date?.to!
-  );
+  const filtredItemsByTime = filtredItemsByInventory?.filter((item) => {
+    const itemDate = new Date(item.date);
+    const fromDate = date?.from ? new Date(date.from) : null;
+    const toDate = date?.to ? new Date(date.to) : null;
+
+    if (fromDate && toDate) {
+      return (
+        itemDate.getFullYear() >= fromDate.getFullYear() &&
+        itemDate.getMonth() >= fromDate.getMonth() &&
+        itemDate.getDate() >= fromDate.getDate() &&
+        itemDate.getFullYear() <= toDate.getFullYear() &&
+        itemDate.getMonth() <= toDate.getMonth() &&
+        itemDate.getDate() <= toDate.getDate()
+      );
+    } else if (fromDate && !toDate) {
+      return (
+        itemDate.getFullYear() === fromDate.getFullYear() &&
+        itemDate.getMonth() === fromDate.getMonth() &&
+        itemDate.getDate() === fromDate.getDate()
+      );
+    } else {
+      return true;
+    }
+  });
 
   return (
     <>
@@ -95,7 +115,7 @@ export const PageWrapper = () => {
             setinventoryId={setinventoryId}
           />
 
-          {user?.role !=='user' && pathname.includes("achat") ? (
+          {user?.role !== "user" && pathname.includes("achat") ? (
             <Button
               onClick={() => {
                 toggle();

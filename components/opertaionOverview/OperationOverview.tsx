@@ -11,7 +11,7 @@ import { getSingleEntree } from "@/data/entree";
 import { getSingleSortie } from "@/data/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
 import { formatDate, formatPrice } from "@/lib/functions";
-import { getCategoryColor } from "@/lib/color";
+import { generateBackgroundColor, getCategoryColor } from "@/lib/color";
 import { AddEditSortie } from "../modals/AddEditSortie";
 import { entree } from "@prisma/client";
 
@@ -119,9 +119,9 @@ export const OperationOverview = () => {
               </strong>
             </div>
             <div className="flex justify-center items-center gap-x-2 text-white font-bold capitalize">
-              <div
+            <div
                 style={{
-                  background: `hsla(${getCategoryColor(operation.inventoryName)})`,
+                  background: `${generateBackgroundColor(operation.inventoryName)}`,
                 }}
                 className={`w-2 h-2 rounded-full `}
               />

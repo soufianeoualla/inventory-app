@@ -65,7 +65,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
   return (
     <>
       <div className="grid w-full max-w-sm items-center gap-1.5 space-y-4">
-        <div className="flex gap-x-2 items-end">
+        <div className="space-y-2 items-end">
           <div className="space-y-2">
             <Label htmlFor="picture">Picture</Label>
             <Input

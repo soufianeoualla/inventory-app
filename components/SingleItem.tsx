@@ -2,7 +2,7 @@ import { MdChevronRight } from "react-icons/md";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { formatDate, formatPrice } from "@/lib/functions";
-import { getCategoryColor } from "@/lib/color";
+import {  generateBackgroundColor, getCategoryColor } from "@/lib/color";
 import { entree } from "@prisma/client";
 
 interface SingleItemProp {
@@ -25,7 +25,7 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
             <div className="flex justify-center items-center gap-x-2">
               <div
                 style={{
-                  background: `hsla(${getCategoryColor(item.inventoryName)})`,
+                  background: `${generateBackgroundColor(item.inventoryName)}`,
                 }}
                 className={`w-2 h-2 rounded-full `}
               />

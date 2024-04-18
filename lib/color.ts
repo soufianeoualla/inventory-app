@@ -27,5 +27,12 @@ export const getCategoryColor = (category: string) => {
   ];
 
 
+  
+  export const generateBackgroundColor = (string:string) => {
+    const color = colorsHSL[string.length % colorsHSL.length];
+    return `hsl(${color})`;
+  };
+
+
 
 

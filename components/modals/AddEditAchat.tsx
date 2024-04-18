@@ -42,7 +42,7 @@ export const AddEditAchat = (props: props) => {
   const { setError, setSuccess, notificationToggle } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
-  const [inventoryId, setinventoryId] = useState<string>("");
+  const [inventoryId, setinventoryId] = useState<string>(edit ? operation!.inventoryId :"");
   const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [isPending, startTransition] = useTransition();
