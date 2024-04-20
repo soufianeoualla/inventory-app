@@ -30,11 +30,11 @@ import { TriggerContext } from "@/context/TriggerContext";
 import { Label } from "../ui/label";
 import { getArticleByRef, getInventories } from "@/data/inventory";
 import { Inventories } from "../inventory/InventoryList";
-import { entree } from "@prisma/client";
+import { operation } from "@prisma/client";
 
 interface props {
   edit: boolean;
-  operation: entree | undefined;
+  operation: operation | undefined;
 }
 
 export const AddEditAchat = (props: props) => {
@@ -52,7 +52,7 @@ export const AddEditAchat = (props: props) => {
     defaultValues: {
       name: edit ? operation!.article : "",
       ref: edit ? operation!.ref.toString() : "",
-      quantity: edit ? operation!.quantity.toString() : "",
+      quantity: edit ? operation!.quantity.toString() : '',
       category: edit ? operation?.category : "",
       unitPrice: edit ? operation?.price.toString() : "",
     },
@@ -163,6 +163,7 @@ export const AddEditAchat = (props: props) => {
                         disabled={isPending}
                         className="text-white w-full"
                         placeholder="Catégorie"
+                        
                         {...field}
                       />
                     </FormControl>
@@ -186,6 +187,7 @@ export const AddEditAchat = (props: props) => {
                         className="text-white w-full"
                         placeholder="P.U"
                         type="number"
+                        min={0}
                         {...field}
                       />
                     </FormControl>
@@ -207,6 +209,7 @@ export const AddEditAchat = (props: props) => {
                         placeholder="Quantity"
                         type="number"
                         {...field}
+                        min={0}
                       />
                     </FormControl>
 

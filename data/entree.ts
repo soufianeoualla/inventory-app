@@ -8,8 +8,8 @@ export const getEntree = async () => {
   const companyId = session?.user?.companyId;
   
   try {
-    const entree = await db.entree.findMany({
-      where: { companyId: companyId },
+    const entree = await db.operation.findMany({
+      where: { companyId: companyId,type:'entree' },
       orderBy: { date: "desc" },
     });
     return entree;
@@ -20,7 +20,7 @@ export const getEntree = async () => {
 
 export const getSingleEntree = async (id: string) => {
   try {
-    const entree = await db.entree.findUnique({
+    const entree = await db.operation.findUnique({
       where: { id: id },
     });
     return entree;

@@ -13,18 +13,21 @@ import { TriggerContext } from "@/context/TriggerContext";
 import { formatDate, formatPrice } from "@/lib/functions";
 import { generateBackgroundColor, getCategoryColor } from "@/lib/color";
 import { AddEditSortie } from "../modals/AddEditSortie";
-import { entree } from "@prisma/client";
+import { operation } from "@prisma/client";
+import { getUserByEmail } from "@/data/user";
 
 
 
 export const OperationOverview = () => {
-  const { addEditModal, toggle } = useContext(AddEditModalContext);
+  const { addEditModal, toggle, } = useContext(AddEditModalContext);
   const { trigger } = useContext(TriggerContext);
-  const [operation, setOperation] = useState<entree>();
+  const [operation, setOperation] = useState<operation>();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const pathname = usePathname();
+  const [name, setname] = useState<string>();
   const router = useRouter();
   const id = pathname.split("/")[2];
+
   const getData = useCallback(async () => {
     if (!id) return;
     const response = pathname.includes("achat")
@@ -32,11 +35,15 @@ export const OperationOverview = () => {
       : await getSingleSortie(id);
     if (!response) return;
     setOperation(response);
-  }, [id, pathname]);
+    const user = await getUserByEmail(operation?.email!)
+    setname(user?.name)
+  }, [id, pathname,operation?.email]);
 
   useEffect(() => {
     getData();
   }, [getData, trigger]);
+
+  
 
   if (!operation)
     return (
@@ -154,6 +161,9 @@ export const OperationOverview = () => {
               <span className=" font-medium  ">Ajouter Par</span>
               <strong className="capitalize text-white text-[15px]">
                 {operation.email}
+              </strong>
+              <strong className="capitalize text-white text-[15px]">
+                {name}
               </strong>
             </div>
           </div>

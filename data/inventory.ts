@@ -72,3 +72,36 @@ export const getArticleByRef = async (ref: number) => {
     return null;
   }
 };
+
+export const getArticleOperations = async (
+  ref: string,
+  inventoryId: string
+) => {
+  try {
+    const operation = await db.operation.findMany({
+      where: {
+        ref: parseInt(ref),
+        inventoryId: inventoryId,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return operation;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const getAllOperations = async (inventoryId: string) => {
+  try {
+    const operation = await db.operation.findMany({
+      where: {
+        inventoryId: inventoryId,
+      },
+    });
+
+    return operation;
+  } catch (error) {
+    return null;
+  }
+};

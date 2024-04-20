@@ -21,12 +21,12 @@ import { TriggerContext } from "@/context/TriggerContext";
 import { FormError } from "../auth/FormError";
 import { Inventories } from "../inventory/InventoryList";
 import Link from "next/link";
-import { article, sortie } from "@prisma/client";
+import { article, operation } from "@prisma/client";
 
 
 interface props {
   edit: boolean;
-  operation: sortie | undefined;
+  operation: operation | undefined;
 }
 
 export const AddEditSortie = ({ edit, operation }: props) => {
@@ -85,7 +85,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (!selectedName || !selectedRef) return;
+    if (!selectedName || !selectedRef || !quantity) return;
     const sortieValues = { selectedName, selectedRef, quantity, date };
     startTransition(() => {
       edit
@@ -193,6 +193,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
                 className="text-white"
                 type="number"
                 placeholder="Quantity"
+                min={0}
                 onChange={(e) => setquantity(e.target.value)}
               />
             </div>

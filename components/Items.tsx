@@ -4,11 +4,11 @@ import { SingleItem } from "./SingleItem";
 import Loading from "./loading";
 import Image from "next/image";
 import ullistration from "@/components/assets/illustration-empty.svg";
-import { entree } from "@prisma/client";
+import { operation } from "@prisma/client";
 
 interface SingleItemProp {
   type: string;
-  items: entree[] | undefined | null;
+  items: operation[] | undefined | null;
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   return (

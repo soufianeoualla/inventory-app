@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 
 export const deleteEntree = async (id: string) => {
   try {
-    const entree = await db.entree.findUnique({
+    const entree = await db.operation.findUnique({
       where: { id: id },
     });
     if (!entree) return { error: "Operation does not exist" };
@@ -27,7 +27,7 @@ export const deleteEntree = async (id: string) => {
       },
     });
 
-    await db.entree.delete({
+    await db.operation.delete({
       where: { id: id },
     });
 

@@ -39,7 +39,7 @@ export const addEntree = async (
   const res = await getInventory(inventoryId);
   const inventoryName = res?.name;
 
-  await db.entree.create({
+  await db.operation.create({
     data: {
       price: parseFloat(unitPrice),
       quantity: parseInt(quantity),
@@ -53,6 +53,7 @@ export const addEntree = async (
       date: date,
       ref: parseInt(ref),
       email: user.email!,
+      type:'entree'
     },
   });
   if (existingProduct) {
@@ -88,7 +89,7 @@ export const editEntree = async (
     return { error: "Invalid fields!" };
   }
   const { name, quantity, ref, category, unitPrice } = validateFields.data;
-  const entree = await db.entree.findUnique({
+  const entree = await db.operation.findUnique({
     where: { id: operationId },
   });
   if (!entree) return { error: "Operation does not exist" };
@@ -110,11 +111,11 @@ export const editEntree = async (
   });
   ``;
 
-  await db.entree.delete({
+  await db.operation.delete({
     where: { id: operationId },
   });
 
-  const existingProduct = await getArticle(parseInt(ref),inventoryId);
+  const existingProduct = await getArticle(parseInt(ref), inventoryId);
   if (!existingProduct) {
     await db.article.create({
       data: {
@@ -132,7 +133,7 @@ export const editEntree = async (
   const inventoryName = res?.name;
   const currentUnitPrice = article?.total! / article?.quantity!;
 
-  await db.entree.create({
+  await db.operation.create({
     data: {
       price: currentUnitPrice,
       quantity: parseInt(quantity),
@@ -146,6 +147,7 @@ export const editEntree = async (
       date: date,
       ref: parseInt(ref),
       email: user.email!,
+      type:'entree'
     },
   });
   if (existingProduct) {

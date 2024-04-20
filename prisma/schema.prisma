@@ -47,62 +47,46 @@ model article {
   name        String
   price       Float
   total       Float
-  ref         Int       
+  ref         Int
   quantity    Int
   category    String
   inventory   inventory @relation(fields: [inventoryId], references: [id])
   inventoryId String    @default(cuid()) @map(name: "inventoryId_id")
 
- @@unique([ref, inventoryId])
- }
-
-model entree {
-  id            String    @id
-  ref           Int
-  date          DateTime
-  createdAt     DateTime  @default(now())
-  email         String
-  article       String
-  price         Float
-  total         Float
-  category      String
-  quantity      Int
-  companyId     String
-  inventory     inventory @relation(fields: [inventoryId], references: [id])
-  inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
-  inventoryName String
-
- @@unique([ref, inventoryId])
- }
-
-model sortie {
-  id            String    @id
-  ref           Int
-  date          DateTime
-  createdAt     DateTime  @default(now())
-  email         String
-  article       String
-  quantity      Int
-  companyId     String
-  price         Float
-  total         Float
-  category      String
-  inventory     inventory @relation(fields: [inventoryId], references: [id])
-  inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
-  inventoryName String
-
   @@unique([ref, inventoryId])
 }
 
+enum type {
+  sortie
+  entree
+}
+
+model operation {
+  id            String    @id
+  ref           Int
+  date          DateTime
+  createdAt     DateTime  @default(now())
+  email         String
+  article       String
+  price         Float
+  total         Float
+  category      String
+  quantity      Int
+  companyId     String
+  inventory     inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
+  inventoryName String
+  type          type
+}
+
 model inventory {
-  id        String    @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
   method    String
   article   article[]
-  company   company   @relation(fields: [companyId], references: [id])
-  companyId String    @default(cuid()) @map(name: "company_id")
-  entree    entree[]
-  sortie    sortie[]
+  company   company     @relation(fields: [companyId], references: [id])
+  companyId String      @default(cuid()) @map(name: "company_id")
+  entree    operation[]
 }
 
 model verificationToken {

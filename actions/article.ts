@@ -7,10 +7,7 @@ export const deleteArticle = async (id: string) => {
     const article = await db.article.findUnique({ where: { id: id } });
 
     if (!article) return { error: "article not found" };
-    await db.entree.deleteMany({
-      where: { ref: article.ref ,inventoryId:article.inventoryId },
-    });
-    await db.sortie.deleteMany({
+    await db.operation.deleteMany({
       where: { ref: article.ref ,inventoryId:article.inventoryId },
     });
 

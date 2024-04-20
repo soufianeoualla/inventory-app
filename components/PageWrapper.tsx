@@ -20,7 +20,7 @@ import { getInventories } from "@/data/inventory";
 import { Inventories } from "./inventory/InventoryList";
 import { getSession } from "next-auth/react";
 import { User } from "next-auth";
-import { entree } from "@prisma/client";
+import { operation } from "@prisma/client";
 
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
@@ -31,7 +31,7 @@ export const PageWrapper = () => {
   const { notification } = useContext(NotificationContext);
   const { toggle, addEditModal, settype, type } =
     useContext(AddEditModalContext);
-  const [items, setitems] = useState<entree[] | null>();
+  const [items, setitems] = useState<operation[] | null>();
   const [category, setcategory] = useState<string>("");
   const { trigger } = useContext(TriggerContext);
   const pathname = usePathname();

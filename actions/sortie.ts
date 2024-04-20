@@ -27,7 +27,7 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
   const id = uuid().slice(0, 7);
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
-  await db.sortie.create({
+  await db.operation.create({
     data: {
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
@@ -41,6 +41,8 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
       date: date,
       inventoryId: inventoryId,
       category: existingProduct.category,
+      type:'sortie'
+
     },
   });
 
@@ -66,7 +68,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
 
   const { selectedName, quantity, selectedRef, date } = sortieValues;
 
-  const sortie = await db.sortie.findUnique({
+  const sortie = await db.operation.findUnique({
     where: { id: operationId },
   });
   if (!sortie) return { error: "Operation does not exist" };
@@ -84,7 +86,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
     },
   });
 
-  await db.sortie.delete({
+  await db.operation.delete({
     where: { id: operationId },
   });
   const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
@@ -96,7 +98,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
 
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
-  await db.sortie.create({
+  await db.operation.create({
     data: {
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
@@ -110,6 +112,8 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
       date: date,
       inventoryId: inventoryId,
       category: existingProduct.category,
+      type:'sortie'
+
     },
   });
 

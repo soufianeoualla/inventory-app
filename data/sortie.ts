@@ -8,8 +8,8 @@ export const getSortie = async () => {
   const companyId = session?.user?.companyId;
 
   try {
-    const sortie = await db.sortie.findMany({
-      where: { companyId: companyId },
+    const sortie = await db.operation.findMany({
+      where: { companyId: companyId , type:'sortie' },
     });
     return sortie;
   } catch (error) {
@@ -19,7 +19,7 @@ export const getSortie = async () => {
 
 export const getSingleSortie = async (id: string) => {
   try {
-    const sortie = await db.sortie.findUnique({
+    const sortie = await db.operation.findUnique({
       where: { id: id },
     });
     return sortie;

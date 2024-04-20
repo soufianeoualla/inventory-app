@@ -1,24 +1,33 @@
+"use client";
 import { MdChevronRight } from "react-icons/md";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { formatDate, formatPrice } from "@/lib/functions";
-import {  generateBackgroundColor, getCategoryColor } from "@/lib/color";
-import { entree } from "@prisma/client";
+import { generateBackgroundColor, getCategoryColor } from "@/lib/color";
+import { operation } from "@prisma/client";
+import { usePathname } from "next/navigation";
 
 interface SingleItemProp {
   type: string;
-  item: entree;
+  item: operation;
 }
 
 export const SingleItem = async ({ type, item }: SingleItemProp) => {
   const pathname = (id: string) => {
     return type === "sortie" ? `/sortie/${id}` : `/achat/${id}`;
   };
+  const InventoryPath = usePathname().includes("inventaire");
 
   return (
     <div>
       <Link key={item.id} href={pathname(item.id)} className="w-full">
-        <div className="w-full mb-4 flex justify-between gap-x-16 pr-3 pl-8  items-center h-[72px] rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer bg-card/60 text-white   ">
+        <div
+          className={`w-full mb-4 flex justify-between gap-x-16 pr-3 pl-8  items-center h-[72px] rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
+            InventoryPath && item.type === "sortie"
+              ? "bg-destructive/10"
+              : " bg-card/60"
+          }   `}
+        >
           <div className="flex items-center justify-between flex-1  ">
             <b className=" uppercase    ">#{item.id}</b>
             <p className="  ">{formatDate(item.date.toString())}</p>

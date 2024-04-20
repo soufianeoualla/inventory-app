@@ -5,6 +5,7 @@ import { DeleteModal } from "../modals/DeleteModal";
 import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
 import { article } from "@prisma/client";
+import Link from "next/link";
 
 
 interface InventoryTableProp {
@@ -17,7 +18,8 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
 
   return (
     <>
-      <Card className="w-[600px] rounded-2xl bg-card/40 border-none shadow-xl">
+    <Link href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}>
+      <Card className="w-[600px] rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
         <div className="flex justify-between items-start p-6 relative">
           <div className="flex items-center gap-x-3 ">
             Ref: {article?.ref}
@@ -58,7 +60,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
               <b>{article?.quantity}</b>
             </div>
             <div>
-              <span>Price Unitaire: </span>
+              <span>PriX Unitaire: </span>
               <b>{article?.price.toFixed(2)}</b>
             </div>
           </div>
@@ -75,6 +77,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
           </div>
         </CardContent>
       </Card>
+    </Link>
 
       {deleteModal && (
         <DeleteModal
