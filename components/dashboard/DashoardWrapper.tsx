@@ -1,7 +1,7 @@
 "use client";
 import { getAllOperations, getInventories } from "@/data/inventory";
 import { PurchaseOverview } from "./PurchaseOverview";
-import { SortieEntreeStatistics } from "./SortieEntreeStatistics";
+import { AreaChartComponent } from "./AreaChart";
 import { SortieOverview } from "./SortieOverview";
 import {
   Select,
@@ -143,7 +143,7 @@ export const DashoardWrapper = () => {
         />
       </div>
       <div className="flex items-center justify-center mt-10">
-        <SortieEntreeStatistics />
+        {operations && <AreaChartComponent operations={operations} />}
       </div>
     </div>
   );

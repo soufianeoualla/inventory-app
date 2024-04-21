@@ -53,7 +53,7 @@ export const Sidebar = () => {
             className={`flex items-center gap-3  px-8  w-[90%] rounded-r-3xl h-12 ${
               pathname.includes(item.href)
                 ? "bg-primary text-white"
-                : "text-Slate-Blue"
+                : "text-Slate-Blue hover:bg-primary/60 hover:text-white"
             } `}
           >
             {item.icon}
