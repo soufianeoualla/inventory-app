@@ -7,13 +7,13 @@ export const ProductSchema = z.object({
   ref: z.string().min(2, {
     message: "Ref is Required",
   }),
-  quantity: z.string().min(2, {
+  quantity: z.string().min(1, {
     message: "Quantity is Required",
   }),
   category: z.string().min(2, {
     message: "Category is Required",
   }),
-  unitPrice: z.string().min(2, {
+  unitPrice: z.string().min(1, {
     message: "Prix Unitaire is Required",
   }),
   

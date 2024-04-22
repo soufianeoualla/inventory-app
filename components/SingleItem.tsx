@@ -22,13 +22,13 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
     <div>
       <Link key={item.id} href={pathname(item.id)} className="w-full">
         <div
-          className={`w-full mb-4 flex justify-between gap-x-16 pr-3 pl-8  items-center h-[72px] rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
+          className={`w-full mb-4 flex justify-between gap-x-16 pr-3 pl-8 sm:p-4  items-center h-[72px] sm:h-auto rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
             InventoryPath && item.type === "sortie"
               ? "bg-destructive/10"
               : " bg-card/60"
           }   `}
         >
-          <div className="flex items-center justify-between flex-1  ">
+          <div className="flex items-center justify-between flex-1 sm:flex-col sm:gap-y-2  ">
             <b className=" uppercase    ">#{item.id}</b>
             <p className="  ">{formatDate(item.date.toString())}</p>
             <div className="flex justify-center items-center gap-x-2">
@@ -41,13 +41,13 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
               {item.inventoryName}
             </div>
             <p className="    ">{item.ref}</p>
-            <p className="    ">{item.article}</p>
+            <strong className="">{item.article}</strong>
           </div>
 
-          <div className="flex items-center   ">
-            <b className=" mr-5     ">{item.quantity}</b>
-            <b className=" mr-5     ">{formatPrice(item.price)}</b>
-            <b className=" mr-5     ">{formatPrice(item.total)}</b>
+          <div className="flex items-center sm:flex-col-reverse sm:gap-y-2  ">
+            <b className=" mr-5 sm:mr-0     ">{item.quantity}</b>
+            <b className=" mr-5 sm:mr-0     ">{formatPrice(item.price)}</b>
+            <b className=" mr-5 sm:mr-0     ">{formatPrice(item.total)}</b>
             <div
               style={{
                 background: `hsla(${getCategoryColor(item.category)}, 0.15)`,
@@ -73,7 +73,7 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
             <Button
               variant={"ghost"}
               size={"icon"}
-              className="hover:bg-transparent "
+              className="hover:bg-transparent sm:hidden "
             >
               <MdChevronRight className="text-primary text-xl" />
             </Button>

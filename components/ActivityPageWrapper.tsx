@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Items } from "./Items";
-import { getEntree } from "@/data/entree";
-import { getSortie } from "@/data/sortie";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { DateRange } from "react-day-picker";
 import { addDays, subDays } from "date-fns";
 import { DateRangeFilter } from "./DateRangeFilter";
@@ -18,6 +16,7 @@ import { getArticleOperations } from "@/data/inventory";
 import { operation } from "@prisma/client";
 import { Button } from "./ui/button";
 import { FaChevronLeft } from "react-icons/fa6";
+import GobackButton from "./GobackButton";
 
 export const ActivitypageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
@@ -29,7 +28,6 @@ export const ActivitypageWrapper = () => {
   const pathname = usePathname();
   const inventoryId = pathname.split("/")[2];
   const ref = pathname.split("/")[3];
-  const router = useRouter();
   useEffect(() => {
     const getdata = async () => {
       const data = await getArticleOperations(ref, inventoryId);
@@ -72,27 +70,18 @@ export const ActivitypageWrapper = () => {
 
   return (
     <>
-      <div className="w-[900px] mx-auto space-y-16">
-        <div className="flex justify-between items-center">
-          <Button
-            onClick={() => {
-              router.back();
-            }}
-            variant={"ghost"}
-            className="flex items-center gap-6 font-bold hover:bg-transparent focus:text-primary hover:text-primary text-white "
-          >
-            <FaChevronLeft className="text-primary w-4 h-4  " />
-            Go back
-          </Button>
+      <div className="max-w-[900px] mx-auto space-y-16 mt-10">
+        <div className="flex justify-between items-center sm:grid sm:relative">
+          <GobackButton />
 
-          <div className="flex justify-end items-center gap-x-4">
+          <div className="flex justify-end items-center gap-4 flex-wrap sm:mt-20">
             <DateRangeFilter
               date={date}
               setDate={setDate}
               className={undefined}
             />
             <Select onValueChange={(value) => settype(value)}>
-              <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectTrigger className="w-[180px] sm:w-[150px] bg-Dark-Charcoal-Gray border-none text-white">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent className="bg-dark text-white border-none">

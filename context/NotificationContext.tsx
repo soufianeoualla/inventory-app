@@ -1,4 +1,5 @@
 "use client";
+import { PopUpMessage } from "@/components/modals/PopUpMessage";
 import React, {
   Dispatch,
   ReactNode,
@@ -48,7 +49,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         success,
       }}
     >
-      {children}
+      {notification && <PopUpMessage />} {children}
     </NotificationContext.Provider>
   );
 };

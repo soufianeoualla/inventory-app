@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { operation } from "@prisma/client";
 import { compareDates, isInRangeDate } from "@/lib/functions";
 import { subDays } from "date-fns";
+
 export const DashoardWrapper = () => {
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [inventoryId, setinventoryId] = useState<string | null>();
@@ -38,7 +39,7 @@ export const DashoardWrapper = () => {
 
   const entree = operations?.filter((item) => item.type === "entree");
   const sortie = operations?.filter((item) => item.type === "sortie");
-
+  const invetaireName = operations?.map((item) => item.inventoryName);
   const today = new Date();
   const yesterday = subDays(today, 1);
   const lastWeek = subDays(today, 7);
@@ -78,26 +79,33 @@ export const DashoardWrapper = () => {
   const lastMonthSortieStats = calculateQuantityAndTotal(lastMonthItemsSortie);
 
   return (
-    <div className=" h-[calc(100vh-80px)] p-6 w-[calc(100vw-250px)]  bg-Charcoal overflow-y-scroll   ">
-      <div className="flex justify-end mb-8">
-        <Select onValueChange={(value) => setinventoryId(value)}>
-          <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
-            <SelectValue className="capitalize" placeholder="Inventaire" />
-          </SelectTrigger>
-          <SelectContent className="bg-dark text-white border-none">
-            <SelectItem className="capitalize" value={"all"}>
-              {"All"}
-            </SelectItem>
-            {inventories?.map((item) => (
-              <SelectItem key={item.id} value={item.id}>
-                {item.name}
+    <div className=" mt-10 ">
+      <div className="flex justify-between  items-center mb-8">
+        {invetaireName && (
+          <h1 className="text-white font-bold text-xl sm:text-lg">
+            Inventaire: <span className="capitalize">{invetaireName[0]}</span>
+          </h1>
+        )}
+        <div className="flex justify-end ">
+          <Select onValueChange={(value) => setinventoryId(value)}>
+            <SelectTrigger className="w-[180px] sm:w-[120px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectValue className="capitalize" placeholder="Inventaire" />
+            </SelectTrigger>
+            <SelectContent className="bg-dark text-white border-none">
+              <SelectItem className="capitalize" value={"all"}>
+                {"All"}
               </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              {inventories?.map((item) => (
+                <SelectItem key={item.id} value={item.id}>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <h1 className="text-white text-xl font-bold ">Entree</h1>
-      <div className="flex justify-center items-center gap-x-8 mt-2">
+      <div className="flex justify-center items-center gap-x-8 mt-2 sm:grid  sm:gap-y-8">
         <PurchaseOverview
           date={"aujourd'hui"}
           quantity={todayEntreeStats.quantity}
@@ -120,7 +128,7 @@ export const DashoardWrapper = () => {
         />
       </div>
       <h1 className="text-white text-xl font-bold mt-10 ">Sortie</h1>
-      <div className="flex justify-center items-center gap-x-8 mt-2">
+      <div className="flex justify-center items-center gap-x-8 mt-2 sm:grid  sm:gap-y-8">
         <SortieOverview
           date={"aujourd'hui"}
           quantity={todaySortieStats.quantity}

@@ -77,7 +77,6 @@ export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
         <p className="text-Soft-Teal text-sm text-white/80">
           Are you sure you want to delete{" "}
           {type === "article" ? "this article" : "this operation"}{" "}
-          {/* <span className="uppercase">#{id}</span>? */}
           This action cannot be undone.
         </p>
         <div className="flex justify-end items-center mt-4 gap-x-2">

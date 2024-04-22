@@ -23,8 +23,10 @@ export const Filters = ({
  
   return (
     <>
+    <div className="flex items-center w-full gap-x-4">
+
       <Select onValueChange={(value) => setcategory(value)}>
-        <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+        <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
           <SelectValue placeholder="Category" />
         </SelectTrigger>
         <SelectContent className="bg-dark text-white border-none">
@@ -37,7 +39,7 @@ export const Filters = ({
         </SelectContent>
       </Select>
       <Select onValueChange={(value) => setinventoryId(value)}>
-        <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+        <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
           <SelectValue className="capitalize" placeholder="Inventaire" />
         </SelectTrigger>
         <SelectContent className="bg-dark text-white border-none">
@@ -49,6 +51,7 @@ export const Filters = ({
           ))}
         </SelectContent>
       </Select>
+    </div>
     </>
   );
 };

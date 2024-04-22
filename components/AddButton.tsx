@@ -24,7 +24,7 @@ export function AddButton() {
             className="flex items-center gap-x-3 rounded-3xl font-bold"
           >
             <FaPlus />
-            Ajouter
+            <span className="sm:hidden">Ajouter</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="bg-dark border-none shadow-md space-y-4 w-[190px] flex flex-col items-center">

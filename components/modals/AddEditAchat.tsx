@@ -31,6 +31,7 @@ import { Label } from "../ui/label";
 import { getArticleByRef, getInventories } from "@/data/inventory";
 import { Inventories } from "../inventory/InventoryList";
 import { operation } from "@prisma/client";
+import { FormError } from "../auth/FormError";
 
 interface props {
   edit: boolean;
@@ -39,10 +40,12 @@ interface props {
 
 export const AddEditAchat = (props: props) => {
   const { edit, operation } = props;
-  const { setError, setSuccess, notificationToggle } =
+  const { setError, setSuccess, notificationToggle,error } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
-  const [inventoryId, setinventoryId] = useState<string>(edit ? operation!.inventoryId :"");
+  const [inventoryId, setinventoryId] = useState<string>(
+    edit ? operation!.inventoryId : ""
+  );
   const [date, setDate] = useState<Date>(edit ? operation!.date : new Date());
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -52,7 +55,7 @@ export const AddEditAchat = (props: props) => {
     defaultValues: {
       name: edit ? operation!.article : "",
       ref: edit ? operation!.ref.toString() : "",
-      quantity: edit ? operation!.quantity.toString() : '',
+      quantity: edit ? operation!.quantity.toString() : "",
       category: edit ? operation?.category : "",
       unitPrice: edit ? operation?.price.toString() : "",
     },
@@ -72,7 +75,6 @@ export const AddEditAchat = (props: props) => {
       }
     };
     getData();
-    console.log(selectedRef);
   }, [selectedRef, form]);
 
   const onSubmit = (values: z.infer<typeof ProductSchema>) => {
@@ -103,14 +105,14 @@ export const AddEditAchat = (props: props) => {
         onClick={toggle}
         className="w-full top-0 left-0 h-full fixed bg-background/70 z-10  "
       ></div>
-      <div className="bg-dark w-[610px]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
+      <div className="bg-dark max-w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 sm:px-6  shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
           {edit ? "Modifier L'Entrée" : "Ajouter un Entrée "}
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex items-start gap-x-2 ">
-              <div>
+            <div className="flex items-start gap-x-2  ">
+             
                 <FormField
                   control={form.control}
                   name="ref"
@@ -131,7 +133,7 @@ export const AddEditAchat = (props: props) => {
                     </FormItem>
                   )}
                 />
-              </div>
+           
               <FormField
                 control={form.control}
                 name="name"
@@ -163,7 +165,6 @@ export const AddEditAchat = (props: props) => {
                         disabled={isPending}
                         className="text-white w-full"
                         placeholder="Catégorie"
-                        
                         {...field}
                       />
                     </FormControl>
@@ -174,7 +175,7 @@ export const AddEditAchat = (props: props) => {
               />
             </div>
 
-            <div className="grid grid-cols-2 items-end gap-x-2 space-y-6">
+            <div className="grid grid-cols-2 items-end gap-x-2 space-y-6 mb-4">
               <FormField
                 control={form.control}
                 name="unitPrice"
@@ -247,8 +248,9 @@ export const AddEditAchat = (props: props) => {
                 <DatePicker date={date} setDate={setDate} />
               </div>
             </div>
+            {error && <FormError message={error} />}
 
-            <div className="flex items-center justify-end gap-x-4 mt-6">
+            <div className="flex items-center justify-end gap-x-4 mt-6 sm:mt-10">
               <Button
                 disabled={isPending}
                 type="button"

@@ -5,6 +5,7 @@ import { AddEditModalProvider } from "@/context/AddEditModalContext";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { TriggerProvider } from "@/context/TriggerContext";
+import { UserProvider } from "@/context/UserContext";
 
 const font = Space_Grotesk({ subsets: ["latin"] });
 
@@ -21,13 +22,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <TriggerProvider>
-          <NotificationProvider>
-            <EdgeStoreProvider>
-              <AddEditModalProvider>{children}</AddEditModalProvider>
-            </EdgeStoreProvider>
-          </NotificationProvider>
-        </TriggerProvider>
+        <UserProvider>
+          <TriggerProvider>
+            <NotificationProvider>
+              <EdgeStoreProvider>
+                <AddEditModalProvider>{children}</AddEditModalProvider>
+              </EdgeStoreProvider>
+            </NotificationProvider>
+          </TriggerProvider>
+        </UserProvider>
       </body>
     </html>
   );

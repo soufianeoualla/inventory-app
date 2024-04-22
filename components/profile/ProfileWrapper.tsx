@@ -20,7 +20,7 @@ export const ProfileWrapper = async () => {
   const currentUser = await getUserById(user?.id);
   const isOwner = user?.role === "owner";
   return (
-    <Tabs defaultValue="account" className="w-[400px] ">
+    <Tabs defaultValue="account" className="w-[400px] sm:w-full mt-20">
       <TabsList
         className={`grid w-full ${isOwner ? "grid-cols-3" : "grid-cols-2"} `}
       >

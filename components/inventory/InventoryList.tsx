@@ -11,6 +11,8 @@ import Link from "next/link";
 import Loading from "../loading";
 import { TriggerContext } from "@/context/TriggerContext";
 
+import { UserContext } from "@/context/UserContext";
+
 export interface Inventories {
   id: string;
   companyId: string;
@@ -23,7 +25,7 @@ const InventoryList = () => {
   const { toggle, addEditModal, settype, type } =
     useContext(AddEditModalContext);
   const { trigger } = useContext(TriggerContext);
-
+  const { user } = useContext(UserContext);
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   useEffect(() => {
     const getData = async () => {
@@ -42,7 +44,7 @@ const InventoryList = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center space-y-4 h-[80vh]">
-        <div className="flex items-center gap-x-4 flex-wrap">
+        <div className="flex items-center sm:justify-center gap-4 flex-wrap">
           {inventories?.map((item) => (
             <Card key={item.id} className="bg-card border-none p-6 w-[250px]  ">
               <Link
@@ -64,14 +66,16 @@ const InventoryList = () => {
             </Card>
           ))}
         </div>
-        {inventories.length < 3 && <Button
-          onClick={() => {
-            toggle();
-            settype("inventaire");
-          }}
-        >
-          Créer un inventaire
-        </Button>}
+        {inventories.length < 3 && user !== "user" && (
+          <Button
+            onClick={() => {
+              toggle();
+              settype("inventaire");
+            }}
+          >
+            Créer un inventaire
+          </Button>
+        )}
       </div>
       {addEditModal && type === "inventaire" && <AddInventory />}
     </>

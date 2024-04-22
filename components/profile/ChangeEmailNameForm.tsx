@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { useState, useTransition } from "react";
+import { useContext, useState, useTransition } from "react";
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import { changeNameEmailSchema } from "@/schemas";
 import { AddImage, changeNameEmail } from "@/actions/profile";
 import { Label } from "../ui/label";
 import { useEdgeStore } from "@/lib/edgestore";
+import { TriggerContext } from "@/context/TriggerContext";
 
 interface User {
   name: string | null;
@@ -26,6 +27,8 @@ interface User {
 }
 
 export const ChangeEmailNameForm = ({ email, name }: User) => {
+  const { triggerToggle } = useContext(TriggerContext);
+
   const [isPending, startTransition] = useTransition();
   const [file, setfile] = useState<File>();
   const { edgestore } = useEdgeStore();
@@ -47,6 +50,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
         setsuccess(data?.success);
       });
     });
+    triggerToggle();
   };
 
   const handleUpload = () => {
@@ -60,6 +64,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
         setsuccess(data?.success);
       });
     });
+    triggerToggle();
   };
 
   return (

@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
 import { article } from "@prisma/client";
 import Link from "next/link";
-
+import { formatPrice } from "@/lib/functions";
 
 interface InventoryTableProp {
   article: article | undefined;
@@ -18,66 +18,68 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
 
   return (
     <>
-    <Link href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}>
-      <Card className="w-[600px] rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
-        <div className="flex justify-between items-start p-6 relative">
-          <div className="flex items-center gap-x-3 ">
-            Ref: {article?.ref}
-            <div
-              className={`px-4 py-2 flex justify-center gap-x-2 items-center ${
-                inStock
-                  ? "bg-emerald-500/15 text-emerald-500"
-                  : "bg-destructive/15 text-destructive"
-              } rounded-lg `}
-            >
+      <Link
+        href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}
+        className="sm:w-full"
+      >
+        <Card className="max-w-[600px] sm:w-full rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
+          <div className="flex justify-between items-start p-6 relative">
+            <div className="flex items-center gap-x-3 ">
+              Ref: {article?.ref}
               <div
-                className={`w-2 h-2 rounded-full ${
-                  inStock ? "bg-emerald-500" : "bg-destructive"
-                }`}
-              />
-              {inStock ? "In stock" : "Out of Stock"}
+                className={`px-4 py-2 flex justify-center gap-x-2 items-center ${
+                  inStock
+                    ? "bg-emerald-500/15 text-emerald-500"
+                    : "bg-destructive/15 text-destructive"
+                } rounded-lg `}
+              >
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    inStock ? "bg-emerald-500" : "bg-destructive"
+                  }`}
+                />
+                {inStock ? "In stock" : "Out of Stock"}
+              </div>
+            </div>
+            <div className="z-0">
+              <Button
+                onClick={() => setdeleteModal(true)}
+                className="text-white"
+                variant={"destructive"}
+                size={"icon"}
+              >
+                <MdDelete />
+              </Button>{" "}
             </div>
           </div>
-          <div className="z-0">
-            <Button
-              onClick={() => setdeleteModal(true)}
-              className="text-white"
-              variant={"destructive"}
-              size={"icon"}
-            >
-              <MdDelete />
-            </Button>{" "}
-          </div>
-        </div>
-        <CardContent className="space-y-4">
-          <div className="flex items-center gap-x-4">
-            <div>
-              <span>Article: </span>
-              <b>{article?.name}</b>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-x-4">
+              <div>
+                <span>Article: </span>
+                <b>{article?.name}</b>
+              </div>
+              <div>
+                <span>Quantity: </span>
+                <b>{article?.quantity}</b>
+              </div>
+              <div>
+                <span>Prix Unitaire: </span>
+                <b>{formatPrice(article?.price!)}</b>
+              </div>
             </div>
-            <div>
-              <span>Quantity: </span>
-              <b>{article?.quantity}</b>
+            <div className="flex items-center gap-x-4">
+              <div>
+                <span>Total: </span>
+                <b>{formatPrice(article?.total!)}</b>
+              </div>
+              <div>
+                <span>Category: </span>
+                <b>{article?.category}</b>
+              </div>
             </div>
-            <div>
-              <span>PriX Unitaire: </span>
-              <b>{article?.price.toFixed(2)}</b>
-            </div>
-          </div>
-          <div className="flex items-center gap-x-4">
-          <div>
-            <span>Total: </span>
-            <b>{article?.total.toFixed(2)}</b>
-          </div>
-          <div>
-            <span>Category: </span>
-            <b>{article?.category}</b>
-          </div>
-
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+          </CardContent>
+        </Card>
+      </Link>
 
       {deleteModal && (
         <DeleteModal

@@ -26,7 +26,6 @@ export const AddInventory = () => {
   const { setError, setSuccess, notificationToggle } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
-  
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +46,7 @@ export const AddInventory = () => {
         onClick={toggle}
         className="w-full top-0 left-0 h-full fixed bg-background/70 z-10  "
       ></div>
-      <div className="bg-dark w-[610px]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
+      <div className="bg-dark max-w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
           {"Ajouter un Inventaire"}
         </div>
@@ -59,6 +58,7 @@ export const AddInventory = () => {
               className="text-white"
               type="text"
               placeholder="Nom"
+              disabled={isPending}
               onChange={(e) => setname(e.target.value)}
             />
           </div>

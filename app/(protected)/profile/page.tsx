@@ -1,12 +1,12 @@
-import { ProfileWrapper } from '@/components/profile/ProfileWrapper'
-import React from 'react'
+import { ProfileWrapper } from "@/components/profile/ProfileWrapper";
+import React from "react";
 
 const ProfilePage = () => {
   return (
-    <div className='flex items-center justify-center  mt-10'>
-      <ProfileWrapper/>
+    <div className=" flex justify-center ">
+      <ProfileWrapper />
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

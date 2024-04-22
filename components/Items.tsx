@@ -12,7 +12,7 @@ interface SingleItemProp {
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   return (
-    <div className="w-[900px] mx-auto uppercase text-[13px]">
+    <div className="max-w-[900px] mx-auto uppercase text-[13px] sm:w-full">
       <Suspense>
         {!items && (
           <div className="flex items-center justify-center h-[70vh]">
@@ -24,7 +24,7 @@ export const Items = ({ type, items }: SingleItemProp) => {
           <div className="flex flex-col justify-center items-center h-[60vh] text-center">
             <Image src={ullistration} alt="ullistration empty" />
             <h1 className="text-2xl font-bold mt-8 text-white">
-              There is nothing here
+              Il n&lsquo;y a rien ici{" "}
             </h1>
           </div>
         )}

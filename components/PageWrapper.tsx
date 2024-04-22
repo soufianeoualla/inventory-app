@@ -6,8 +6,6 @@ import { FaPlus } from "react-icons/fa6";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
 import { AddEditAchat } from "./modals/AddEditAchat";
 import { Items } from "./Items";
-import { PopUpMessage } from "./modals/PopUpMessage";
-import { NotificationContext } from "@/context/NotificationContext";
 import { getEntree } from "@/data/entree";
 import { getSortie } from "@/data/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
@@ -18,17 +16,16 @@ import { addDays, subDays } from "date-fns";
 import { DateRangeFilter } from "./DateRangeFilter";
 import { getInventories } from "@/data/inventory";
 import { Inventories } from "./inventory/InventoryList";
-import { getSession } from "next-auth/react";
-import { User } from "next-auth";
+
 import { operation } from "@prisma/client";
+import { UserContext } from "@/context/UserContext";
 
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 15),
     to: addDays(new Date(), 7),
   });
-
-  const { notification } = useContext(NotificationContext);
+  const { user } = useContext(UserContext);
   const { toggle, addEditModal, settype, type } =
     useContext(AddEditModalContext);
   const [items, setitems] = useState<operation[] | null>();
@@ -37,12 +34,9 @@ export const PageWrapper = () => {
   const pathname = usePathname();
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [inventoryId, setinventoryId] = useState<string>("");
-  const [user, setuser] = useState<User | null>();
 
   useEffect(() => {
     const getdata = async () => {
-      const session = await getSession();
-      setuser(session?.user);
       const res = pathname.includes("achat")
         ? await getEntree()
         : await getSortie();
@@ -101,8 +95,8 @@ export const PageWrapper = () => {
 
   return (
     <>
-      <div className="w-[900px] mx-auto space-y-16">
-        <div className="flex justify-end items-center gap-x-4">
+      <div className="max-w-[900px] mx-auto space-y-16 sm:w-full sm:p-6">
+        <div className="flex justify-end w-full items-center gap-4 flex-wrap sm:justify-start ">
           <DateRangeFilter
             date={date}
             setDate={setDate}
@@ -115,28 +109,31 @@ export const PageWrapper = () => {
             setinventoryId={setinventoryId}
           />
 
-          {user?.role !== "user" && pathname.includes("achat") ? (
+          {user !== "user" && pathname.includes("achat") ? (
             <Button
               onClick={() => {
                 toggle();
                 settype("entree");
               }}
-              className="flex items-center gap-x-2 font-bold"
+              className="flex items-center gap-x-2 font-bold w-full"
             >
               <FaPlus />
               Ajouter un Entrée
             </Button>
           ) : (
-            <Button
-              onClick={() => {
-                toggle();
-                settype("sortie");
-              }}
-              className="flex items-center gap-x-2 font-bold"
-            >
-              <FaPlus />
-              Ajouter un Sortie
-            </Button>
+            user !== "user" &&
+            pathname.includes("sortie") && (
+              <Button
+                onClick={() => {
+                  toggle();
+                  settype("sortie");
+                }}
+                className="flex items-center gap-x-2 font-bold"
+              >
+                <FaPlus />
+                Ajouter un Sortie
+              </Button>
+            )
           )}
         </div>
         <Items type="achat" items={filtredItemsByTime} />
@@ -148,7 +145,6 @@ export const PageWrapper = () => {
       {addEditModal && type === "sortie" && (
         <AddEditSortie edit={false} operation={undefined} />
       )}
-      {notification && <PopUpMessage />}
     </>
   );
 };

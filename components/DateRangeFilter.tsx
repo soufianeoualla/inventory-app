@@ -26,14 +26,14 @@ export function DateRangeFilter({
   setDate,
 }: DateRangeFilterProps) {
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("grid gap-2 sm:w-full", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal bg-Dark-Charcoal-Gray text-white border-none",
+              "w-[300px] sm:w-full justify-start text-left font-normal bg-Dark-Charcoal-Gray text-white border-none",
               !date && "text-muted-foreground"
             )}
           >
