@@ -24,7 +24,7 @@ const CardWrapper = ({
   type,
 }: CardWrapperProps) => {
   return (
-    <Card className="text-center w-[400px] sm:w-[90%] shadow-md bg-gradient-to-br from-accent/40 to-card border-white/10  ">
+    <Card className="text-center w-[400px] sm:w-[95%] shadow-md bg-gradient-to-br from-accent/40 to-card border-white/10  ">
       <CardHeader className=" space-y-3 flex items-center gap-x-3 ">
         <div className="flex items-center gap-x-3 font-bold tracking-wide">
           <Image
