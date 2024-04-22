@@ -79,7 +79,7 @@ export const DashoardWrapper = () => {
   const lastMonthSortieStats = calculateQuantityAndTotal(lastMonthItemsSortie);
 
   return (
-    <div className=" mt-10 ">
+    <div className="px-8 mt-10 ">
       <div className="flex justify-between  items-center mb-8">
         {invetaireName && (
           <h1 className="text-white font-bold text-xl sm:text-lg">

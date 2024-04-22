@@ -95,8 +95,8 @@ export const PageWrapper = () => {
 
   return (
     <>
-      <div className="max-w-[900px] mx-auto space-y-16 sm:w-full sm:p-6">
-        <div className="flex justify-end w-full items-center gap-4 flex-wrap sm:justify-start ">
+      <div className="max-w-[900px] mx-auto space-y-16 sm:w-full p-6">
+        <div className="flex justify-end w-full items-center gap-4 sm:flex-wrap sm:justify-start ">
           <DateRangeFilter
             date={date}
             setDate={setDate}

@@ -40,7 +40,7 @@ export const Sidebar = () => {
     },
   ];
   return (
-    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue  relative sm:absolute sm:top-0 sm:left-0 z-20   ">
+    <div className="shadow-md border-l  h-screen bg-Dark-Charcoal-Gray border-Charcoal-Blue  relative sm:absolute sm:top-0 sm:left-0 sm:z-20   ">
       <div className=" logo h-20 border-b border-b-slate-500/20 flex items-center w-full gap-x-2 text-xl font-bold uppercase tracking-wide px-8 text-white ">
         <Image src={logo} alt="logo" className=" w-10" />
         Inventory

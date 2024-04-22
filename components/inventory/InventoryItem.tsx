@@ -22,7 +22,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
         href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}
         className="sm:w-full"
       >
-        <Card className="max-w-[600px] sm:w-full rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
+        <Card className="w-[600px] sm:w-full rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
           <div className="flex justify-between items-start p-6 relative">
             <div className="flex items-center gap-x-3 ">
               Ref: {article?.ref}
