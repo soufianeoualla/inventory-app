@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { Filters } from "./Filters";
 import { Button } from "./ui/button";
 import { FaPlus } from "react-icons/fa6";
@@ -37,12 +37,16 @@ export const PageWrapper = () => {
 
   useEffect(() => {
     const getdata = async () => {
-      const res = pathname.includes("achat")
-        ? await getEntree()
-        : await getSortie();
-      setitems(res);
-      const response = await getInventories();
-      setinventories(response);
+      try {
+        const res = pathname.includes("achat")
+          ? await getEntree()
+          : await getSortie();
+        setitems(res);
+        const response = await getInventories();
+        setinventories(response);
+      } catch (error) {
+        console.log("Error fetching data:", error);
+      }
     };
     getdata();
   }, [trigger, pathname]);
@@ -72,22 +76,45 @@ export const PageWrapper = () => {
     const itemDate = new Date(item.date);
     const fromDate = date?.from ? new Date(date.from) : null;
     const toDate = date?.to ? new Date(date.to) : null;
-
     if (fromDate && toDate) {
-      return (
-        itemDate.getFullYear() >= fromDate.getFullYear() &&
-        itemDate.getMonth() >= fromDate.getMonth() &&
-        itemDate.getDate() >= fromDate.getDate() &&
-        itemDate.getFullYear() <= toDate.getFullYear() &&
-        itemDate.getMonth() <= toDate.getMonth() &&
-        itemDate.getDate() <= toDate.getDate()
+      const fromUTC = new Date(
+        Date.UTC(
+          fromDate.getFullYear(),
+          fromDate.getMonth(),
+          fromDate.getDate()
+        )
       );
+      const toUTC = new Date(
+        Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate())
+      );
+
+      const itemDateUTC = new Date(
+        Date.UTC(
+          itemDate.getFullYear(),
+          itemDate.getMonth(),
+          itemDate.getDate()
+        )
+      );
+
+      return itemDateUTC >= fromUTC && itemDateUTC <= toUTC;
     } else if (fromDate && !toDate) {
-      return (
-        itemDate.getFullYear() === fromDate.getFullYear() &&
-        itemDate.getMonth() === fromDate.getMonth() &&
-        itemDate.getDate() === fromDate.getDate()
+      const fromUTC = new Date(
+        Date.UTC(
+          fromDate.getFullYear(),
+          fromDate.getMonth(),
+          fromDate.getDate()
+        )
       );
+
+      const itemDateUTC = new Date(
+        Date.UTC(
+          itemDate.getFullYear(),
+          itemDate.getMonth(),
+          itemDate.getDate()
+        )
+      );
+
+      return itemDateUTC.getTime() === fromUTC.getTime();
     } else {
       return true;
     }
@@ -136,7 +163,9 @@ export const PageWrapper = () => {
             )
           )}
         </div>
-        <Items type="achat" items={filtredItemsByTime} />
+        <Suspense>
+          <Items type="achat" items={filtredItemsByTime!} />
+        </Suspense>
       </div>
 
       {addEditModal && type === "entree" && (

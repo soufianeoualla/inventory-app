@@ -12,10 +12,10 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { article } from "@prisma/client";
 import { Label } from "../ui/label";
-import { getArticle } from "@/data/inventory";
 import { FormError } from "../auth/FormError";
 import { FormSuccess } from "../auth/FormSuccess";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
+import { compareQuantity } from "@/actions/compareQuantity";
 
 interface Props {
   articles: article[];
@@ -29,8 +29,9 @@ export const CompareQuantity = ({ articles, id }: Props) => {
   const [selectedName, setselectedName] = useState<string>("");
   const [selectedRef, setselectedRef] = useState<string>("");
   const [isPending, startTransition] = useTransition();
-  const [error, seterror] = useState<string>("");
-  const [success, setsuccess] = useState<string>("");
+  const [error, seterror] = useState<string | undefined>("");
+  const [success, setsuccess] = useState<string | undefined>("");
+
   const handleNameChange = (value: string) => {
     setselectedName(value);
     const dependRef = articles?.filter((item) => item.name === value);
@@ -49,19 +50,12 @@ export const CompareQuantity = ({ articles, id }: Props) => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    startTransition(async () => {
-      if (!quantity || !selectedName || !selectedRef) return;
-      const article = await getArticle(parseInt(selectedRef), id);
-      if (article?.quantity! < parseInt(quantity)) {
-        seterror("quantité physique est plus grand que la quantité theorique");
-        setsuccess("");
-      } else if (article?.quantity! > parseInt(quantity)) {
-        seterror("quantité theorique est plus grand que la quantité physique");
-        setsuccess("");
-      } else {
-        seterror("");
-        setsuccess("les quantités sont égaux");
-      }
+    startTransition(() => {
+      if (!quantity || !selectedRef) return;
+      compareQuantity(selectedRef, id, quantity).then((data) => {
+        seterror(data?.error);
+        setsuccess(data?.success);
+      });
     });
   };
 
@@ -71,7 +65,7 @@ export const CompareQuantity = ({ articles, id }: Props) => {
         onClick={toggle}
         className="w-full top-0 left-0 h-full fixed bg-background/80 z-10  "
       ></div>
-      <Card className="bg-dark w-[400px] border-none  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-4 shadow-md z-20">
+      <Card className="bg-dark w-[400px] sm:w-[95%] border-none  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-4 shadow-md z-20">
         <CardHeader className="text-2xl font-bold">
           Comparaison d&apos;inventaire
         </CardHeader>

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { operation } from "@prisma/client";
 import { compareDates, isInRangeDate } from "@/lib/functions";
 import { subDays } from "date-fns";
+import Loading from "../loading";
 
 export const DashoardWrapper = () => {
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
@@ -77,6 +78,13 @@ export const DashoardWrapper = () => {
   const yesterdaySortieStats = calculateQuantityAndTotal(yesterdayItemsSortie);
   const lastWeekSortieStats = calculateQuantityAndTotal(lastWeekItemsSortie);
   const lastMonthSortieStats = calculateQuantityAndTotal(lastMonthItemsSortie);
+
+  if (!operations)
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="px-8 mt-10 ">

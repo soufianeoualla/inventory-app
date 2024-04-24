@@ -40,7 +40,7 @@ interface props {
 
 export const AddEditAchat = (props: props) => {
   const { edit, operation } = props;
-  const { setError, setSuccess, notificationToggle,error } =
+  const { setError, setSuccess, notificationToggle, error, success } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
   const [inventoryId, setinventoryId] = useState<string>(
@@ -94,8 +94,8 @@ export const AddEditAchat = (props: props) => {
           });
 
       triggerToggle();
-      toggle();
       notificationToggle();
+      toggle();
     });
   };
 
@@ -112,28 +112,27 @@ export const AddEditAchat = (props: props) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex items-start gap-x-2  ">
-             
-                <FormField
-                  control={form.control}
-                  name="ref"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Réf</FormLabel>
-                      <FormControl>
-                        <Input
-                          list="ref-list"
-                          disabled={isPending}
-                          className="text-white"
-                          placeholder="Ref"
-                          {...field}
-                        />
-                      </FormControl>
+              <FormField
+                control={form.control}
+                name="ref"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Réf</FormLabel>
+                    <FormControl>
+                      <Input
+                        list="ref-list"
+                        disabled={isPending}
+                        className="text-white"
+                        placeholder="Ref"
+                        {...field}
+                      />
+                    </FormControl>
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-           
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="name"

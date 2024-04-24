@@ -1,6 +1,7 @@
 "use client";
 import { MobileSideBar } from "@/components/MobileSideBar";
-import React, { ReactNode, createContext, useState } from "react";
+import { usePathname } from "next/navigation";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
 
 interface ContextProps {
   MobileMenuToggle: () => void;
@@ -14,7 +15,11 @@ export const MobileMenuContext = createContext<ContextProps>({
 
 export const MobileMenuProvider = ({ children }: { children: ReactNode }) => {
   const [mobileMenu, setMobileMenu] = useState<boolean>(false);
+  const pathname = usePathname();
 
+  useEffect(() => {
+    setMobileMenu(false); 
+  }, [pathname]);
   const MobileMenuToggle = () => {
     setMobileMenu(!mobileMenu);
   };

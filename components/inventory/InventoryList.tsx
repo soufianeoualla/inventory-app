@@ -46,7 +46,7 @@ const InventoryList = () => {
       <div className="flex flex-col items-center justify-center space-y-4 h-[80vh]">
         <div className="flex items-center sm:justify-center gap-4 flex-wrap">
           {inventories?.map((item) => (
-            <Card key={item.id} className="bg-card border-none p-6 w-[250px]  ">
+            <Card key={item.id} className="bg-card border-none  p-6 w-[250px] hover:scale-105 ">
               <Link
                 href={`/inventaire/${item.id}`}
                 className="flex justify-between items-center"

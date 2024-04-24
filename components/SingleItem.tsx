@@ -22,13 +22,13 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
     <div>
       <Link key={item.id} href={pathname(item.id)} className="w-full">
         <div
-          className={`w-full mb-4 flex justify-between gap-x-16 pr-3 pl-8 sm:p-4  items-center h-[72px] sm:h-auto rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
+          className={`w-full mb-4 flex justify-between gap-x-8 pr-3 pl-8 sm:p-4  items-center h-[72px] sm:h-auto rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
             InventoryPath && item.type === "sortie"
               ? "bg-destructive/10"
               : " bg-card/60"
           }   `}
         >
-          <div className="flex items-center justify-between flex-1 sm:flex-col sm:gap-y-2  ">
+          <div className="flex items-center justify-start gap-x-3 flex-1  sm:flex-col sm:gap-y-2  ">
             <b className=" uppercase    ">#{item.id}</b>
             <p className="  ">{formatDate(item.date.toString())}</p>
             <div className="flex justify-center items-center gap-x-2">

@@ -9,7 +9,8 @@ export const getSortie = async () => {
 
   try {
     const sortie = await db.operation.findMany({
-      where: { companyId: companyId , type:'sortie' },
+      where: { companyId: companyId, type: "sortie" },
+      orderBy: { date: "desc" },
     });
     return sortie;
   } catch (error) {

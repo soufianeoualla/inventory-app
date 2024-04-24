@@ -20,7 +20,6 @@ import { addSortie, editSortie } from "@/actions/sortie";
 import { TriggerContext } from "@/context/TriggerContext";
 import { FormError } from "../auth/FormError";
 import { Inventories } from "../inventory/InventoryList";
-import Link from "next/link";
 import { article, operation } from "@prisma/client";
 
 interface props {
@@ -51,7 +50,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
     getData();
   }, [inventoryId]);
 
-  const { setError, setSuccess, notificationToggle, error } =
+  const { setError, setSuccess, notificationToggle, error, success } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
 
@@ -97,9 +96,9 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             setSuccess(data.success);
           });
 
-      toggle();
       notificationToggle();
       triggerToggle();
+      toggle();
     });
   };
 
@@ -124,7 +123,10 @@ export const AddEditSortie = ({ edit, operation }: props) => {
                 onValueChange={(value) => setinventoryId(value)}
               >
                 <SelectTrigger className="w-full h-11 bg-Slate-Teal border-none text-white">
-                  <SelectValue placeholder="Inventaire" className="capitalize" />
+                  <SelectValue
+                    placeholder="Inventaire"
+                    className="capitalize"
+                  />
                 </SelectTrigger>
                 <SelectContent className="bg-Slate-Teal text-white border-none">
                   {inventories?.length === 0 && (
@@ -133,7 +135,11 @@ export const AddEditSortie = ({ edit, operation }: props) => {
                     </SelectItem>
                   )}
                   {inventories?.map((item, index) => (
-                    <SelectItem key={index} value={item.id} className="capitalize">
+                    <SelectItem
+                      key={index}
+                      value={item.id}
+                      className="capitalize"
+                    >
                       {item.name}
                     </SelectItem>
                   ))}
@@ -197,9 +203,12 @@ export const AddEditSortie = ({ edit, operation }: props) => {
               />
             </div>
           </div>
-          {articleQuantity && <p className="text-white font-medium mt-2">
-          Quantité disponible en stock : <span className="text-primary font-bold">{articleQuantity}</span>
-          </p>}
+          {articleQuantity && (
+            <p className="text-white font-medium mt-2">
+              Quantité disponible en stock :{" "}
+              <span className="text-primary font-bold">{articleQuantity}</span>
+            </p>
+          )}
           {error && <FormError message={error} />}
           <div className="flex items-center justify-end gap-x-4 ">
             <Button

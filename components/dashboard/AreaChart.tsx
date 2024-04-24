@@ -51,12 +51,12 @@ export const AreaChartComponent = ({ operations }: Props) => {
   }));
 
   return (
-    <div className="p-8 max-w-[900px] space-y-3 sm:w-full sm:p-4  ">
+    <div className="p-8 max-w-[900px]  space-y-3 sm:w-full sm:p-4  ">
       <h1 className="text-white capitalize font-bold text-2xl ">
-        Prix Total des sorties et d&lsquo;achats
+        Variation des prix Total
       </h1>
-      <div className="flex items-center sm:grid sm:gap-y-8">
-        <ResponsiveContainer width={350} height={300}>
+      <div className="flex items-center sm:grid sm:gap-y-8 w-full ">
+        <ResponsiveContainer height={300}>
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />
@@ -75,7 +75,7 @@ export const AreaChartComponent = ({ operations }: Props) => {
           </AreaChart>
         </ResponsiveContainer>
 
-        <ResponsiveContainer width={350} height={300}>
+        <ResponsiveContainer height={300}>
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />
@@ -102,10 +102,15 @@ interface CustomTooltipProp {
   active?: boolean;
   payload?: any;
   label?: string;
-  color : string
+  color: string;
 }
 
-const CustomTooltip = ({ active, payload, label,color }:CustomTooltipProp) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  color,
+}: CustomTooltipProp) => {
   if (active && payload && payload.length) {
     return (
       <div className="p-4 bg-slate-200 flex flex-col gap-4 rounded-md">
