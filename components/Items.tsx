@@ -6,7 +6,7 @@ import { operation } from "@prisma/client";
 
 interface SingleItemProp {
   type: string;
-  items: operation[]  | null;
+  items: operation[] | undefined | null;
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   return (

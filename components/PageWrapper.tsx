@@ -164,7 +164,7 @@ export const PageWrapper = () => {
           )}
         </div>
         <Suspense>
-          <Items type="achat" items={filtredItemsByTime!} />
+          <Items type="achat" items={filtredItemsByTime} />
         </Suspense>
       </div>
 
