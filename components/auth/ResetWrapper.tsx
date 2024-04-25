@@ -29,7 +29,7 @@ const ResetWrapper = () => {
           Inventory App
         </div>
 
-        <CardDescription>{"Reset your password"} </CardDescription>
+        <CardDescription>{"Réinitialiser votre mot de passe"} </CardDescription>
       </CardHeader>
       <CardContent className=" grid gap-4">
         {token ? <ResetPassword token={token} /> : <ResetForm />}

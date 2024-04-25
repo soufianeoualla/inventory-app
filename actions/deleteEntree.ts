@@ -8,9 +8,9 @@ export const deleteEntree = async (id: string) => {
     const entree = await db.operation.findUnique({
       where: { id: id },
     });
-    if (!entree) return { error: "Operation does not exist" };
+    if (!entree) return { error: "L'operation est introvable" };
     const article = await getArticle(entree.ref,entree.inventoryId)
-    if (!article) return { error: "Article does not exist" };
+    if (!article) return { error: "L'article est introvable" };
 
     const newQuantity = article.quantity - entree.quantity;
     const currentTotalCost = article.price * article.quantity;
@@ -31,7 +31,7 @@ export const deleteEntree = async (id: string) => {
       where: { id: id },
     });
 
-    return { success: "The operation deleted successfully" };
+    return { success: "L'opération a été supprimée avec succès" };
   } catch (error) {
     console.log(error);
   }

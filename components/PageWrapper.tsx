@@ -130,7 +130,7 @@ export const PageWrapper = () => {
           <DateRangeFilter
             date={date}
             setDate={setDate}
-            className={undefined}
+            
           />
           <Filters
             uniqueCategories={uniqueCategories}

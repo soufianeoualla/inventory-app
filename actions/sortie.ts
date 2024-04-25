@@ -14,16 +14,16 @@ interface values {
 export const addSortie = async (sortieValues: values, inventoryId: string) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) return { error: "not logged In" };
+  if (!user) return { error: "Non connecté" };
 
   const { selectedName, quantity, selectedRef, date } = sortieValues;
 
   const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
   if (!existingProduct)
-    return { error: "Article does not exist on the inventory" };
+    return { error: "L'article n'existe pas dans l'inventaire" };
 
   if (existingProduct.quantity < parseInt(quantity))
-    return { error: "You don't have enough Quantity on this article" };
+    return { error: "Vous n'avez pas assez de quantité pour cet article" };
   const id = uuid().slice(0, 7);
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
@@ -58,13 +58,13 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
     },
   });
 
-  return { success: "Opertaion successfully done" };
+  return { success: "Opération effectuée avec succès" };
 };
 
 export const editSortie = async (sortieValues: values, operationId: string) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) return { error: "not logged In" };
+  if (!user) return { error: "Non connecté" };
 
   const { selectedName, quantity, selectedRef, date } = sortieValues;
 
@@ -91,10 +91,10 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   });
   const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
   if (!existingProduct)
-    return { error: "Article does not exist on the inventory" };
+    return { error: "L'article n'existe pas dans l'inventaire" };
 
   if (existingProduct.quantity < parseInt(quantity))
-    return { error: "You don't have enough Quantity on this article" };
+    return { error: "Vous n'avez pas assez de quantité pour cet article" };
 
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
@@ -129,5 +129,5 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
     },
   });
 
-  return { success: "Opertaion successfully done" };
+  return { success: "Opération effectuée avec succès" };
 };

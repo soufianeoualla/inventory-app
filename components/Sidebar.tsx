@@ -14,7 +14,7 @@ export const Sidebar = () => {
   const pathname = usePathname();
   const links = [
     {
-      name: "Dahboard",
+      name: "Accueil",
       href: "/dashboard",
       icon: <BiSolidDashboard />,
     },
@@ -67,7 +67,7 @@ export const Sidebar = () => {
         className="absolute left-0  w-[90%] rounded-none rounded-r-3xl bottom-10 flex gap-x-2 items-center text-Slate-Blue text-base h-12 hover:bg-primary "
       >
         <IoLogOut />
-        Log Out
+       {"Se déconnecter"}
       </Button>
     </div>
   );

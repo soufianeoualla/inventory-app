@@ -4,9 +4,9 @@ import React from "react";
 const LoginPage = () => {
   return (
     <CardWrapper
-      headerLabel="Welcome Back"
+      headerLabel="Bienvenue "
       backButtonHref="/auth/register"
-      backButtonLabel="Not a member yet? Sign Up"
+      backButtonLabel="Pas encore membre ? Inscrivez-vous"
       type="login"
     />
   );

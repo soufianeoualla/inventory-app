@@ -1,5 +1,9 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { FaArrowUpLong } from "react-icons/fa6";
@@ -45,24 +49,26 @@ const InventoryList = () => {
     <>
       <div className="flex flex-col items-center justify-center space-y-4 h-[80vh]">
         <div className="flex items-center sm:justify-center gap-4 flex-wrap">
-          {inventories?.map((item) => (
-            <Card key={item.id} className="bg-card border-none  p-6 w-[250px] hover:scale-105 ">
-              <Link
-                href={`/inventaire/${item.id}`}
-                className="flex justify-between items-center"
-              >
-                <div className="space-y-3 uppercase">
-                  {item.name}
-                  <div>article: {item.article.length}</div>
-                  <div className="bg-purple/15 flex justify-center items-center rounded-md p-2 gap-x-2">
-                    <div className="h-2 w-2 rounded-full bg-purple" />
-                    {item.method}
-                  </div>
+          {inventories?.map((item,index) => (
+            <Card
+              key={item.id}
+              className="bg-card border-none  p-6 w-[250px] relative flex justify-between items-center "
+            >
+              <div className="space-y-3 uppercase">
+                {item.name}
+                <div>article: {item.article.length}</div>
+                <div className="bg-purple/15 flex justify-center items-center rounded-md p-2 gap-x-2">
+                  <div className="h-2 w-2 rounded-full bg-purple" />
+                  {item.method}
                 </div>
-                <div className="w-10 h-10 rounded-full bg-white flex justify-center items-center">
-                  <FaArrowUpLong className="text-dark rotate-45" />
+              </div>
+
+              <Link href={`/inventaire/${item.id}`}>
+                <div className="w-10 h-10 rounded-full text-dark bg-white flex justify-center items-center hover:scale-110 hover:bg-primary hover:text-white">
+                  <FaArrowUpLong className=" rotate-45" />
                 </div>
               </Link>
+             
             </Card>
           ))}
         </div>
@@ -83,3 +89,5 @@ const InventoryList = () => {
 };
 
 export default InventoryList;
+
+

@@ -1,6 +1,6 @@
 "use client";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { useContext, useState, useTransition } from "react";
+import { useContext, useEffect, useState, useTransition } from "react";
 
 import {
   Select,
@@ -17,19 +17,40 @@ import { Label } from "../ui/label";
 import { TriggerContext } from "@/context/TriggerContext";
 
 import { addInventaire } from "@/actions/Inventaire";
-export const AddInventory = () => {
+import { getInventory } from "@/data/inventory";
+import { inventory } from "@prisma/client";
+
+interface AddInventoryProps {
+  id?: string;
+  edit?: boolean;
+}
+
+export const AddInventory = ({ id, edit }: AddInventoryProps) => {
   const methods = ["CMUP"];
-  const [selectedMethod, setselectedMethod] = useState<string>("");
-  const [name, setname] = useState<string>("");
+  const [inventory, setInventory] = useState<inventory | null>();
+  const [selectedMethod, setselectedMethod] = useState<string | undefined>(
+    edit ? inventory?.method : ""
+  );
+  const [name, setname] = useState<string | undefined>(
+    edit ? inventory?.name : ""
+  );
   const [isPending, startTransition] = useTransition();
   const { toggle } = useContext(AddEditModalContext);
   const { setError, setSuccess, notificationToggle } =
     useContext(NotificationContext);
   const { triggerToggle } = useContext(TriggerContext);
 
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getInventory(id!);
+      setInventory(data);
+    };
+    getData();
+  }, [id]);
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!name || !selectedMethod) return;
     startTransition(() => {
       addInventaire(name, selectedMethod).then((data) => {
         setError(data.error);
@@ -48,7 +69,7 @@ export const AddInventory = () => {
       ></div>
       <div className="bg-dark max-w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
-          {"Ajouter un Inventaire"}
+          {edit ? "Modifier L'inventaire" :"Ajouter un Inventaire"}
         </div>
 
         <form onSubmit={onSubmit} className="space-y-8">
@@ -59,6 +80,7 @@ export const AddInventory = () => {
               type="text"
               placeholder="Nom"
               disabled={isPending}
+              value={name}
               onChange={(e) => setname(e.target.value)}
             />
           </div>

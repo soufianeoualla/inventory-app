@@ -4,11 +4,10 @@ import React from "react";
 const RegisterPage = () => {
   return (
     <CardWrapper
-      
       backButtonHref="/auth/login"
-      backButtonLabel="Already have an account? Sign In"
+      backButtonLabel="Déjà un compte ? Connexion"
       type="register"
-      headerLabel="Create an account"
+      headerLabel="Créer un compte"
     />
   );
 };

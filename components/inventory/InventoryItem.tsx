@@ -34,11 +34,11 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
                 } rounded-lg `}
               >
                 <div
-                  className={`w-2 h-2 rounded-full ${
+                  className={`w-2 h-2 rounded-full capitalize ${
                     inStock ? "bg-emerald-500" : "bg-destructive"
                   }`}
                 />
-                {inStock ? "In stock" : "Out of Stock"}
+                {inStock ? "en stock" : "en rupture de stock"}
               </div>
             </div>
             <div className="z-0">

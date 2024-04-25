@@ -13,15 +13,15 @@ export const addUser = async (
 ) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) return { error: "not logged In" };
-  if (user.role !== "owner") return { error: "Your not authorized" };
+  if (!user) return { error: "Non connecté" };
+  if (user.role !== "owner") return { error: "Vous n'êtes pas autorisé(e)" };
   const validateFields = AdduserSchema.safeParse(values);
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Champs invalides!" };
   }
   const { email, name } = validateFields.data;
   const existingUser = await getUserByEmail(email);
-  if (existingUser) return { error: "User already exist" };
+  if (existingUser) return { error: "L'utilisateur existe déjà" };
   const password = uuid().slice(0,8);
   const hashedPassword = await bcrypt.hash(password, 10);
   await db.user.create({
@@ -35,5 +35,5 @@ export const addUser = async (
     },
   });
   await AddUserEmail(email, name, password);
-  return { success: "User added successfully" };
+  return { success: "Utilisateur ajouté avec succès" };
 };

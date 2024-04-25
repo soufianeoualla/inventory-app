@@ -16,6 +16,7 @@ import { AddEditSortie } from "../modals/AddEditSortie";
 import { operation } from "@prisma/client";
 import { getUserByEmail } from "@/data/user";
 import { UserContext } from "@/context/UserContext";
+import GobackButton from "../GobackButton";
 
 export const OperationOverview = () => {
   const { user } = useContext(UserContext);
@@ -54,21 +55,12 @@ export const OperationOverview = () => {
   return (
     <>
       <div className="max-w-[730px] mt-[50px] mx-auto md:w-full ">
-        <Button
-          onClick={() => {
-            router.back();
-          }}
-          variant={"ghost"}
-          className="flex items-center gap-6 font-bold hover:bg-transparent focus:text-primary hover:text-primary text-white "
-        >
-          <FaChevronLeft className="text-primary w-4 h-4  " />
-          Go back
-        </Button>
+      <GobackButton/>
 
         <div className="w-full h-[88px] rounded-lg flex items-center justify-between px-8 py-6  mt-8 bg-card/20">
           <div className="flex items-center sm:w-full sm:justify-between gap-5">
             <small className="text-[13px] font-medium text-card-foreground  ">
-              Category
+              Catégorie
             </small>
             <div
               style={{
@@ -102,17 +94,17 @@ export const OperationOverview = () => {
                   toggle();
                 }}
                 variant={"ghost"}
-                className=" text-white pt-2.5 font-bold rounded-3xl h-12 w-16 hover:text-primary text-[15px] hover:bg-transparent focus:text-primary bg-Dusty-Aqua  "
+                className=" text-white pt-2.5 font-bold rounded-3xl h-12  hover:text-primary text-[15px] hover:bg-transparent focus:text-primary bg-Dusty-Aqua  "
               >
-                Edit
+                Modifier
               </Button>
 
               <Button
                 onClick={() => setDeleteModal(true)}
                 variant={"ghost"}
-                className="bg-destructive/95 pt-2  text-white rounded-3xl w-[89px] h-12 text-[15px] font-bold tracking-wide hover:bg-destructive-foreground"
+                className="bg-destructive/95 pt-2  text-white rounded-3xl  h-12 text-[15px] font-bold tracking-wide hover:bg-destructive-foreground"
               >
-                Delete
+                Supprimer
               </Button>
             </div>
           )}
@@ -177,7 +169,7 @@ export const OperationOverview = () => {
           <div className="p-8 bg-Dusty-Aqua rounded-lg mt-11 text-[15px] sm:px-4">
             <table className="w-full sm:hidden">
               <tr className="text-muted-foreground ">
-                <th>item Name</th>
+                <th>Article</th>
                 <th>Ref</th>
                 <th>QTY.</th>
                 <th>P.U</th>

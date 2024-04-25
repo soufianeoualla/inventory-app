@@ -55,7 +55,7 @@ export const RegisterForm = () => {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Nom complet</FormLabel>
               <FormControl>
                 <Input disabled={isPending}
                   type="text"
@@ -72,11 +72,11 @@ export const RegisterForm = () => {
           name="company"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Company Name</FormLabel>
+              <FormLabel>Entreprise</FormLabel>
               <FormControl>
                 <Input disabled={isPending}
                   type="text"
-                  placeholder="Your company Name"
+                  placeholder="Entreprise"
                   {...field}
                 />
               </FormControl>
@@ -102,7 +102,7 @@ export const RegisterForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mot de passe</FormLabel>
               <FormControl>
                 <Input disabled={isPending} type="password" placeholder="******" {...field} />
               </FormControl>
@@ -113,7 +113,7 @@ export const RegisterForm = () => {
         {error && <FormError message={error} />}{" "}
         {success && <FormSuccess message={success} />}
         <Button disabled={isPending} size={"lg"} type="submit" className="w-full">
-          Register
+        Inscription
         </Button>
       </form>
     </Form>

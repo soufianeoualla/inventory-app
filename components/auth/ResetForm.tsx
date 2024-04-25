@@ -74,7 +74,7 @@ export const ResetForm = () => {
           type="submit"
           className="w-full"
         >
-          Send email
+          {"Envoyer un email"}
         </Button>
       </form>
     </Form>

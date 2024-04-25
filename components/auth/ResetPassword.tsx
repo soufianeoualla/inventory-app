@@ -70,7 +70,7 @@ export const ResetPassword = ({token}:ResetPasswordProps) => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mot de passe</FormLabel>
               <FormControl>
                 <Input
                   disabled={isPending}
@@ -88,7 +88,7 @@ export const ResetPassword = ({token}:ResetPasswordProps) => {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Confirmer le mot de passe</FormLabel>
               <FormControl>
                 <Input
                   disabled={isPending}
@@ -109,7 +109,7 @@ export const ResetPassword = ({token}:ResetPasswordProps) => {
           type="submit"
           className="w-full"
         >
-          Change Password
+          Modifier le mot de passe
         </Button>
       </form>
     </Form>

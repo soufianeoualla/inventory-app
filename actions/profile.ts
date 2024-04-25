@@ -16,26 +16,26 @@ export const makeNewPssword = async (
 
   const validateFields = NewPasswordSchema.safeParse(values);
   if (!validateFields.success) {
-    return { error: "Invalid Fields" };
+    return { error: "Champs invalides" };
   }
   const { newPassword, oldPassword } = validateFields.data;
 
   const existingUser = await getUserById(user?.id);
-  if (!existingUser) return { error: "user not found" };
+  if (!existingUser) return { error: "Utilisateur non trouvé" };
   const passwordMatch = await bcrypt.compare(
     oldPassword,
     existingUser.password
   );
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
-  if (!passwordMatch) return { error: "Current Password is Worng" };
+  if (!passwordMatch) return { error: "Le mot de passe actuel est incorrect" };
   await db.user.update({
     where: { id: existingUser.id },
     data: {
       password: hashedPassword,
     },
   });
-  return { success: "Your password got changed" };
+  return { success: "Votre mot de passe a été modifié avec succès" };
 };
 
 export const changeNameEmail = async (
@@ -46,7 +46,7 @@ export const changeNameEmail = async (
 
   const { email, name } = values;
   const existingUser = await getUserById(user?.id);
-  if (!existingUser) return { error: "user not found" };
+  if (!existingUser) return { error: "Utilisateur non trouvé" };
 
   const currentEmail = existingUser.email === email;
 
@@ -57,12 +57,12 @@ export const changeNameEmail = async (
         name: name,
       },
     });
-    return { success: "Name changed succesfully!" };
+    return { success: "Nom modifié avec succès!" };
   }
 
   const usedEmail = await getUserByEmail(email);
 
-  if (usedEmail && !currentEmail) return { error: "Email is Already in use" };
+  if (usedEmail && !currentEmail) return { error: "L'email est déjà utilisé" };
 
   await db.user.update({
     where: { id: user?.id },
@@ -78,19 +78,19 @@ export const changeNameEmail = async (
     verficationToken.token,
     name
   );
-  return { success: "Confirmation email sent!" };
+  return { success: "Email de confirmation envoyé !" };
 };
 
 export const AddImage = async (image: string) => {
   const session = await auth();
   const user = session?.user;
   const existingUser = await getUserById(user?.id);
-  if (!existingUser) return { error: "user not found" };
+  if (!existingUser) return { error: "Utilisateur non trouvé" };
   await db.user.update({
     where: { id: existingUser.id },
     data: {
       image: image,
     },
   });
-  return { success: "Picture added successfully!" };
+  return { success: "Image ajoutée avec succès !" };
 };

@@ -11,7 +11,7 @@ import * as z from "zod";
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validateFields = LoginSchema.safeParse(values);
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Champs invalides!" };
   }
   const { email, password } = validateFields.data;
 
@@ -23,7 +23,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       verficationToken.token,
       existingUser.name as string
     );
-    return { success: "Confirmation email sent!" };
+    return { success: "Email de confirmation envoyé !" };
   }
 
   try {
@@ -36,10 +36,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials!" };
+          return { error: "Identifiants invalides !" };
         default:
           console.log(error);
-          return { error: "Something went wrong!" };
+          return { error: "Quelque chose s'est mal passé !" };
       }
     }
 

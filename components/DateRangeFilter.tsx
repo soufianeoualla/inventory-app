@@ -4,7 +4,7 @@ import * as React from "react";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
-
+import { fr } from 'date-fns/locale';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/popover";
 
 interface DateRangeFilterProps {
-  className: React.HTMLAttributes<HTMLDivElement> | undefined;
+  className?: React.HTMLAttributes<HTMLDivElement> | undefined;
   date: DateRange | undefined;
   setDate: React.Dispatch<React.SetStateAction<DateRange|undefined>>;
 }
@@ -48,7 +48,7 @@ export function DateRangeFilter({
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Sélectionnez une date</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -60,6 +60,7 @@ export function DateRangeFilter({
             className=""
             initialFocus
             mode="range"
+            locale={fr}
             defaultMonth={date?.from}
             selected={date}
             onSelect={setDate}

@@ -8,9 +8,9 @@ export const verification = async (token: string) => {
   if (existingToken) {
     const existingUser = await getUserByEmail(existingToken?.email as string);
   
-    if (!existingUser) return { error: "Email not found" };
+    if (!existingUser) return { error: "Email non trouvé" };
     const isExpired = new Date(existingToken.expires) < new Date();
-    if (isExpired) return { error: "Link has expired" };
+    if (isExpired) return { error: "Le lien a expiré" };
 
     await db.user.update({
       where: { id: existingUser.id },
@@ -18,6 +18,6 @@ export const verification = async (token: string) => {
     });
 
     await db.verificationToken.delete({ where: { id: existingToken.id } });
-    return { success: "Email verified" };
+    return { success: "Email vérifié" };
   }
 };

@@ -2,83 +2,82 @@ import { z } from "zod";
 
 export const ProductSchema = z.object({
   name: z.string().min(2, {
-    message: "name is Required",
+    message: "Le nom est requis",
   }),
   ref: z.string().min(2, {
-    message: "Ref is Required",
+    message: "La référence est requise",
   }),
   quantity: z.string().min(1, {
-    message: "Quantity is Required",
+    message: "La quantité est requise",
   }),
   category: z.string().min(2, {
-    message: "Category is Required",
+    message: "La catégorie est requise",
   }),
   unitPrice: z.string().min(1, {
-    message: "Prix Unitaire is Required",
+    message: "Le prix unitaire est requis",
   }),
-  
 });
 
 export const LoginSchema = z.object({
   email: z.string().email({
-    message: "Email is Required",
+    message: "L'e-mail est requis",
   }),
   password: z.string().min(6, {
-    message: "Password is required",
+    message: "Le mot de passe est requis",
   }),
 });
 export const ForgotPsswordSchema = z.object({
   email: z.string().email({
-    message: "Email is Required",
+    message: "L'e-mail est requis",
   }),
 });
 export const AdduserSchema = z.object({
   name: z.string().min(3, {
-    message: "Full Name is Required",
+    message: "Le nom complet est requis",
   }),
 
   email: z.string().email({
-    message: "Email is Required",
+    message: "L'e-mail est requis",
   }),
 });
 export const changeNameEmailSchema = z.object({
   name: z.string().min(3, {
-    message: "Full Name is Required",
+    message: "Le nom complet est requis",
   }),
 
   email: z.string().email({
-    message: "Email is Required",
+    message: "L'e-mail est requis",
   }),
 });
 
 export const RegisterSchema = z.object({
   name: z.string().min(3, {
-    message: "Full Name is Required",
+    message: "Le nom complet est requis",
   }),
   company: z.string().min(3, {
-    message: "Company is Required",
+    message: "La société est requise",
   }),
   email: z.string().email({
-    message: "Email is Required",
+    message: "L'e-mail est requis",
   }),
   password: z.string().min(6, {
-    message: "Password is required",
+    message: "Le mot de passe est requis",
   }),
 });
 
 export const NewPasswordSchema = z.object({
   oldPassword: z.string().min(6, {
-    message: "Password is required",
+    message: "Le mot de passe est requis",
   }),
   newPassword: z.string().min(6, {
-    message: "Password is required",
+    message: "Le mot de passe est requis",
   }),
 });
 
 export const ResetSchema = z
   .object({
     password: z.string().min(6, {
-      message: "Password is required",
+      message: "Le mot de passe est requis",
     }),
     confirmPassword: z.string(),
   })
@@ -87,7 +86,7 @@ export const ResetSchema = z
       return values.password === values.confirmPassword;
     },
     {
-      message: "Passwords must match!",
+      message: "Les mots de passe doivent correspondre !",
       path: ["confirmPassword"],
     }
   );

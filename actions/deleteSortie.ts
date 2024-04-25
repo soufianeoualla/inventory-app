@@ -8,15 +8,16 @@ export const deleteSortie = async (id: string) => {
     const sortie = await db.operation.findUnique({
       where: { id: id },
     });
-    if (!sortie) return { error: "Operation does not exist" };
+    if (!sortie) return { error: "L'operation est introvable" };
     const article = await getArticle(sortie.ref, sortie.inventoryId);
+    if (!article) return { error: "L'article est introvable" };
 
     await db.article.update({
       where: {
         ref_inventoryId: { ref: sortie?.ref, inventoryId: sortie.inventoryId },
       },
       data: {
-        quantity: article?.quantity! + sortie?.quantity,
+        quantity: article.quantity! + sortie?.quantity,
       },
     });
 
@@ -24,7 +25,7 @@ export const deleteSortie = async (id: string) => {
       where: { id: id },
     });
 
-    return { success: "The operation deleted successfully" };
+    return { success: "L'opération a été supprimée avec succès" };
   } catch (error) {
     console.log(error);
   }

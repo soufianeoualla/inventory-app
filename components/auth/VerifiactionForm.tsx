@@ -14,13 +14,13 @@ export const VerifiactionForm = () => {
   const token = searchParams.get("token");
   const router = useRouter();
   const onSubmit = useCallback(() => {
-    if (!token) return setError("Invalid Token");
+    if (!token) return setError("Token invalide");
     verification(token).then((data) => {
       setError(data?.error);
       setSuccess(data?.success);
       if (data?.success) {
         setTimeout(() => {
-          setSuccess("Redirecting...");
+          setSuccess("Redirection en cours...");
           setTimeout(() => {
             router.push("/auth/login");
           }, 3000);
@@ -37,7 +37,7 @@ export const VerifiactionForm = () => {
   return (
     <Card className="w-[400px] text-center h-[150px] space-y-5 bg-gradient-to-br from-accent/40 to-card border-white/10">
       <CardHeader>
-        <CardTitle>Confiming your e-mail</CardTitle>
+        <CardTitle>{"Confirmation de votre e-mail"}</CardTitle>
       </CardHeader>
       <CardContent>
         {!error && !success && <Loading />}

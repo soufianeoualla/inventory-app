@@ -14,10 +14,10 @@ export const addEntree = async (
 ) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) return { error: "not logged In" };
+  if (!user) return { error: "Non connecté" };
   const validateFields = ProductSchema.safeParse(values);
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Champs invalides!" };
   }
   const { name, quantity, ref, category, unitPrice } = validateFields.data;
 
@@ -73,7 +73,7 @@ export const addEntree = async (
     });
   }
 
-  return { success: "Opertaion successfully done" };
+  return { success: "L'opération a été effectuée avec succès" };
 };
 
 export const editEntree = async (
@@ -83,16 +83,16 @@ export const editEntree = async (
 ) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) return { error: "not logged In" };
+  if (!user) return { error: "Non connecté" };
   const validateFields = ProductSchema.safeParse(values);
   if (!validateFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: "Champs invalides!" };
   }
   const { name, quantity, ref, category, unitPrice } = validateFields.data;
   const entree = await db.operation.findUnique({
     where: { id: operationId },
   });
-  if (!entree) return { error: "Operation does not exist" };
+  if (!entree) return { error: "L'operation est introvable" };
   const inventoryId = entree?.inventoryId;
   const article = await getArticle(entree.ref, entree.inventoryId);
 
@@ -167,5 +167,5 @@ export const editEntree = async (
     });
   }
 
-  return { success: "Opertaion successfully done" };
+  return { success: "L'opération a été effectuée avec succès" };
 };

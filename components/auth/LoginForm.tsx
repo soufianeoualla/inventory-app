@@ -87,7 +87,7 @@ export const LoginForm = () => {
                 variant={"link"}
                 className="px-0 font-normal focus:text-light-purple"
               >
-                <Link href={"/auth/reset"}>Forgot password?</Link>
+                <Link href={"/auth/reset"}>{"Mot de passe oublié ?"}</Link>
               </Button>
               <FormMessage />
             </FormItem>
@@ -101,7 +101,7 @@ export const LoginForm = () => {
           type="submit"
           className="w-full"
         >
-          login
+          Connexion
         </Button>
       </form>
     </Form>

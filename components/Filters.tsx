@@ -27,7 +27,7 @@ export const Filters = ({
 
       <Select onValueChange={(value) => setcategory(value)}>
         <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
-          <SelectValue placeholder="Category" />
+          <SelectValue placeholder="Catégorie" />
         </SelectTrigger>
         <SelectContent className="bg-dark text-white border-none">
           <SelectItem value={"all"}>{"All"}</SelectItem>
