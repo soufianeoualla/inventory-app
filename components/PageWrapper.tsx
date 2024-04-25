@@ -35,6 +35,7 @@ export const PageWrapper = () => {
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [inventoryId, setinventoryId] = useState<string>("");
 
+
   useEffect(() => {
     const getdata = async () => {
       try {
@@ -120,6 +121,8 @@ export const PageWrapper = () => {
     }
   });
 
+ 
+
   return (
     <>
       <div className="max-w-[900px] mx-auto space-y-16 sm:w-full p-6">
@@ -165,6 +168,7 @@ export const PageWrapper = () => {
         </div>
         <Suspense>
           <Items type="achat" items={filtredItemsByTime} />
+        
         </Suspense>
       </div>
 

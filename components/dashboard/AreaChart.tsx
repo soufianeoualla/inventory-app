@@ -51,12 +51,12 @@ export const AreaChartComponent = ({ operations }: Props) => {
   }));
 
   return (
-    <div className="p-8 max-w-[900px]  space-y-3 sm:w-full sm:p-4  ">
+    <div className="max-w-[900px]  space-y-3 sm:w-full  ">
       <h1 className="text-white capitalize font-bold text-2xl ">
         Variation des prix Total
       </h1>
       <div className="flex items-center sm:grid sm:gap-y-8 w-full ">
-        <ResponsiveContainer height={300}>
+        <ResponsiveContainer minWidth={320} height={300}>
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />
@@ -75,7 +75,7 @@ export const AreaChartComponent = ({ operations }: Props) => {
           </AreaChart>
         </ResponsiveContainer>
 
-        <ResponsiveContainer height={300}>
+        <ResponsiveContainer  minWidth={320} height={300}>
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />

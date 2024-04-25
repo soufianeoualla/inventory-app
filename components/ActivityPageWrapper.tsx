@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Items } from "./Items";
 import { usePathname } from "next/navigation";
 import { DateRange } from "react-day-picker";
@@ -14,8 +14,6 @@ import {
 } from "@/components/ui/select";
 import { getArticleOperations } from "@/data/inventory";
 import { operation } from "@prisma/client";
-import { Button } from "./ui/button";
-import { FaChevronLeft } from "react-icons/fa6";
 import GobackButton from "./GobackButton";
 
 export const ActivitypageWrapper = () => {
@@ -47,22 +45,45 @@ export const ActivitypageWrapper = () => {
     const itemDate = new Date(item.date);
     const fromDate = date?.from ? new Date(date.from) : null;
     const toDate = date?.to ? new Date(date.to) : null;
-
     if (fromDate && toDate) {
-      return (
-        itemDate.getFullYear() >= fromDate.getFullYear() &&
-        itemDate.getMonth() >= fromDate.getMonth() &&
-        itemDate.getDate() >= fromDate.getDate() &&
-        itemDate.getFullYear() <= toDate.getFullYear() &&
-        itemDate.getMonth() <= toDate.getMonth() &&
-        itemDate.getDate() <= toDate.getDate()
+      const fromUTC = new Date(
+        Date.UTC(
+          fromDate.getFullYear(),
+          fromDate.getMonth(),
+          fromDate.getDate()
+        )
       );
+      const toUTC = new Date(
+        Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate())
+      );
+
+      const itemDateUTC = new Date(
+        Date.UTC(
+          itemDate.getFullYear(),
+          itemDate.getMonth(),
+          itemDate.getDate()
+        )
+      );
+
+      return itemDateUTC >= fromUTC && itemDateUTC <= toUTC;
     } else if (fromDate && !toDate) {
-      return (
-        itemDate.getFullYear() === fromDate.getFullYear() &&
-        itemDate.getMonth() === fromDate.getMonth() &&
-        itemDate.getDate() === fromDate.getDate()
+      const fromUTC = new Date(
+        Date.UTC(
+          fromDate.getFullYear(),
+          fromDate.getMonth(),
+          fromDate.getDate()
+        )
       );
+
+      const itemDateUTC = new Date(
+        Date.UTC(
+          itemDate.getFullYear(),
+          itemDate.getMonth(),
+          itemDate.getDate()
+        )
+      );
+
+      return itemDateUTC.getTime() === fromUTC.getTime();
     } else {
       return true;
     }
@@ -93,8 +114,9 @@ export const ActivitypageWrapper = () => {
             </Select>
           </div>
         </div>
-
-        <Items type="achat" items={filtredItemsByTime} />
+        <Suspense>
+          <Items type="achat" items={filtredItemsByTime} />
+        </Suspense>
       </div>
     </>
   );
