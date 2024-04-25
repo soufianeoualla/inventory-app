@@ -75,7 +75,7 @@ model operation {
   companyId     String
   inventory     inventory @relation(fields: [inventoryId], references: [id])
   inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
-
+  inventoryName  String
   type          type
 }
 

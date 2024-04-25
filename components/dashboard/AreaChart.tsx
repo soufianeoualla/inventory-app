@@ -58,7 +58,7 @@ export const AreaChartComponent = ({ operations }: Props) => {
         // Create new entry
         dailyStatsMap.set(day, {
           entree: item.type === "entree" ? item.total : 0,
-          sortie: item.type === "sortie" ? item.total : null,
+          sortie: item.type === "sortie" ? item.total : 0,
         });
       }
     });

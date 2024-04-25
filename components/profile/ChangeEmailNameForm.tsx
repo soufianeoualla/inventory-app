@@ -75,6 +75,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
             <Label htmlFor="picture">Image</Label>
             <Input
               disabled={isPending}
+              placeholder="Selectionner une image"
               id="picture"
               type="file"
               onChange={(e) => {
