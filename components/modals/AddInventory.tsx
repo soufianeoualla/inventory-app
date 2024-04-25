@@ -16,7 +16,7 @@ import { NotificationContext } from "@/context/NotificationContext";
 import { Label } from "../ui/label";
 import { TriggerContext } from "@/context/TriggerContext";
 
-import { addInventaire } from "@/actions/Inventaire";
+import { addInventaire, editInventaire } from "@/actions/Inventaire";
 import { getInventory } from "@/data/inventory";
 import { inventory } from "@prisma/client";
 
@@ -47,18 +47,24 @@ export const AddInventory = ({ id, edit }: AddInventoryProps) => {
     };
     getData();
   }, [id]);
+  console.log(id)
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name || !selectedMethod) return;
     startTransition(() => {
-      addInventaire(name, selectedMethod).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        notificationToggle();
-        toggle();
-        triggerToggle();
-      });
+      edit
+        ? editInventaire(name, selectedMethod, id!).then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        })
+        : addInventaire(name, selectedMethod).then((data) => {
+            setError(data.error);
+            setSuccess(data.success);
+          });
+      notificationToggle();
+      toggle();
+      triggerToggle();
     });
   };
   return (
@@ -69,7 +75,7 @@ export const AddInventory = ({ id, edit }: AddInventoryProps) => {
       ></div>
       <div className="bg-dark max-w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
-          {edit ? "Modifier L'inventaire" :"Ajouter un Inventaire"}
+          {edit ? "Modifier L'inventaire" : "Ajouter un Inventaire"}
         </div>
 
         <form onSubmit={onSubmit} className="space-y-8">
@@ -80,7 +86,7 @@ export const AddInventory = ({ id, edit }: AddInventoryProps) => {
               type="text"
               placeholder="Nom"
               disabled={isPending}
-              value={name}
+              defaultValue={name}
               onChange={(e) => setname(e.target.value)}
             />
           </div>
@@ -116,7 +122,7 @@ export const AddInventory = ({ id, edit }: AddInventoryProps) => {
               Anuuler
             </Button>
             <Button disabled={isPending} type="submit" size={"lg"}>
-              Ajouter
+              {edit ? "Modifier" : "Ajouter"}
             </Button>
           </div>
         </form>

@@ -1,4 +1,5 @@
 "use client";
+import { deleteInventory } from "@/actions/Inventaire";
 import { deleteArticle } from "@/actions/article";
 import { deleteEntree } from "@/actions/deleteEntree";
 import { deleteSortie } from "@/actions/deleteSortie";
@@ -55,12 +56,25 @@ export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
       setDeleteModal(false);
     });
   };
+  const onDeleteInventory = () => {
+    startTransition(() => {
+      deleteInventory(id).then((data) => {
+        setError(data?.error);
+        setSuccess(data?.success);
+      });
+      triggerToggle();
+      notificationToggle();
+      setDeleteModal(false);
+    });
+  };
 
   const onDelete = () => {
     pathname.includes("achat")
       ? onDeleteEntree()
-      : pathname.includes("achat")
+      : pathname.includes("sortie")
       ? onDeleteSortie()
+      : type === "inventaire"
+      ? onDeleteInventory()
       : onDeleteArticle();
   };
   return (
@@ -72,12 +86,10 @@ export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
 
       <form className="w-[480px] absolute top-[20%] left-1/2 -translate-x-1/2 translate-y-1/2  rounded-lg p-12 z-50   bg-dark sm:w-[90%]">
         <h1 className="text-xl font-bold -tracking-tighter mb-3  text-white">
-          Confirm Deletion
+          Confirmer la suppression
         </h1>
         <p className="text-Soft-Teal text-sm text-white/80">
-          Are you sure you want to delete{" "}
-          {type === "article" ? "this article" : "this operation"}{" "}
-          This action cannot be undone.
+          Êtes-vous sûr de vouloir supprimer ceci {type} Cette action est irréversible.
         </p>
         <div className="flex justify-end items-center mt-4 gap-x-2">
           <Button
@@ -85,17 +97,17 @@ export const DeleteModal = ({ id, setDeleteModal, type }: DeleteModalProp) => {
             onClick={() => setDeleteModal(false)}
             variant={"ghost"}
             type="button"
-            className="text-base pt-2 h-12 w-[89px] text-Subtle-Turquoise hover:bg-transparent font-bold rounded-3xl  bg-Dusty-Aqua text-white"
+            className="text-base pt-2 h-12  text-Subtle-Turquoise hover:bg-transparent font-bold rounded-3xl  bg-Dusty-Aqua text-white"
           >
-            Cancel
+            Annuler
           </Button>
           <Button
             disabled={isPending}
             onClick={onDelete}
             variant={"destructive"}
-            className="text-base pt-2 rounded-3xl h-12 w-[89px] font-bold  text-white "
+            className="text-base pt-2 rounded-3xl h-12  font-bold  text-white "
           >
-            Delete
+            Supprimer
           </Button>
         </div>
       </form>
