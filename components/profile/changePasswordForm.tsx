@@ -41,49 +41,50 @@ export const ChangePasswordForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="oldPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Current password</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={isPending}
-                  placeholder=""
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="newPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>New password</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={isPending}
-                  placeholder=""
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {error && <FormError message={error} />}
-          {success && <FormSuccess message={success} />}
-        <Button disabled={isPending} className="mt-8">
-          Save password
-        </Button>
-      </form>
-    </Form>
+  <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
+    <FormField
+      control={form.control}
+      name="oldPassword"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Mot de passe actuel</FormLabel>
+          <FormControl>
+            <Input
+              disabled={isPending}
+              placeholder=""
+              type="password"
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+    <FormField
+      control={form.control}
+      name="newPassword"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Nouveau mot de passe</FormLabel>
+          <FormControl>
+            <Input
+              disabled={isPending}
+              placeholder=""
+              type="password"
+              {...field}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+    {error && <FormError message={error} />}
+    {success && <FormSuccess message={success} />}
+    <Button disabled={isPending} className="mt-8">
+      Enregistrer le mot de passe
+    </Button>
+  </form>
+</Form>
+
   );
 };

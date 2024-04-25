@@ -21,43 +21,42 @@ export const ProfileWrapper = async () => {
   const isOwner = user?.role === "owner";
   return (
     <Tabs defaultValue="account" className="w-[400px] sm:w-full mt-20">
-      <TabsList
-        className={`grid w-full ${isOwner ? "grid-cols-3" : "grid-cols-2"} `}
-      >
-        <TabsTrigger value="account">Account</TabsTrigger>
-        <TabsTrigger value="password">Password</TabsTrigger>
-        {isOwner && <TabsTrigger value="settings">Settings</TabsTrigger>}
-      </TabsList>
-      <TabsContent value="account">
-        <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
-          <CardHeader>
-            <CardTitle>Account</CardTitle>
-            <CardDescription>
-              Make changes to your account here. Click save when you&apos;re
-              done.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-           
-            <ChangeEmailNameForm
-              email={currentUser?.email!}
-              name={currentUser?.name!}
-            />
-          </CardContent>
-        </Card>
-      </TabsContent>
-      <TabsContent value="password">
-        <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>Change your password here.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <ChangePasswordForm />
-          </CardContent>
-        </Card>
-      </TabsContent>
-      {isOwner && <Settings />}
-    </Tabs>
+  <TabsList
+    className={`grid w-full ${isOwner ? "grid-cols-3" : "grid-cols-2"} `}
+  >
+    <TabsTrigger value="account">Compte</TabsTrigger>
+    <TabsTrigger value="password">Mot de passe</TabsTrigger>
+    {isOwner && <TabsTrigger value="settings">Paramètres</TabsTrigger>}
+  </TabsList>
+  <TabsContent value="account">
+    <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
+      <CardHeader>
+        <CardTitle>Compte</CardTitle>
+        <CardDescription>
+          Apportez des modifications à votre compte ici. Cliquez sur Enregistrer lorsque vous avez terminé.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <ChangeEmailNameForm
+          email={currentUser?.email!}
+          name={currentUser?.name!}
+        />
+      </CardContent>
+    </Card>
+  </TabsContent>
+  <TabsContent value="password">
+    <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
+      <CardHeader>
+        <CardTitle>Mot de passe</CardTitle>
+        <CardDescription>Changez votre mot de passe ici.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <ChangePasswordForm />
+      </CardContent>
+    </Card>
+  </TabsContent>
+  {isOwner && <Settings />}
+</Tabs>
+
   );
 };

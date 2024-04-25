@@ -86,8 +86,9 @@ export const Settings = () => {
   const onChangeRole = () => {
     seterror("");
     setsuccess("");
-    if (!newRole) return seterror("Please select a role");
-    if (!user) return seterror("Please select a user");
+    if (!newRole) return seterror("Veuillez sélectionner un rôle");
+    if (!user) return seterror("Veuillez sélectionner un utilisateur");
+
     startTransition(() => {
       changeUserRole(user, newRole).then((data) => {
         seterror(data?.error);
@@ -100,13 +101,14 @@ export const Settings = () => {
     <TabsContent value="settings">
       <Card className="bg-gradient-to-br from-accent/40 to-card border-white/10">
         <CardHeader>
-          <CardTitle>Settings</CardTitle>
-          <CardDescription>Control your Users</CardDescription>
+          <CardTitle>Paramètres</CardTitle>
+          <CardDescription>Contrôlez vos utilisateurs</CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onAddUser)} className="space-y-4">
-              <Label htmlFor="">Add new User</Label>
+              <Label htmlFor="">Ajouter un nouvel utilisateur</Label>
+
               <div className="flex items-center gap-x-3">
                 <FormField
                   control={form.control}
@@ -120,6 +122,7 @@ export const Settings = () => {
                           className="h-10"
                           id="email"
                           type="email"
+                          placeholder="mail@soufian.me"
                           {...field}
                         />
                       </FormControl>
@@ -134,9 +137,10 @@ export const Settings = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Full name</FormLabel>
+                      <FormLabel>Nom complet</FormLabel>
                       <FormControl>
                         <Input
+                          placeholder="Nom complet"
                           disabled={isPending}
                           className="h-10"
                           id="name"
@@ -159,7 +163,7 @@ export const Settings = () => {
                   >
                     <SelectTrigger className="w-[180px]">
                       <SelectValue
-                        placeholder={`${role ? role : "Select Role"}`}
+                        placeholder={`${role ? role : "Sélectionner un rôle"}`}
                       />
                     </SelectTrigger>
                     <SelectContent className="border-none">
@@ -172,24 +176,24 @@ export const Settings = () => {
                   </Select>
                 </div>
                 <Button className="w-full" disabled={isPending}>
-                  Add user
+                  Ajouter utilisateur
                 </Button>
               </div>
-
-    
             </form>
           </Form>
 
           <div className=" space-y-4">
-            <Label htmlFor="">Change Current User Roles </Label>
+            <Label htmlFor="">
+              Modifier les rôles des utilisateurs actuels
+            </Label>
             <div className="flex items-center gap-x-2">
               <Select value={user} onValueChange={(value) => setuser(value)}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder={"Select a User"} />
+                  <SelectValue placeholder={"Sélectionner un utilisateur"} />
                 </SelectTrigger>
                 <SelectContent className="border-none">
                   <SelectGroup>
-                    <SelectLabel>Users</SelectLabel>
+                    <SelectLabel>Utilisateurs</SelectLabel>
                     {users &&
                       users.map((item) => (
                         <SelectItem key={item.id} value={item.id}>
@@ -210,7 +214,7 @@ export const Settings = () => {
                 onValueChange={(value) => setnewRole(value)}
               >
                 <SelectTrigger className="w-[180px] ">
-                  <SelectValue placeholder="Change role" />
+                  <SelectValue placeholder="Modifier le role" />
                 </SelectTrigger>
                 <SelectContent className="border-none">
                   <SelectGroup>
@@ -224,8 +228,8 @@ export const Settings = () => {
           </div>
         </CardContent>
         <CardFooter className="grid gap-y-4">
-          <Button  type="button" onClick={onChangeRole}>
-            Save changes
+          <Button type="button" onClick={onChangeRole}>
+            Sauvegarder les modifications
           </Button>
           {error && <FormError message={error} />}
           {success && <FormSuccess message={success} />}

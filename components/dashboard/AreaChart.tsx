@@ -1,6 +1,7 @@
 "use client";
 import { formatPrice } from "@/lib/functions";
 import { operation } from "@prisma/client";
+import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -17,6 +18,23 @@ interface Props {
 }
 
 export const AreaChartComponent = ({ operations }: Props) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mediaQuery.matches);
+
+    const handleResize = () => {
+      setIsMobile(mediaQuery.matches);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const date = new Date();
   const dailyStatsMap = new Map();
 
@@ -56,7 +74,10 @@ export const AreaChartComponent = ({ operations }: Props) => {
         Variation des prix Total
       </h1>
       <div className="flex items-center sm:grid sm:gap-y-8 w-full ">
-        <ResponsiveContainer minWidth={320} height={300}>
+        <ResponsiveContainer
+          width={isMobile ? 300 : 600}
+          height={isMobile ? 300 : 450}
+        >
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />
@@ -75,7 +96,10 @@ export const AreaChartComponent = ({ operations }: Props) => {
           </AreaChart>
         </ResponsiveContainer>
 
-        <ResponsiveContainer  minWidth={320} height={300}>
+        <ResponsiveContainer
+          width={isMobile ? 300 : 600}
+          height={isMobile ? 300 : 450}
+        >
           <AreaChart data={totalStats} margin={{ right: 30 }}>
             <YAxis />
             <XAxis dataKey="day" />

@@ -72,7 +72,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
       <div className="grid w-full max-w-sm items-center gap-1.5 space-y-4">
         <div className="space-y-2 items-end">
           <div className="space-y-2">
-            <Label htmlFor="picture">Picture</Label>
+            <Label htmlFor="picture">Image</Label>
             <Input
               disabled={isPending}
               id="picture"
@@ -85,7 +85,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
           </div>
 
           <Button disabled={isPending} onClick={handleUpload} type="button">
-            Upload
+          Télécharger
           </Button>
         </div>
       </div>{" "}
@@ -96,7 +96,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nom</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isPending}
@@ -129,7 +129,7 @@ export const ChangeEmailNameForm = ({ email, name }: User) => {
           />
 
           <Button disabled={isPending} className="mt-8">
-            Save chnages
+          Sauvegarder les modifications
           </Button>
         </form>
         {error && <FormError message={error} />}
