@@ -31,6 +31,20 @@ export const getPendingEntree = async () => {
     return null;
   }
 };
+export const getCompeletedEntree = async () => {
+  const session = await auth();
+  const companyId = session?.user?.companyId;
+
+  try {
+    const entree = await db.operation.findMany({
+      where: { companyId: companyId, type: "entree", status: "completed" },
+      orderBy: { date: "desc" },
+    });
+    return entree;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const getSingleEntree = async (id: string) => {
   try {

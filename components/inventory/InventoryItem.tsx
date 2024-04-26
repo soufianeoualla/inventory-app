@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { article } from "@prisma/client";
 import Link from "next/link";
 import { formatPrice } from "@/lib/functions";
+import { FaArrowUpLong } from "react-icons/fa6";
 
 interface InventoryTableProp {
   article: article | undefined;
@@ -18,10 +19,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
 
   return (
     <>
-      <Link
-        href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}
-        className="sm:w-full"
-      >
+     
         <Card className="w-[600px] sm:w-full rounded-2xl bg-card/40 border-none shadow-xl hover:border-primary hover:border-2 hover:scale-105">
           <div className="flex justify-between items-start p-6 relative">
             <div className="flex items-center gap-x-3 ">
@@ -40,8 +38,8 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
                 />
                 {inStock ? "en stock" : "en rupture de stock"}
               </div>
-            </div>
-            <div className="z-0">
+            </div >
+            <div className="z-10 ">
               <Button
                 onClick={() => setdeleteModal(true)}
                 className="text-white"
@@ -50,9 +48,10 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
               >
                 <MdDelete />
               </Button>{" "}
+              
             </div>
           </div>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 relative">
             <div className="flex items-center gap-x-4">
               <div>
                 <span>Article: </span>
@@ -77,9 +76,17 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
                 <b>{article?.category}</b>
               </div>
             </div>
+            <Link
+                href={`/inventaire/${article?.inventoryId!}/${article?.ref.toString()!}`}
+                className="absolute right-6 bottom-6"
+              >
+                <div className="w-10 h-10 rounded-full text-dark bg-white flex justify-center items-center hover:scale-110 hover:bg-primary hover:text-white">
+                  <FaArrowUpLong className=" rotate-45" />
+                </div>
+              </Link>
           </CardContent>
         </Card>
-      </Link>
+     
 
       {deleteModal && (
         <DeleteModal

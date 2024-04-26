@@ -1,5 +1,7 @@
 "use server";
 
+import { getCompeletedEntree } from "@/data/entree";
+import { getArticle } from "@/data/inventory";
 import { db } from "@/lib/db";
 
 export const deleteArticle = async (id: string) => {
@@ -8,7 +10,7 @@ export const deleteArticle = async (id: string) => {
 
     if (!article) return { error: "Article est introuvable" };
     await db.operation.deleteMany({
-      where: { ref: article.ref ,inventoryId:article.inventoryId },
+      where: { ref: article.ref, inventoryId: article.inventoryId },
     });
 
     await db.article.delete({
@@ -20,3 +22,5 @@ export const deleteArticle = async (id: string) => {
     console.log(error);
   }
 };
+
+

@@ -27,7 +27,7 @@ export const addEntree = async (
   const existingProduct = await getArticle(parseInt(ref), inventoryId);
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
-  if (pending) {
+  if (pending)  {
     await db.operation.create({
       data: {
         inventoryName: inventoryName!,
@@ -252,10 +252,9 @@ export const addPendingEntree = async () => {
   if (!pendingEntree) return;
 
   for (const item of pendingEntree) {
-    if (item.date >= currentDate) {
-      // Filter items based on date
+    if (item.date <= currentDate) {
       const article = await getArticle(item.ref, item.inventoryId);
-      if (!article) continue; // Skip if article is not found
+      if (!article) continue; 
 
       const newQuantity = article.quantity + item.quantity;
       const currentTotalCost = article.price * article.quantity;

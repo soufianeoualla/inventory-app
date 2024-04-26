@@ -49,41 +49,35 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
           </div>
 
           <div className="flex items-center  sm:flex-col-reverse sm:gap-y-2  ">
-          
             <b className=" mr-2 sm:mr-0     ">{item.quantity}</b>
             <b className=" mr-2 sm:mr-0     ">{formatPrice(item.price)}</b>
             <b className=" mr-2 sm:mr-0     ">{formatPrice(item.total)}</b>
             <div className="flex items-center gap-2 sm:grid ">
-            <div
-              style={{
-                background: `hsla(${getCategoryColor(item.category)}, 0.15)`,
-              }}
-              className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2 sm:order-2  `}
-            >
               <div
-                style={{
-                  background: `hsla(${getCategoryColor(item.category)})`,
-                }}
-                className={`w-2 h-2 rounded-full `}
-              />
-              <b
-                style={{
-                  color: `hsla(${getCategoryColor(item.category)})`,
-                }}
-                className={` capitalize tracking-wide`}
+                className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2 sm:order-2  `}
               >
-                {item.category}
-              </b>
-              
-            </div>
+                <div
+                  style={{
+                    background: `hsla(${getCategoryColor(item.category)})`,
+                  }}
+                  className={`w-2 h-2 rounded-full `}
+                />
+                <b
+                  style={{
+                    color: `hsla(${getCategoryColor(item.category)})`,
+                  }}
+                  className={` capitalize tracking-wide`}
+                >
+                  {item.category}
+                </b>
+              </div>
 
-            <div
-                className={` px-2 h-10   bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${statusColors} sm:order-1 `}
+              <div
+                className={`w-[104px] px-2 h-10   bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${statusColors} sm:order-1 `}
               >
                 <div className={`w-2 h-2 rounded-full ${statusColors} `} />
                 <b className={` capitalize tracking-wide`}>{item.status}</b>
               </div>
-
             </div>
             <Button
               variant={"ghost"}
@@ -95,7 +89,6 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
           </div>
         </div>
       </Link>
-      
     </div>
   );
 };

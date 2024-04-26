@@ -120,11 +120,7 @@ export const OperationOverview = () => {
             </div>
 
             <div
-              style={{
-                background: `hsla(${getCategoryColor(
-                  operation.category
-                )}, 0.15)`,
-              }}
+              
               className={`px-2 h-10   rounded-md flex items-center justify-center gap-2  `}
             >
               <div
