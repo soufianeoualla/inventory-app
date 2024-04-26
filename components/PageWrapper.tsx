@@ -158,7 +158,7 @@ export const PageWrapper = () => {
                   toggle();
                   settype("sortie");
                 }}
-                className="flex items-center gap-x-2 font-bold"
+                className="flex items-center gap-x-2 font-bold w-full"
               >
                 <FaPlus />
                 Ajouter un Sortie

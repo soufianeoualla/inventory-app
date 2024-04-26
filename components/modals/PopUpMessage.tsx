@@ -9,7 +9,7 @@ export const PopUpMessage = () => {
   const { error, success } = useContext(NotificationContext);
   return (
     <motion.div
-      className="bg-white w-80 fixed right-12 bottom-5 z-30 rounded-xl  
+      className="bg-white w-80 fixed right-12 bottom-5 z-30 rounded-xl sm:right-[8%] 
    "
       variants={{
         hidden: { opacity: 0, y: 50 },

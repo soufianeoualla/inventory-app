@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { SingleItem } from "./SingleItem";
 import Loading from "./loading";
 import Image from "next/image";
@@ -13,17 +13,13 @@ interface SingleItemProp {
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentItems = items?.slice(firstItemIndex, lastItemIndex);
 
   const pageNumbers = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(items?.length! / itemsPerPage);
-    i++
-  ) {
+  for (let i = 1; i <= Math.ceil(items?.length! / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
   const lastPage = pageNumbers.length;
@@ -46,29 +42,31 @@ export const Items = ({ type, items }: SingleItemProp) => {
       {currentItems?.map((item) => (
         <SingleItem key={item.id} type={type} item={item} />
       ))}
-               {currentItems && <div className="flex items-center justify-end gap-x-4 sm:justify-center">
-            <Button
-              disabled={currentPage === 1}
-              variant={"ghost"}
-              onClick={() => setCurrentPage((prev) => prev - 1)}
-              className="text-white"
-            >
-              {"<"} Précédent 
-            </Button>
-            <span className="text-white">
-              Page {currentPage} / {lastPage}{" "}
-            </span>
-            <Button
-              disabled={currentPage === lastPage}
-              variant={"ghost"}
-              onClick={() =>
-                setCurrentPage((prev) => (prev < lastPage ? prev + 1 : prev))
-              }
-              className="text-white"
-            >
-              Suivant {">"}
-            </Button>
-          </div>}
+      {currentItems && items?.length! > itemsPerPage && (
+        <div className="flex items-center justify-end gap-x-4 sm:justify-center">
+          <Button
+            disabled={currentPage === 1}
+            variant={"ghost"}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className="text-white"
+          >
+            {"<"} Précédent
+          </Button>
+          <span className="text-white">
+            Page {currentPage} / {lastPage}{" "}
+          </span>
+          <Button
+            disabled={currentPage === lastPage}
+            variant={"ghost"}
+            onClick={() =>
+              setCurrentPage((prev) => (prev < lastPage ? prev + 1 : prev))
+            }
+            className="text-white"
+          >
+            Suivant {">"}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

@@ -100,9 +100,6 @@ export const DashoardWrapper = () => {
               <SelectValue className="capitalize" placeholder="Inventaire" />
             </SelectTrigger>
             <SelectContent className="bg-dark text-white border-none">
-              <SelectItem className="capitalize" value={"all"}>
-                {"All"}
-              </SelectItem>
               {inventories?.map((item) => (
                 <SelectItem key={item.id} value={item.id}>
                   {item.name}
