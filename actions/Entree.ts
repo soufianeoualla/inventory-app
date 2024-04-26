@@ -15,22 +15,22 @@ export const addEntree = async (
 ) => {
   const session = await auth();
   const user = session?.user;
-  
+
   if (!user) return { error: "Non connecté" };
-  
+
   const validateFields = ProductSchema.safeParse(values);
-  
+
   if (!validateFields.success) {
     return { error: "Champs invalides!" };
   }
-  
+
   const { name, quantity, ref, category, unitPrice } = validateFields.data;
   const id = uuid().slice(0, 7);
   const pending = date > new Date();
-  
+
   const inventory = await getInventory(inventoryId!);
   const inventoryName = inventory?.name;
-  
+
   await db.operation.create({
     data: {
       inventoryName: inventoryName!,
@@ -48,10 +48,9 @@ export const addEntree = async (
       type: "entree",
       status: pending ? "pending" : "completed",
     },
-  });  
+  });
+  const existingProduct = await getArticle(parseInt(ref), inventoryId);
   if (!pending) {
-    const existingProduct = await getArticle(parseInt(ref), inventoryId);
-    
     if (!existingProduct) {
       await db.article.create({
         data: {
@@ -67,7 +66,8 @@ export const addEntree = async (
     } else {
       const newQuantity = existingProduct.quantity + parseInt(quantity);
       const currentTotalCost = existingProduct.price * existingProduct.quantity;
-      const newTotalCost = currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
+      const newTotalCost =
+        currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
       const newPrice = newTotalCost / newQuantity;
 
       await db.article.update({
@@ -79,11 +79,24 @@ export const addEntree = async (
         },
       });
     }
+  } else {
+    if (!existingProduct) {
+      await db.article.create({
+        data: {
+          price: 0,
+          quantity: 0,
+          total: 0,
+          category: category,
+          name: name,
+          ref: parseInt(ref),
+          inventoryId: inventoryId,
+        },
+      });
+    }
   }
 
   return { success: "L'opération a été effectuée avec succès" };
 };
-
 
 export const editEntree = async (
   values: z.infer<typeof ProductSchema>,
@@ -92,30 +105,33 @@ export const editEntree = async (
 ) => {
   const session = await auth();
   const user = session?.user;
-  
+
   if (!user) return { error: "Non connecté" };
-  
+
   const validateFields = ProductSchema.safeParse(values);
-  
+
   if (!validateFields.success) {
     return { error: "Champs invalides!" };
   }
-  
+
   const { name, quantity, ref, category, unitPrice } = validateFields.data;
   const entree = await db.operation.findUnique({
     where: { id: operationId },
   });
-  
+
   if (!entree) return { error: "L'opération est introuvable" };
-  
+
   const inventoryId = entree.inventoryId;
   const article = await getArticle(entree.ref, entree.inventoryId);
-  
+
   if (!article) return { error: "L'article est introuvable" };
 
   const newQuantity = Math.max(article.quantity - entree.quantity, 0);
   const currentTotalCost = article.price * article.quantity;
-  const newTotalCost = Math.max(currentTotalCost - entree.price * entree.quantity, 0);
+  const newTotalCost = Math.max(
+    currentTotalCost - entree.price * entree.quantity,
+    0
+  );
   const newPrice = newQuantity === 0 ? 0 : newTotalCost / newQuantity;
 
   await db.article.update({
@@ -174,7 +190,8 @@ export const editEntree = async (
   if (!pending && existingProduct) {
     const newQuantity = existingProduct.quantity + parseInt(quantity);
     const currentTotalCost = existingProduct.price * existingProduct.quantity;
-    const newTotalCost = currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
+    const newTotalCost =
+      currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
     const newPrice = newTotalCost / newQuantity;
 
     await db.article.update({
@@ -185,11 +202,24 @@ export const editEntree = async (
         total: newPrice * newQuantity,
       },
     });
+  } else {
+    if (!existingProduct) {
+      await db.article.create({
+        data: {
+          price: 0,
+          quantity: 0,
+          total: 0,
+          category: category,
+          name: name,
+          ref: parseInt(ref),
+          inventoryId: inventoryId,
+        },
+      });
+    }
   }
 
   return { success: "L'opération a été effectuée avec succès" };
 };
-
 
 export const addPendingEntree = async () => {
   const currentDate = new Date();
@@ -200,7 +230,7 @@ export const addPendingEntree = async () => {
   for (const item of pendingEntree) {
     if (item.date <= currentDate) {
       const article = await getArticle(item.ref, item.inventoryId);
-      if (!article) continue; 
+      if (!article) continue;
 
       const newQuantity = article.quantity + item.quantity;
       const currentTotalCost = article.price * article.quantity;
