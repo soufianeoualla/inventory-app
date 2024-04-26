@@ -11,6 +11,7 @@ export const getSortie = async () => {
     const sortie = await db.operation.findMany({
       where: { companyId: companyId, type: "sortie" },
       orderBy: { date: "desc" },
+      include: { inventory: true },
     });
     return sortie;
   } catch (error) {
@@ -22,6 +23,7 @@ export const getSingleSortie = async (id: string) => {
   try {
     const sortie = await db.operation.findUnique({
       where: { id: id },
+      include: { inventory: true },
     });
     return sortie;
   } catch (error) {

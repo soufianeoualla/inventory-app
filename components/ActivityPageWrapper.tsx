@@ -93,7 +93,7 @@ export const ActivitypageWrapper = () => {
     <>
       <div className="max-w-[900px] mx-auto space-y-16 mt-10">
         <div className="flex justify-between items-center sm:grid sm:relative">
-          <GobackButton />
+          <GobackButton className="sm:top-0" />
 
           <div className="flex justify-end items-center gap-4 flex-wrap sm:mt-20">
             <DateRangeFilter

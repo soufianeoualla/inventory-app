@@ -33,7 +33,7 @@ export function DateRangeFilter({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] sm:w-full justify-start text-left font-normal bg-Dark-Charcoal-Gray text-white border-none",
+              "w-[250px] sm:w-full justify-start text-left font-normal bg-Dark-Charcoal-Gray text-white border-none",
               !date && "text-muted-foreground"
             )}
           >

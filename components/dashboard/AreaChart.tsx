@@ -41,6 +41,7 @@ export const AreaChartComponent = ({ operations }: Props) => {
   operations
     .filter(
       (item) =>
+        
         item.date.getMonth() === date.getMonth() &&
         item.date.getFullYear() === date.getFullYear()
     )

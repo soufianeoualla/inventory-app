@@ -1,9 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { FaChevronLeft } from "react-icons/fa";
 import { AddEditModalContext } from "@/context/AddEditModalContext";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Loading from "../loading";
 import { AddEditAchat } from "../modals/AddEditAchat";
 import { DeleteModal } from "../modals/DeleteModal";
@@ -27,7 +26,6 @@ export const OperationOverview = () => {
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const pathname = usePathname();
   const [name, setname] = useState<string>();
-  const router = useRouter();
   const id = pathname.split("/")[2];
 
   const getData = useCallback(async () => {
@@ -51,39 +49,26 @@ export const OperationOverview = () => {
         <Loading />
       </div>
     );
+  const statusColors =
+    operation.status === "pending"
+      ? "bg-pending text-pending"
+      : operation.status === "completed" && "bg-emerald-500 text-emerald-500";
 
   return (
     <>
-      <div className="max-w-[730px] mt-[50px] mx-auto md:w-full ">
-      <GobackButton/>
-
-        <div className="w-full h-[88px] rounded-lg flex items-center justify-between px-8 py-6  mt-8 bg-card/20">
+      <div className="max-w-[730px] mt-[50px] mx-auto md:w-full sm:relative ">
+        <GobackButton className="sm:-top-14" />
+        <div className="sm:mt-20">
+        <div className="w-full h-[88px] rounded-lg flex items-center justify-between px-8 py-6  mt-8 bg-card/20 ">
           <div className="flex items-center sm:w-full sm:justify-between gap-5">
             <small className="text-[13px] font-medium text-card-foreground  ">
-              Catégorie
+              Status
             </small>
             <div
-              style={{
-                background: `hsla(${getCategoryColor(
-                  operation.category
-                )}, 0.15)`,
-              }}
-              className={`px-2 h-10   rounded-md flex items-center justify-center gap-2  `}
+              className={` px-2 h-10    bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${statusColors} `}
             >
-              <div
-                style={{
-                  background: `hsla(${getCategoryColor(operation.category)})`,
-                }}
-                className={`w-2 h-2 rounded-full `}
-              />
-              <b
-                style={{
-                  color: `hsla(${getCategoryColor(operation.category)})`,
-                }}
-                className={` capitalize tracking-wide`}
-              >
-                {operation.category}
-              </b>
+              <div className={`w-2 h-2 rounded-full ${statusColors} `} />
+              <b className={` capitalize tracking-wide`}>{operation.status}</b>
             </div>
           </div>
 
@@ -121,7 +106,8 @@ export const OperationOverview = () => {
                 {operation.id}
               </strong>
             </div>
-            <div className="flex justify-center items-center gap-x-2 text-white font-bold capitalize">
+            <div className="flex justify-center items-center gap-4 sm:flex-col ">
+            <div className="flex justify-center items-center gap-x-2 text-white font-bold capitalize ">
               <div
                 style={{
                   background: `${generateBackgroundColor(
@@ -131,6 +117,32 @@ export const OperationOverview = () => {
                 className={`w-2 h-2 rounded-full `}
               />
               {operation.inventoryName}
+            </div>
+
+            <div
+              style={{
+                background: `hsla(${getCategoryColor(
+                  operation.category
+                )}, 0.15)`,
+              }}
+              className={`px-2 h-10   rounded-md flex items-center justify-center gap-2  `}
+            >
+              <div
+                style={{
+                  background: `hsla(${getCategoryColor(operation.category)})`,
+                }}
+                className={`w-2 h-2 rounded-full `}
+              />
+              <b
+                style={{
+                  color: `hsla(${getCategoryColor(operation.category)})`,
+                }}
+                className={` capitalize tracking-wide`}
+              >
+                {operation.category}
+              </b>
+            </div>
+
             </div>
           </div>
 
@@ -202,6 +214,9 @@ export const OperationOverview = () => {
             </div>
           </div>
         </div>
+
+        </div>
+
       </div>
       {deleteModal && (
         <DeleteModal

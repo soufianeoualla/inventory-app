@@ -67,7 +67,7 @@ export const InventoryWrapper = () => {
     <>
       <div className="px-8 mx-auto space-y-16 sm:px-4 sm:mx-0 mb-8">
         <div className="flex items-center justify-between sm:items-start mt-6 sm:relative">
-          <GobackButton/>
+          <GobackButton className="sm:top-0"/>
           <div className="flex items-center gap-4 justify-end flex-wrap sm:mt-20 sm:justify-start">
             <Select onValueChange={(value) => setcategory(value)}>
               <SelectTrigger className="w-[180px] sm:w-[150px] bg-Dark-Charcoal-Gray border-none text-white">

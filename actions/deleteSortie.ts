@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 export const deleteSortie = async (id: string) => {
   try {
     const sortie = await db.operation.findUnique({
-      where: { id: id },
+      where: { id: id,type:'sortie' },
     });
     if (!sortie) return { error: "L'operation est introvable" };
     const article = await getArticle(sortie.ref, sortie.inventoryId);

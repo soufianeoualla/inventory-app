@@ -24,7 +24,7 @@ export const Items = ({ type, items }: SingleItemProp) => {
   }
   const lastPage = pageNumbers.length;
   return (
-    <div className="max-w-[900px] mx-auto uppercase text-[13px] sm:w-full">
+    <div className="max-w-[910px] mx-auto uppercase text-[13px] sm:w-full">
       {!items && (
         <div className="flex items-center justify-center h-[70vh]">
           <Loading />

@@ -34,8 +34,7 @@ export const PageWrapper = () => {
   const pathname = usePathname();
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [inventoryId, setinventoryId] = useState<string>("");
-
-
+  const [status, setStatus] = useState<string>("");
   useEffect(() => {
     const getdata = async () => {
       try {
@@ -59,7 +58,14 @@ export const PageWrapper = () => {
     uniqueCategories.push(category);
   });
 
-  const filtredItemsByCategory = items?.filter((item) => {
+  const filtredItemsByStatus = items?.filter((item) => {
+    if (status && status !== "all") {
+      return item.status === status;
+    }
+    return true;
+  });
+
+  const filtredItemsByCategory = filtredItemsByStatus?.filter((item) => {
     if (category && category !== "all") {
       return item.category === category;
     }
@@ -121,54 +127,49 @@ export const PageWrapper = () => {
     }
   });
 
- 
-
   return (
     <>
-      <div className="max-w-[900px] mx-auto space-y-16 sm:w-full p-6">
+      <div className="max-w-[1100px] mx-auto space-y-16 sm:w-full p-6">
         <div className="flex justify-end w-full items-center gap-4 sm:flex-wrap sm:justify-start ">
-          <DateRangeFilter
-            date={date}
-            setDate={setDate}
-            
-          />
+          <DateRangeFilter date={date} setDate={setDate} />
           <Filters
+            setStatus={setStatus}
             uniqueCategories={uniqueCategories}
             setcategory={setcategory}
             inventories={inventories}
             setinventoryId={setinventoryId}
           />
-
-          {user !== "user" && pathname.includes("achat") ? (
-            <Button
-              onClick={() => {
-                toggle();
-                settype("entree");
-              }}
-              className="flex items-center gap-x-2 font-bold w-full"
-            >
-              <FaPlus />
-              Ajouter un Entrée
-            </Button>
-          ) : (
-            user !== "user" &&
-            pathname.includes("sortie") && (
+          <div>
+            {user !== "user" && pathname.includes("achat") ? (
               <Button
                 onClick={() => {
                   toggle();
-                  settype("sortie");
+                  settype("entree");
                 }}
-                className="flex items-center gap-x-2 font-bold w-full"
+                className="flex items-center gap-x-2 font-bold w-[180px] sm:w-full"
               >
                 <FaPlus />
-                Ajouter un Sortie
+                Ajouter un Entrée
               </Button>
-            )
-          )}
+            ) : (
+              user !== "user" &&
+              pathname.includes("sortie") && (
+                <Button
+                  onClick={() => {
+                    toggle();
+                    settype("sortie");
+                  }}
+                  className="flex items-center gap-x-2 font-bold w-[180px] sm:w-full"
+                >
+                  <FaPlus />
+                  Ajouter un Sortie
+                </Button>
+              )
+            )}
+          </div>
         </div>
         <Suspense>
           <Items type="achat" items={filtredItemsByTime} />
-        
         </Suspense>
       </div>
 

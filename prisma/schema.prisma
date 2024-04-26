@@ -61,6 +61,11 @@ enum type {
   entree
 }
 
+enum status {
+  pending
+  completed
+}
+
 model operation {
   id            String    @id
   ref           Int
@@ -75,8 +80,9 @@ model operation {
   companyId     String
   inventory     inventory @relation(fields: [inventoryId], references: [id])
   inventoryId   String    @default(cuid()) @map(name: "inventoryId_id")
-  inventoryName  String
   type          type
+  inventoryName String
+  status        status
 }
 
 model inventory {

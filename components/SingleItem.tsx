@@ -17,12 +17,16 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
     return type === "sortie" ? `/sortie/${id}` : `/achat/${id}`;
   };
   const InventoryPath = usePathname().includes("inventaire");
+  const statusColors =
+    item.status === "pending"
+      ? "bg-pending text-pending"
+      : item.status === "completed" && "bg-emerald-500 text-emerald-500";
 
   return (
     <div>
       <Link key={item.id} href={pathname(item.id)} className="w-full">
         <div
-          className={`w-full mb-4 flex justify-between gap-x-8 pr-3 pl-8 sm:p-4  items-center h-[72px] sm:h-auto rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
+          className={`w-full mb-4 flex justify-between gap-x-2 pr-2 pl-6 sm:p-4  items-center h-[72px] sm:h-auto rounded-lg shadow-sm hover:border-primary hover:border cursor-pointer  text-white ${
             InventoryPath && item.type === "sortie"
               ? "bg-destructive/10"
               : " bg-card/60"
@@ -44,15 +48,17 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
             <strong className="">{item.article}</strong>
           </div>
 
-          <div className="flex items-center sm:flex-col-reverse sm:gap-y-2  ">
-            <b className=" mr-5 sm:mr-0     ">{item.quantity}</b>
-            <b className=" mr-5 sm:mr-0     ">{formatPrice(item.price)}</b>
-            <b className=" mr-5 sm:mr-0     ">{formatPrice(item.total)}</b>
+          <div className="flex items-center  sm:flex-col-reverse sm:gap-y-2  ">
+          
+            <b className=" mr-2 sm:mr-0     ">{item.quantity}</b>
+            <b className=" mr-2 sm:mr-0     ">{formatPrice(item.price)}</b>
+            <b className=" mr-2 sm:mr-0     ">{formatPrice(item.total)}</b>
+            <div className="flex items-center gap-2 sm:grid ">
             <div
               style={{
                 background: `hsla(${getCategoryColor(item.category)}, 0.15)`,
               }}
-              className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2  `}
+              className={`w-[104px] h-10   rounded-md flex items-center justify-center gap-2 sm:order-2  `}
             >
               <div
                 style={{
@@ -68,8 +74,17 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
               >
                 {item.category}
               </b>
+              
             </div>
 
+            <div
+                className={` px-2 h-10   bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${statusColors} sm:order-1 `}
+              >
+                <div className={`w-2 h-2 rounded-full ${statusColors} `} />
+                <b className={` capitalize tracking-wide`}>{item.status}</b>
+              </div>
+
+            </div>
             <Button
               variant={"ghost"}
               size={"icon"}
@@ -80,6 +95,7 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
           </div>
         </div>
       </Link>
+      
     </div>
   );
 };

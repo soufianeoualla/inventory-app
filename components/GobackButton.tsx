@@ -4,7 +4,11 @@ import React from "react";
 import { FaChevronLeft } from "react-icons/fa6";
 import { Button } from "./ui/button";
 
-const GobackButton = () => {
+interface GobackButtonProps {
+  className?: string;
+}
+
+const GobackButton = ({ className }: GobackButtonProps) => {
   const router = useRouter();
 
   return (
@@ -13,9 +17,9 @@ const GobackButton = () => {
         router.back();
       }}
       variant={"ghost"}
-      className="flex items-center gap-6 font-bold hover:bg-transparent focus:text-primary hover:text-primary text-white sm:absolute sm:left-0 sm:top-0 "
+      className={`flex items-center gap-6 font-bold hover:bg-transparent focus:text-primary hover:text-primary text-white sm:absolute sm:left-0  ${className}`}
     >
-      <FaChevronLeft className="text-primary w-4 h-4  " />
+      <FaChevronLeft className={`text-primary w-4 h-4  `} />
       {"Retourner"}
     </Button>
   );

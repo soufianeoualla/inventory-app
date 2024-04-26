@@ -6,10 +6,10 @@ import { db } from "@/lib/db";
 export const deleteEntree = async (id: string) => {
   try {
     const entree = await db.operation.findUnique({
-      where: { id: id },
+      where: { id: id, type: "entree" },
     });
     if (!entree) return { error: "L'operation est introvable" };
-    const article = await getArticle(entree.ref,entree.inventoryId)
+    const article = await getArticle(entree.ref, entree.inventoryId);
     if (!article) return { error: "L'article est introvable" };
 
     const newQuantity = article.quantity - entree.quantity;
@@ -21,7 +21,7 @@ export const deleteEntree = async (id: string) => {
         ref_inventoryId: { ref: entree?.ref, inventoryId: entree.inventoryId },
       },
       data: {
-        quantity: newQuantity,
+        quantity: newQuantity ,
         price: newPrice,
         total: newPrice * newQuantity,
       },

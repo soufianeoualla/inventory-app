@@ -29,6 +29,7 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
   const inventoryName = res?.name;
   await db.operation.create({
     data: {
+      status: "completed",
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
       companyId: user.companyId,
@@ -41,8 +42,7 @@ export const addSortie = async (sortieValues: values, inventoryId: string) => {
       date: date,
       inventoryId: inventoryId,
       category: existingProduct.category,
-      type:'sortie'
-
+      type: "sortie",
     },
   });
 
@@ -100,6 +100,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   const inventoryName = res?.name;
   await db.operation.create({
     data: {
+      status: "completed",
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
       companyId: user.companyId,
@@ -112,8 +113,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
       date: date,
       inventoryId: inventoryId,
       category: existingProduct.category,
-      type:'sortie'
-
+      type: "sortie",
     },
   });
 
