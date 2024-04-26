@@ -1,7 +1,5 @@
 "use server";
 
-import { getCompeletedEntree } from "@/data/entree";
-import { getArticle } from "@/data/inventory";
 import { db } from "@/lib/db";
 
 export const deleteArticle = async (id: string) => {
