@@ -13,7 +13,7 @@ interface SingleItemProp {
 }
 export const Items = ({ type, items }: SingleItemProp) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   const lastItemIndex = currentPage * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
   const currentItems = items?.slice(firstItemIndex, lastItemIndex);

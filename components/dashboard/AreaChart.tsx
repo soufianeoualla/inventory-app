@@ -41,7 +41,7 @@ export const AreaChartComponent = ({ operations }: Props) => {
   operations
     .filter(
       (item) =>
-        
+        item.date.getDate() <= date.getDate() &&
         item.date.getMonth() === date.getMonth() &&
         item.date.getFullYear() === date.getFullYear()
     )
@@ -67,12 +67,12 @@ export const AreaChartComponent = ({ operations }: Props) => {
   const totalStats = Array.from(dailyStatsMap, ([day, stats]) => ({
     day,
     ...stats,
-  }));
+  })).sort((a, b) => a.day - b.day); // Sort by day in ascending order
 
   return (
-    <div className="max-w-[900px]  space-y-3 sm:w-full  ">
+    <div className="max-w-[900px]  space-y-3 sm:w-full mb-10 ">
       <h1 className="text-white capitalize font-bold text-2xl ">
-        Variation des prix Total
+      Visualisation des Mouvements de Trésorerie Quotidiens
       </h1>
       <div className="flex items-center sm:grid sm:gap-y-8 w-full ">
         <ResponsiveContainer

@@ -76,7 +76,9 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
                 className={`w-[104px] px-2 h-10   bg-opacity-10 rounded-md flex items-center justify-center gap-2 ${statusColors} sm:order-1 `}
               >
                 <div className={`w-2 h-2 rounded-full ${statusColors} `} />
-                <b className={` capitalize tracking-wide`}>{item.status}</b>
+                <b className={` capitalize tracking-wide`}>
+                  {item.status === "pending" ? "en attente" : "terminé"}
+                </b>
               </div>
             </div>
             <Button

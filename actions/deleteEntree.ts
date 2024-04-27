@@ -11,21 +11,27 @@ export const deleteEntree = async (id: string) => {
     if (!entree) return { error: "L'operation est introvable" };
     const article = await getArticle(entree.ref, entree.inventoryId);
     if (!article) return { error: "L'article est introvable" };
+    const completed = entree.status === "completed";
+    if (completed) {
+      const newQuantity = article.quantity - entree.quantity;
+      const currentTotalCost = article.price * article.quantity;
+      const newTotalCost = currentTotalCost - entree.price * entree.quantity;
+      const newPrice = newTotalCost / newQuantity;
 
-    const newQuantity = article.quantity - entree.quantity;
-    const currentTotalCost = article.price * article.quantity;
-    const newTotalCost = currentTotalCost - entree.price * entree.quantity;
-    const newPrice = newTotalCost / newQuantity;
-    await db.article.update({
-      where: {
-        ref_inventoryId: { ref: entree?.ref, inventoryId: entree.inventoryId },
-      },
-      data: {
-        quantity: newQuantity ,
-        price: newPrice,
-        total: newPrice * newQuantity,
-      },
-    });
+      await db.article.update({
+        where: {
+          ref_inventoryId: {
+            ref: entree?.ref,
+            inventoryId: entree.inventoryId,
+          },
+        },
+        data: {
+          quantity: newQuantity,
+          price: newPrice,
+          total: newPrice * newQuantity,
+        },
+      });
+    }
 
     await db.operation.delete({
       where: { id: id },

@@ -58,9 +58,14 @@ export const PageWrapper = () => {
     uniqueCategories.push(category);
   });
 
+  const allStatus = {
+    "en attente": "pending",
+    terminé: "completed",
+  };
+
   const filtredItemsByStatus = items?.filter((item) => {
     if (status && status !== "all") {
-      return item.status === status;
+      return item.status === allStatus[status as "en attente" | "terminé"];
     }
     return true;
   });

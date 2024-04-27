@@ -23,7 +23,7 @@ export const Filters = ({
   setinventoryId,
   setStatus,
 }: FiltersProps) => {
-  const status: Array<string> = ["pending", "completed"];
+  const status = ["en attente", "terminé"];
   return (
     <>
       <div className="flex items-center sm:w-full gap-x-4">
@@ -32,7 +32,7 @@ export const Filters = ({
             <SelectValue placeholder="Catégorie" />
           </SelectTrigger>
           <SelectContent className="bg-dark text-white border-none">
-            <SelectItem value={"all"}>{"All"}</SelectItem>
+            <SelectItem value={"all"}>{"Tout"}</SelectItem>
             {uniqueCategories.map((item, index) => (
               <SelectItem key={index} value={item}>
                 {item}
@@ -46,7 +46,7 @@ export const Filters = ({
           </SelectTrigger>
           <SelectContent className="bg-dark text-white border-none">
             <SelectItem className="capitalize" value={"all"}>
-              {"All"}
+              {"Tout"}
             </SelectItem>
             {inventories?.map((item) => (
               <SelectItem key={item.id} value={item.id}>
@@ -61,7 +61,7 @@ export const Filters = ({
           </SelectTrigger>
           <SelectContent className="bg-dark text-white border-none">
             <SelectItem className="capitalize" value={"all"}>
-              {"All"}
+            {"Tout"}
             </SelectItem>
             {status?.map((item, index) => (
               <SelectItem key={index} value={item}>

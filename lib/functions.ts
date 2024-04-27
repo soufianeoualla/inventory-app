@@ -53,3 +53,5 @@ export const isInRangeDate = (date1: Date, date2: Date) => {
     date1.getDate() < new Date().getDate()
   );
 };
+
+
