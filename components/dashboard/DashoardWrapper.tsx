@@ -16,6 +16,10 @@ import { operation } from "@prisma/client";
 import { compareDates, isInRangeDate } from "@/lib/functions";
 import { subDays } from "date-fns";
 import Loading from "../loading";
+import Image from "next/image";
+import ullistration from "@/components/assets/illustration-empty.svg";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export const DashoardWrapper = () => {
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
@@ -78,6 +82,25 @@ export const DashoardWrapper = () => {
   const yesterdaySortieStats = calculateQuantityAndTotal(yesterdayItemsSortie);
   const lastWeekSortieStats = calculateQuantityAndTotal(lastWeekItemsSortie);
   const lastMonthSortieStats = calculateQuantityAndTotal(lastMonthItemsSortie);
+
+  if (inventories?.length === 0)
+    return (
+      <>
+        {
+          <div className="flex flex-col justify-center items-center h-[80vh] text-center">
+            <Image src={ullistration} alt="ullistration empty" />
+            <div className="flex flex-col items-center gap-y-2">
+              <h1 className="text-2xl font-bold mt-8 text-white">
+                {"vous n'avez pas d'inventaire, créez-en un"}
+              </h1>
+              <Button variant={"link"} className="bg-white">
+                <Link href={"/inventaire"}>{"créez-en un"}</Link>
+              </Button>
+            </div>
+          </div>
+        }
+      </>
+    );
 
   if (!operations)
     return (
