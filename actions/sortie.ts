@@ -85,11 +85,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
       quantity: article?.quantity! + sortie?.quantity,
     },
   });
-  if (sortie.quantity > article?.quantity!) return;
 
-  await db.operation.delete({
-    where: { id: operationId },
-  });
   const existingProduct = await getArticle(parseInt(selectedRef), inventoryId);
   if (!existingProduct)
     return { error: "L'article n'existe pas dans l'inventaire" };
@@ -99,20 +95,17 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
 
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
-  await db.operation.create({
+  await db.operation.update({
+    where:{id:operationId},
     data: {
-      status: "completed",
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
-      companyId: user.companyId,
       inventoryName: inventoryName!,
-      id: operationId,
       email: user.email!,
       quantity: parseInt(quantity),
       ref: parseInt(selectedRef),
       article: selectedName,
       date: date,
-      inventoryId: inventoryId,
       category: existingProduct.category,
       type: "sortie",
     },
