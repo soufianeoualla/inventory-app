@@ -96,7 +96,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
   await db.operation.update({
-    where:{id:operationId},
+    where: { id: operationId },
     data: {
       price: existingProduct.price,
       total: parseInt(quantity) * existingProduct.price,
@@ -106,6 +106,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
       ref: parseInt(selectedRef),
       article: selectedName,
       date: date,
+      inventoryId: inventoryId,
       category: existingProduct.category,
       type: "sortie",
     },

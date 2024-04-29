@@ -126,7 +126,6 @@ export const editEntree = async (
 
   if (!article) return { error: "L'article est introuvable" };
   const currentDate = new Date();
-  const pending = date > currentDate;
   const newQuantity = Math.max(article.quantity - entree.quantity, 0);
   const currentTotalCost = article.price * article.quantity;
   const newTotalCost = Math.max(
@@ -135,7 +134,7 @@ export const editEntree = async (
   );
   const newPrice = newQuantity === 0 ? 0 : newTotalCost / newQuantity;
 
-  if (!pending) {
+  if (entree.status !=='pending') {
     await db.article.update({
       where: {
         ref_inventoryId: { ref: entree.ref, inventoryId: entree.inventoryId },
@@ -148,61 +147,57 @@ export const editEntree = async (
     });
   }
 
-  await db.operation.delete({
-    where: { id: operationId },
-  });
 
+  const isPending = date > currentDate;
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
   const existingProduct = await getArticle(parseInt(ref), inventoryId);
 
-  await db.operation.create({
+  await db.operation.update({
+    where:{id:operationId},
     data: {
       inventoryName: inventoryName!,
       price: parseFloat(unitPrice),
       quantity: parseInt(quantity),
       total: parseFloat(unitPrice) * parseInt(quantity),
-      companyId: user.companyId,
-      id: operationId,
       category: category,
       inventoryId: inventoryId,
       article: name,
       date: date,
       ref: parseInt(ref),
       email: user.email!,
-      type: "entree",
-      status: pending ? "pending" : "completed",
+      status: isPending ? "pending" : "completed",
     },
   });
-  if (!pending && !existingProduct) {
-    await db.article.create({
-      data: {
-        price: parseFloat(unitPrice),
-        quantity: parseInt(quantity),
-        total: parseFloat(unitPrice) * parseInt(quantity),
-        category: category,
-        name: name,
-        ref: parseInt(ref),
-        inventoryId: inventoryId,
-      },
-    });
-  }
+  if (!isPending) {
+    if (!existingProduct) {
+      await db.article.create({
+        data: {
+          price: parseFloat(unitPrice),
+          quantity: parseInt(quantity),
+          total: parseFloat(unitPrice) * parseInt(quantity),
+          category: category,
+          name: name,
+          ref: parseInt(ref),
+          inventoryId: inventoryId,
+        },
+      });
+    } else {
+      const newQuantity = existingProduct.quantity + parseInt(quantity);
+      const currentTotalCost = existingProduct.price * existingProduct.quantity;
+      const newTotalCost =
+        currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
+      const newPrice = newTotalCost / newQuantity;
 
-  if (!pending && existingProduct) {
-    const newQuantity = existingProduct.quantity + parseInt(quantity);
-    const currentTotalCost = existingProduct.price * existingProduct.quantity;
-    const newTotalCost =
-      currentTotalCost + parseFloat(unitPrice) * parseInt(quantity);
-    const newPrice = newTotalCost / newQuantity;
-
-    await db.article.update({
-      where: { id: existingProduct?.id },
-      data: {
-        quantity: newQuantity,
-        price: newPrice,
-        total: newPrice * newQuantity,
-      },
-    });
+      await db.article.update({
+        where: { id: existingProduct?.id },
+        data: {
+          quantity: newQuantity,
+          price: newPrice,
+          total: newPrice * newQuantity,
+        },
+      });
+    }
   } else {
     if (!existingProduct) {
       await db.article.create({
