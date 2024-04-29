@@ -70,7 +70,7 @@ export const InventoryWrapper = () => {
           <GobackButton className="sm:top-0"/>
           <div className="flex items-center gap-4 justify-end flex-wrap sm:mt-20 sm:justify-start">
             <Select onValueChange={(value) => setcategory(value)}>
-              <SelectTrigger className="w-[180px] sm:w-[150px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
                 <SelectValue placeholder="Catégorie" />
               </SelectTrigger>
               <SelectContent className="bg-card text-white border-none">
@@ -84,7 +84,7 @@ export const InventoryWrapper = () => {
             </Select>
 
             <Select onValueChange={(value) => setstatus(value)}>
-              <SelectTrigger className="w-[180px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectTrigger className="w-[180px]  sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
                 <SelectValue placeholder="Statut" />
               </SelectTrigger>
               <SelectContent className="bg-card text-white border-none">

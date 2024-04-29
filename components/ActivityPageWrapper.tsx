@@ -102,7 +102,7 @@ export const ActivitypageWrapper = () => {
               className={undefined}
             />
             <Select onValueChange={(value) => settype(value)}>
-              <SelectTrigger className="w-[180px] sm:w-[150px] bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent className="bg-dark text-white border-none">

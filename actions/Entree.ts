@@ -125,7 +125,8 @@ export const editEntree = async (
   const article = await getArticle(entree.ref, entree.inventoryId);
 
   if (!article) return { error: "L'article est introuvable" };
-
+  const currentDate = new Date();
+  const pending = date > currentDate;
   const newQuantity = Math.max(article.quantity - entree.quantity, 0);
   const currentTotalCost = article.price * article.quantity;
   const newTotalCost = Math.max(
@@ -134,23 +135,23 @@ export const editEntree = async (
   );
   const newPrice = newQuantity === 0 ? 0 : newTotalCost / newQuantity;
 
-  await db.article.update({
-    where: {
-      ref_inventoryId: { ref: entree.ref, inventoryId: entree.inventoryId },
-    },
-    data: {
-      quantity: newQuantity,
-      price: newPrice,
-      total: newPrice * newQuantity,
-    },
-  });
+  if (!pending) {
+    await db.article.update({
+      where: {
+        ref_inventoryId: { ref: entree.ref, inventoryId: entree.inventoryId },
+      },
+      data: {
+        quantity: newQuantity,
+        price: newPrice,
+        total: newPrice * newQuantity,
+      },
+    });
+  }
 
   await db.operation.delete({
     where: { id: operationId },
   });
 
-  const currentDate = new Date();
-  const pending = date > currentDate;
   const res = await getInventory(inventoryId!);
   const inventoryName = res?.name;
   const existingProduct = await getArticle(parseInt(ref), inventoryId);

@@ -153,15 +153,15 @@ export const Settings = () => {
                   )}
                 />
               </div>
-              <div></div>
-              <div className="flex items-end gap-x-4">
-                <div className="space-y-2">
+           
+              <div className="flex items-end gap-4 sm:flex-wrap w-full">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="email">Role</Label>
                   <Select
                     value={role}
                     onValueChange={(value) => setrole(value)}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[180px] sm:w-full">
                       <SelectValue
                         placeholder={`${role ? role : "Sélectionner un rôle"}`}
                       />
@@ -182,13 +182,13 @@ export const Settings = () => {
             </form>
           </Form>
 
-          <div className=" space-y-4">
+          <div className=" space-y-4 w-full">
             <Label htmlFor="">
               Modifier les rôles des utilisateurs actuels
             </Label>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center gap-2 flex-col">
               <Select value={user} onValueChange={(value) => setuser(value)}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className=" w-full">
                   <SelectValue placeholder={"Sélectionner un utilisateur"} />
                 </SelectTrigger>
                 <SelectContent className="border-none">
@@ -213,7 +213,7 @@ export const Settings = () => {
                 value={newRole}
                 onValueChange={(value) => setnewRole(value)}
               >
-                <SelectTrigger className="w-[180px] ">
+                <SelectTrigger className="w-full ">
                   <SelectValue placeholder="Modifier le role" />
                 </SelectTrigger>
                 <SelectContent className="border-none">

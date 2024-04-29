@@ -32,7 +32,7 @@ export const SingleItem = async ({ type, item }: SingleItemProp) => {
               : " bg-card/60"
           }   `}
         >
-          <div className="flex items-center justify-start gap-x-3 flex-1  sm:flex-col sm:gap-y-2  ">
+          <div className="flex items-center justify-start gap-x-3 flex-1  sm:flex-col sm:gap-y-2 sm:flex-none  ">
             <b className=" uppercase    ">#{item.id}</b>
             <p className="  ">{formatDate(item.date.toString())}</p>
             <div className="flex justify-center items-center gap-x-2">

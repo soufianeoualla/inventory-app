@@ -26,7 +26,7 @@ export const Filters = ({
   const status = ["en attente", "terminé"];
   return (
     <>
-      <div className="flex items-center sm:w-full gap-x-4">
+      <div className="flex items-center sm:w-full gap-x-4 sm:flex-wrap sm:gap-y-4">
         <Select onValueChange={(value) => setcategory(value)}>
           <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
             <SelectValue placeholder="Catégorie" />
@@ -57,7 +57,7 @@ export const Filters = ({
         </Select>
         <Select onValueChange={(value) => setStatus(value)}>
           <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
-            <SelectValue className="capitalize" placeholder="Status" />
+            <SelectValue className="capitalize" placeholder="Statut" />
           </SelectTrigger>
           <SelectContent className="bg-dark text-white border-none">
             <SelectItem className="capitalize" value={"all"}>

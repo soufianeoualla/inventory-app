@@ -52,7 +52,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
             </div>
           </div>
           <CardContent className="space-y-4 relative">
-            <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-4 sm:flex-wrap">
               <div>
                 <span>Article: </span>
                 <b>{article?.name}</b>
@@ -66,7 +66,7 @@ export const InventoryItem = ({ article }: InventoryTableProp) => {
                 <b>{formatPrice(article?.price!)}</b>
               </div>
             </div>
-            <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-4 sm:flex-wrap">
               <div>
                 <span>Total: </span>
                 <b>{formatPrice(article?.total!)}</b>
