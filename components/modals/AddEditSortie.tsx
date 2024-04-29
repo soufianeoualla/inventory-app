@@ -90,8 +90,8 @@ export const AddEditSortie = ({ edit, operation }: props) => {
     startTransition(() => {
       edit
         ? editSortie(sortieValues, operation!.id).then((data) => {
-            setError(data.error);
-            setSuccess(data.success);
+            setError(data?.error);
+            setSuccess(data?.success);
           })
         : addSortie(sortieValues, inventoryId).then((data) => {
             setError(data.error);

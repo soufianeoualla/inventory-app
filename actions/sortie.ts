@@ -85,6 +85,7 @@ export const editSortie = async (sortieValues: values, operationId: string) => {
       quantity: article?.quantity! + sortie?.quantity,
     },
   });
+  if (sortie.quantity > article?.quantity!) return;
 
   await db.operation.delete({
     where: { id: operationId },
