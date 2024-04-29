@@ -174,7 +174,10 @@ export const PageWrapper = () => {
           </div>
         </div>
         <Suspense>
-          <Items type="achat" items={filtredItemsByTime} />
+          <Items
+            type={pathname.includes("achat") ? "achat" : "sortie"}
+            items={filtredItemsByTime}
+          />
         </Suspense>
       </div>
 

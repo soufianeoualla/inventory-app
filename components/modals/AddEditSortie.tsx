@@ -35,7 +35,9 @@ export const AddEditSortie = ({ edit, operation }: props) => {
   const [selectedRef, setselectedRef] = useState<string>(
     edit ? operation!.ref.toString() : ""
   );
-  const [inventoryId, setinventoryId] = useState<string>("");
+  const [inventoryId, setinventoryId] = useState<string>(
+    edit ? operation?.inventoryId! : ""
+  );
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
 
   const [articleQuantity, setarticleQuantity] = useState<number | null>();
@@ -108,9 +110,9 @@ export const AddEditSortie = ({ edit, operation }: props) => {
         onClick={toggle}
         className="w-full top-0 left-0 h-full fixed bg-background/70 z-10  "
       ></div>
-      <div className="bg-dark max-w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 sm:px-6 shadow-md z-20   ">
+      <div className="bg-dark w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 sm:px-6 shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
-          {"Ajouter un sortie"}
+          {edit ? "Modifier la sortie" : "Ajouter un sortie"}
         </div>
 
         <form onSubmit={onAddSortie} className="space-y-8">
@@ -194,6 +196,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             <div className="space-y-2 w-full">
               <Label>Quantity</Label>
               <Input
+              value={quantity}
                 className="text-white"
                 type="number"
                 placeholder="Quantity"
@@ -221,7 +224,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
               Anuuler
             </Button>
             <Button disabled={isPending} type="submit" size={"lg"}>
-              Ajouter
+              {edit ? "Modifier" : "Ajouter"}
             </Button>
           </div>
         </form>
