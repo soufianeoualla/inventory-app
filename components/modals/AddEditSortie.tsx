@@ -155,7 +155,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
           </div>
           <div className="flex items-center gap-x-2 ">
             <div className=" w-full space-y-2">
-              <Label>Name</Label>
+              <Label>Article</Label>
               <Select
                 value={selectedName}
                 disabled={isPending}
@@ -175,7 +175,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
             </div>
 
             <div className="w-full space-y-2">
-              <Label> Ref</Label>
+              <Label> Réf</Label>
               <Select
                 value={selectedRef}
                 disabled={isPending}
@@ -194,7 +194,7 @@ export const AddEditSortie = ({ edit, operation }: props) => {
               </Select>
             </div>
             <div className="space-y-2 w-full">
-              <Label>Quantity</Label>
+              <Label>Quantité</Label>
               <Input
               value={quantity}
                 className="text-white"
