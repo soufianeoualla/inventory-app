@@ -50,6 +50,7 @@ export const addEntree = async (
     },
   });
   const existingProduct = await getArticle(parseInt(ref), inventoryId);
+  
   if (!pending) {
     if (!existingProduct) {
       await db.article.create({

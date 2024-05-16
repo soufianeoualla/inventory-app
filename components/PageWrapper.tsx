@@ -131,6 +131,7 @@ export const PageWrapper = () => {
       return true;
     }
   });
+  const isSortiePage = pathname.includes('sortie')
 
   return (
     <>
@@ -143,6 +144,7 @@ export const PageWrapper = () => {
             setcategory={setcategory}
             inventories={inventories}
             setinventoryId={setinventoryId}
+            isSortiePage
           />
           <div>
             {user !== "user" && pathname.includes("achat") ? (

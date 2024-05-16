@@ -13,19 +13,19 @@ export const compareQuantity = async (
   if (!user) return { error: "Pas authentifié" };
   const article = await getArticle(parseInt(selectedRef), id);
   if (!article) return;
-  const result = article?.quantity - parseInt(quantity);
+  const result = parseInt(quantity) - article?.quantity;
 
-  if (article?.quantity! < parseInt(quantity)) {
+  if (result > 0) {
     return {
-      error: `quantité theorique - quantité physique: ${result} `,
+      error: `quantité physique - quantité theorique: ${result} `,
     };
-  } else if (article?.quantity > parseInt(quantity)) {
+  } else if (result < 0) {
     return {
-      error: `quantité theorique - quantité physique: ${result} `,
+      error: `quantité physique - quantité theorique: ${result} `,
     };
-  } else if (article?.quantity === parseInt(quantity)) {
+  } else if (result === 0) {
     return {
-      success: `quantité theorique - quantité physique: ${result} `,
+      success: `quantité physique - quantité theorique: ${result} `,
     };
   }
 };

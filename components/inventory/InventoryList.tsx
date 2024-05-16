@@ -90,7 +90,7 @@ const InventoryList = () => {
             </div>
           ))}
         </div>
-        {inventories.length < 3 && user !== "user" && (
+        {user !== "user" && (
           <Button
             onClick={() => {
               toggle();

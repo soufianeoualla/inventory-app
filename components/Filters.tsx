@@ -11,7 +11,7 @@ interface FiltersProps {
   uniqueCategories: Array<string>;
   setcategory: Dispatch<SetStateAction<string>>;
   setStatus: Dispatch<SetStateAction<string>>;
-
+  isSortiePage: boolean;
   setinventoryId: Dispatch<SetStateAction<string>>;
   inventories: Inventories[] | null;
 }
@@ -22,6 +22,7 @@ export const Filters = ({
   inventories,
   setinventoryId,
   setStatus,
+  isSortiePage,
 }: FiltersProps) => {
   const status = ["en attente", "terminé"];
   return (
@@ -55,21 +56,23 @@ export const Filters = ({
             ))}
           </SelectContent>
         </Select>
-        <Select onValueChange={(value) => setStatus(value)}>
-          <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
-            <SelectValue className="capitalize" placeholder="Statut" />
-          </SelectTrigger>
-          <SelectContent className="bg-dark text-white border-none">
-            <SelectItem className="capitalize" value={"all"}>
-            {"Tout"}
-            </SelectItem>
-            {status?.map((item, index) => (
-              <SelectItem key={index} value={item}>
-                {item}
+        {!isSortiePage && (
+          <Select onValueChange={(value) => setStatus(value)}>
+            <SelectTrigger className="w-[180px] sm:w-full bg-Dark-Charcoal-Gray border-none text-white">
+              <SelectValue className="capitalize" placeholder="Statut" />
+            </SelectTrigger>
+            <SelectContent className="bg-dark text-white border-none">
+              <SelectItem className="capitalize" value={"all"}>
+                {"Tout"}
               </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              {status?.map((item, index) => (
+                <SelectItem key={index} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
     </>
   );

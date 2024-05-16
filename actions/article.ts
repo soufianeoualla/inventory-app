@@ -8,7 +8,7 @@ export const deleteArticle = async (id: string) => {
 
     if (!article) return { error: "Article est introuvable" };
     await db.operation.deleteMany({
-      where: { ref: article.ref, inventoryId: article.inventoryId },
+      where: { ref: article.ref, inventoryId: article. inventoryId},
     });
 
     await db.article.delete({
