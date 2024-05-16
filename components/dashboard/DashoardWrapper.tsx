@@ -1,5 +1,9 @@
 "use client";
-import { getAllOperations, getInventories } from "@/data/inventory";
+import {
+  getAllOperations,
+  getInventories,
+  getInventory,
+} from "@/data/inventory";
 import { PurchaseOverview } from "./PurchaseOverview";
 import { AreaChartComponent } from "./AreaChart";
 import { SortieOverview } from "./SortieOverview";
@@ -12,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Inventories } from "../inventory/InventoryList";
 import { useEffect, useState } from "react";
-import { operation } from "@prisma/client";
+import { inventory, operation } from "@prisma/client";
 import { compareDates, isInRangeDate } from "@/lib/functions";
 import { subDays } from "date-fns";
 import Loading from "../loading";
@@ -25,6 +29,7 @@ export const DashoardWrapper = () => {
   const [inventories, setinventories] = useState<Inventories[] | null>(null);
   const [inventoryId, setinventoryId] = useState<string | null>();
   const [operations, setoperations] = useState<operation[] | null>();
+  const [inventory, setinventory] = useState<inventory | null>();
   useEffect(() => {
     const fetchData = async () => {
       const response = await getInventories();
@@ -39,12 +44,12 @@ export const DashoardWrapper = () => {
   useEffect(() => {
     if (inventoryId) {
       getAllOperations(inventoryId).then(setoperations);
+      getInventory(inventoryId).then(setinventory);
     }
   }, [inventoryId]);
 
   const entree = operations?.filter((item) => item.type === "entree");
   const sortie = operations?.filter((item) => item.type === "sortie");
-  const invetaireName = operations?.map((item) => item.inventoryName);
   const today = new Date();
   const yesterday = subDays(today, 1);
   const lastWeek = subDays(today, 7);
@@ -112,9 +117,9 @@ export const DashoardWrapper = () => {
   return (
     <div className="px-8 mt-10 ">
       <div className="flex justify-between  items-center mb-8">
-        {invetaireName && (
+        {inventory && (
           <h1 className="text-white font-bold text-xl sm:text-lg">
-            Inventaire: <span className="capitalize">{invetaireName[0]}</span>
+            Inventaire: <span className="uppercase">{inventory.name}</span>
           </h1>
         )}
         <div className="flex justify-end ">
@@ -124,7 +129,7 @@ export const DashoardWrapper = () => {
             </SelectTrigger>
             <SelectContent className="bg-dark text-white border-none">
               {inventories?.map((item) => (
-                <SelectItem key={item.id} value={item.id}>
+                <SelectItem key={item.id} value={item.id} className="uppercase">
                   {item.name}
                 </SelectItem>
               ))}
