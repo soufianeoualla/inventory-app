@@ -22,8 +22,8 @@ import { UserContext } from "@/context/UserContext";
 
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
-    from: subDays(new Date(), 15),
-    to: addDays(new Date(), 7),
+    from: subDays(new Date(), 30),
+    to: addDays(new Date(), 0),
   });
   const { user } = useContext(UserContext);
   const { toggle, addEditModal, settype, type } =
@@ -132,6 +132,7 @@ export const PageWrapper = () => {
     }
   });
   const isSortiePage = pathname.includes('sortie')
+  
 
   return (
     <>
@@ -144,7 +145,7 @@ export const PageWrapper = () => {
             setcategory={setcategory}
             inventories={inventories}
             setinventoryId={setinventoryId}
-            isSortiePage
+            isSortiePage={isSortiePage}
           />
           <div>
             {user !== "user" && pathname.includes("achat") ? (
