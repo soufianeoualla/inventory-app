@@ -157,7 +157,7 @@ export const PageWrapper = () => {
                 className="flex items-center gap-x-2 font-bold w-[180px] sm:w-full"
               >
                 <FaPlus />
-                Ajouter un Entrée
+                Ajouter une Entrée
               </Button>
             ) : (
               user !== "user" &&
@@ -170,7 +170,7 @@ export const PageWrapper = () => {
                   className="flex items-center gap-x-2 font-bold w-[180px] sm:w-full"
                 >
                   <FaPlus />
-                  Ajouter un Sortie
+                  Ajouter une Sortie
                 </Button>
               )
             )}

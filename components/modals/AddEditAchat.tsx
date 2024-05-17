@@ -107,7 +107,7 @@ export const AddEditAchat = (props: props) => {
       ></div>
       <div className="bg-dark w-[610px] sm:w-[95%]  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl p-10 sm:px-6  shadow-md z-20   ">
         <div className="text-2xl font-bold mb-10 text-white">
-          {edit ? "Modifier L'Entrée" : "Ajouter un Entrée "}
+          {edit ? "Modifier L'Entrée" : "Ajouter une Entrée "}
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -34,7 +34,7 @@ export function AddButton() {
               settype("entree");
             }}
           >
-            Ajouter un Entrée
+            Ajouter une Entrée
           </Button>
           <Button
             onClick={() => {
@@ -42,7 +42,7 @@ export function AddButton() {
               settype("sortie");
             }}
           >
-            Ajouter un Sortie
+            Ajouter une Sortie
           </Button>
         </PopoverContent>
       </Popover>
