@@ -23,7 +23,7 @@ import { UserContext } from "@/context/UserContext";
 export const PageWrapper = () => {
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 30),
-    to: addDays(new Date(), 0),
+    to: addDays(new Date(), 7),
   });
   const { user } = useContext(UserContext);
   const { toggle, addEditModal, settype, type } =
